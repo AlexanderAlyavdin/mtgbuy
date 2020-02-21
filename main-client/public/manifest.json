@@ -1,0 +1,8 @@
+{
+  "short_name": "MtgBuy",
+  "name": "MtgBuy app starter",
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
