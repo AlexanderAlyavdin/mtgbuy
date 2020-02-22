@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import { History } from 'history';
 import Layout from './components/Layout';
+import TestRoute from './routes/Test';
 
 type AppProps = {
   routerHistory: History;
@@ -17,6 +18,9 @@ const App: FunctionComponent<AppProps> = ({ routerHistory }) => {
           </Route>
           <Route path='/about'>
             <div>Route About</div>
+          </Route>
+          <Route path='/test'>
+            <TestRoute />
           </Route>
         </Switch>
       </Layout>
