@@ -10,10 +10,15 @@ import InputBase from '@material-ui/core/InputBase';
 import './HeaderMain.scss';
 
 import makeBem from '../utils/make-bem';
+import getHtmlByCardName from '../utils/parsers/mtgsale-parser-copy';
 
 const { mainClass, bem } = makeBem('HeaderMain');
 
-const HeaderMain: FunctionComponent = () => {
+interface HeaderProps {
+  onSearch?(): void;
+}
+
+const HeaderMain: FunctionComponent<HeaderProps> = ({ onSearch }) => {
   return (
     <AppBar position='static'>
       <Toolbar>
@@ -28,6 +33,14 @@ const HeaderMain: FunctionComponent = () => {
             <SearchIcon />
           </div>
           <InputBase
+            onKeyDown={keyboardEvent => {
+              console.log(keyboardEvent.key);
+              if (keyboardEvent.key === 'Enter') {
+                getHtmlByCardName((keyboardEvent.target as HTMLInputElement).value).then(res => {
+                  console.log(res);
+                });
+              }
+            }}
             placeholder='Search…'
             classes={{
               root: bem('search-root'),
