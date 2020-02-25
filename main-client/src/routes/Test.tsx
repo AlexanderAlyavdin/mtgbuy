@@ -12,7 +12,7 @@ const TestRoute: FunctionComponent = () => {
 
   useEffect(() => {
     (async (): Promise<void> => setHtmlResult(await getHtmlByCardName('golos')))();
-  });
+  }, []);
 
   return <div className={mainClass}>{htmlResult.window.document.textContent}</div>;
 };
