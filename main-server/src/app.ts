@@ -1,5 +1,5 @@
 import express from 'express';
-import getHtmlByCardName from './utils/parsers/mtgsale-parser';
+var request = require('request');
 
 const app = express();
 const port = 3030;
@@ -12,11 +12,14 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', (req, res) => {
+app.get('/', (req, response) => {
   const cardName = req.params.cardName;
-  const result = getHtmlByCardName(cardName);
-  res.send(result);
+  request(`https://mtgsale.ru/home/search-results?Name=${cardName}`, (err, res, body) => {
+      if (err) { return console.log(err); }
+      response.send(body);
+  });
 });
+
 app.listen(port, err => {
   if (err) {
     return console.error(err);
