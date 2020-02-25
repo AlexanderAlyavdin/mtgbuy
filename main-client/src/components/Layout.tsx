@@ -1,5 +1,6 @@
 import React, { FunctionComponent } from 'react';
 import './Layout.scss';
+import HeaderMain from './HeaderMain';
 
 import makeBem from '../utils/make-bem';
 
@@ -8,12 +9,8 @@ const { mainClass, bem } = makeBem('Layout');
 const Layout: FunctionComponent = ({ children }) => {
   return (
     <div className={mainClass}>
-      <header className={bem('header')}>
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        {children}
-      </header>
+      <HeaderMain />
+      {children}
     </div>
   );
 };
