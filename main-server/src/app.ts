@@ -13,7 +13,7 @@ app.use((req, res, next) => {
 });
 
 app.get('/', (req, response) => {
-  const cardName = req.params.cardName;
+  const cardName = req.query.cardName;
   request(`https://mtgsale.ru/home/search-results?Name=${cardName}`, (err, res, body) => {
       if (err) { return console.log(err); }
       response.send(body);
