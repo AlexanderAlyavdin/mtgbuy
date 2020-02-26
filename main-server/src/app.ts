@@ -2,7 +2,7 @@ import express from 'express';
 var request = require('request');
 
 const app = express();
-const port = 3030;
+const port = process.env.PORT || 3030;
 
 // Avoid CORS
 app.use((req, res, next) => {
@@ -20,9 +20,6 @@ app.get('/', (req, response) => {
   });
 });
 
-app.listen(port, err => {
-  if (err) {
-    return console.error(err);
-  }
-  return console.log(`server is listening on ${port}`);
+app.listen(port, () => {
+  console.log(`server is listening on ${port}`);
 });
