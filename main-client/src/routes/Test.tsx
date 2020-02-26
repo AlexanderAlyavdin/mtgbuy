@@ -11,7 +11,7 @@ const TestRoute: FunctionComponent = () => {
   const [htmlResult, setHtmlResult] = useState(new JSDOM('<div></div>'));
 
   useEffect(() => {
-    (async (): Promise<void> => setHtmlResult(await getHtmlByCardName('golos')))();
+    getHtmlByCardName('golos').then(html => setHtmlResult(html));
   }, []);
 
   return <div className={mainClass}>{htmlResult.window.document.textContent}</div>;
