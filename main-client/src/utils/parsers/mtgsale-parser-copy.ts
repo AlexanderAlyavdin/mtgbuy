@@ -1,6 +1,6 @@
 import { JSDOM } from 'jsdom';
 
-const BASE_URL = 'http://localhost:3030/';
+const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3030/' : 'https://mtgbuy.herokuapp.com/';
 
 const getHtmlByCardName = async (cardName: string): Promise<JSDOM> => {
   const response = await fetch(`${BASE_URL}?cardName=${cardName}`);
