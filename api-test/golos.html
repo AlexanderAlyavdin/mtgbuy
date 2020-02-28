@@ -1,0 +1,997 @@
+HTTP/1.1 200 OK
+Server: Apache-Coyote/1.1
+Cache-Control: private, no-cache, no-store, must-revalidate, max-age=0
+Expires: Thu, 01 Jan 1970 03:00:00 MSK
+Pragma: no-cache
+Content-Encoding: gzip
+Vary: Accept-Encoding
+Content-Type: text/html;charset=UTF-8
+Content-Length: 7225
+Date: Fri, 28 Feb 2020 21:42:41 GMT
+Connection: close
+
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset='utf-8' />
+	<title>MTG sale - Результаты поиска</title>
+	<meta name="description" content="Всё для игры Magic The Gathering" />
+	<meta name="keywords" content="Magic The Gathering, MTG" />
+	<meta property="og:url" content="" />
+	<meta property="og:title" content="" />
+	<meta property="og:description" content="" />
+	<meta property="og:image" content="" />
+	<link rel="stylesheet" href="/resources/website2/css/style.css" />
+	<link rel="stylesheet" href="/resources/website2/css/nabors.css" />
+	<link rel="stylesheet" href="/resources/website2/css/flags.css"/>
+	<link rel="stylesheet" href="/resources/website2/css/flexslider.css">
+	<link rel="stylesheet" href="/resources/website2/css/jquery.formstyler.css">
+    <link rel="stylesheet" href="/resources/website2/css/jquery-ui.min.css">
+	<link rel="stylesheet" href="/resources/website2/css/font-awesome.min.css">
+	<link rel="stylesheet" href="/resources/website2/css/lightbox.css">
+	<link rel="shortcut icon" href="/docroot/favicon2.ico" type="image/x-icon">
+	<link href='https://fonts.googleapis.com/css?family=Open+Sans:400,600,700,800&subset=latin,cyrillic' rel='stylesheet' type='text/css'>
+<!-- begin js and css added by @cms.init -->
+<meta name="gwt:property" content="locale=en"/>
+<!-- cms:page content="website:/home/search-results" preview="true" -->
+<!-- /cms:page -->
+
+<!-- end js and css added by @cms.init -->
+</head>
+<body>
+	<div class="container">
+<header class="header">
+    <div class="loginform">
+        <div class="inlogin">
+            <h3 class="extra">Вход</h3>
+            <a class="infolink registerbutton">Регистрация</a>
+            <form id="login-form" action="/user/login">
+                <input type="text" class="loginin" name="login" placeholder="E-mail">
+                <input type="password" class="loginin" name="password" placeholder="Пароль">
+                <a class="infolink recoverpasswordbutton">Забыли пароль</a>
+                <div class="cleardiv"></div>
+                <div id="login-error" class="mistake-message"></div>
+                <button class="submitlogin" id="login-submit" type="submit">Войти</button>
+            </form>
+        </div>
+    </div>
+    <div class="registerform">
+        <div class="inlogin">
+            <h3 class="extra">Регистрация</h3>
+            <a class="infolink loginbutton">Вход</a>
+            <form id="register-form" action="/user/register">
+                <input type="text" class="loginin" name="email" id="register-email" placeholder="E-mail">
+                <a class="infolink recoverpasswordbutton">Забыли пароль</a>
+                <div class="cleardiv"></div>
+                <div id="register-error" class="mistake-message"></div>
+                <button class="submitlogin" id="register-submit" type="submit">Зарегистрироваться</button>
+            </form>
+        </div>
+    </div>
+    <div class="recoverpasswordform">
+        <div class="inlogin">
+            <h3 class="extra">Восстановление пароля</h3>
+            <a class="infolink loginbutton">Вход</a>
+            <form id="recover-password-form" action="/user/recover">
+                <input type="text" class="loginin" name="email" id="recover-password-email" placeholder="E-mail">
+                <div class="cleardiv"></div>
+                <div id="recover-password-error" class="mistake-message"></div>
+                <button class="submitlogin" id="recover-password-submit" type="submit">Восстановить пароль</button>
+            </form>
+        </div>
+    </div>
+    <div class="requestform">
+        <div class="inlogin">
+            <h3 class="extra">Заявка на отсутствующие карты</h3>
+                        <p>Пожалуйста, <a class="forminlinelink registerbutton">зарегиструйтесь</a> или <a class="forminlinelink loginbutton">войдите</a>,
+             чтобы оставить заявку.</p>
+        </div>
+    </div>
+    <div class="wrap head">
+        <div class="logo">
+            <a href="/">
+                <img src="/resources/website2/images/logo1.png" alt="" />
+                <img src="/resources/website2/images/logo2.png" alt="" />
+            </a>
+        </div>
+        <div class="buttoncart">
+            <div class="meta">
+                    <p class="loginbutton"><a class="loginbutton" href="#">Вход</a></p>
+                <p class="language"><a class="language" href="#">En</a></p>
+            </div>
+            <div id="cartHeader">
+<a class="cart" href="#">
+    <span class="cartname"><i class="fa fa-mycart"></i> Корзина</span>
+    <span class="cartnumber">0</span>
+</a>
+            </div>
+        </div>
+    </div>
+</header>
+		<div class="page page-out">
+<div class="menutop">
+    <div class="wrap wnap">
+        <nav class="topnav" id="topnav">
+            <li class="first">
+                <a href="/home/catalog">Каталог продукции</a>
+                <div class="divtop">
+                    <div class="colx">
+                        <a href="/home/search-results">Карты</a>
+                        <a class="date" href="/home/search-results?CardSet=T_S">Standard</a>
+                        <a class="date" href="/home/search-results?CardSet=T_M">Modern</a>
+                        <a class="date" href="/home/search-results?CardSet=T_L">Legacy</a>
+                        <br>
+                        <a class="date" href="/home/setlist">Список сетов</a>
+                        <br>
+                        <a class="date" href="/home/catalog?id=13">Наборы карт</a>
+                    </div>
+                                        <div class="colx">
+                        <a href="/home/catalog?id=2">Запечатанная продукция</a>
+                        <a class="date" href="/home/catalog?id=4">Дисплеи и бустера</a>
+                        <a class="date" href="/home/catalog?id=5">Начальные наборы</a>
+                        <a class="date" href="/home/catalog?id=7">Коллекционные и подарочные наборы</a>
+                        <a class="date" href="/home/catalog?id=6">Дуэльные наборы</a>
+                        <a class="date" href="/home/catalog?id=16">Готовые колоды</a>
+                        <a class="date" href="/home/catalog?id=31">Колода Planeswalker</a>
+                    </div>
+                    <div class="colx">
+                        <a href="/home/catalog?id=3">Аксессуары</a>
+                        <a class="date" href="/home/catalog?id=8">Протекторы</a>
+                        <a class="date" href="/home/catalog?id=9">Декбоксы</a>
+                        <a class="date" href="/home/catalog?id=23">Альбомы и листы</a>
+                        <a class="date" href="/home/catalog?id=24">Коврики</a>
+                        <a class="date" href="/home/catalog?id=26">Кубики и каунтеры</a>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <a href="/home/delivery">Оплата и доставка</a>
+                <div class="divtop2">
+                    <div class="colx">
+                        <a href="/home/discounts">Скидки</a>
+                    </div>
+                </div>
+            </li>
+            <a href="/home/buying">Покупаем карты</a>
+            <a href="/home/articles">Статьи</a>
+            <li>
+                <a href="/home/faq">FAQ</a>
+                <div class="divtop2">
+                    <div class="colx">
+                        <a href="/home/conditions">Состояния карт</a>
+                    </div>
+                </div>
+            </li>
+
+
+            <a href="/home/about">О нас</a>
+            <a class="navsearch" href="#"><i class="fa fa-search"></i></a>
+        </nav>
+    </div>
+    <div class="misearch">
+        <div class="wrap">
+            <input type="text" class="itex" placeholder="Полное или частичное названия карты" size="40">
+        </div>
+    </div>
+</div>
+
+<div class="search">
+	<div class="wrap">
+		<div class="w50">
+			<h3 class="extra">Поиск карт</h3>
+			<a class="sets" href="/home/setlist"><i class="fa fa-mysets"></i> Список сетов</a>
+		</div>
+		<div class="w50">
+			<a class="spisok" href="/home/cardlist"><i class="fa fa-list"></i> Ввод списком</a>
+			<a class="fullsearch" href="/home/advsearch"><i class="fa fa-search-plus"></i> Расширенный поиск</a>
+		</div>
+		<form action="/home/search-results" method="GET" id="CatalogSearchForm" accept-charset="UTF-8">
+			<div class="isearch">
+				<input type="text" class="itext" id="CardNameField" placeholder="Полное или частичное названия карты" name="Name" size="40" value=""></input>
+				<!--textarea class="sitext" name="list" placeholder="Введите или скопируйте список карт, по одной на строчку"></textarea-->
+				<button type="submit" class="ibutton" value="Найти">Найти</button>
+			</div>
+			<div class="bsearch">
+				<div class="col1">
+					<span class="span1">Язык</span>
+						<select class="bsearch" name="Lang">
+							<option selected="selected" checked value="Any">Любой</option>
+							<option value="ENG">Английский</option>
+							<option value="RUS">Русский</option>
+							<option value="CN">Китайский</option>
+							<option value="DE">Немецкий</option>
+							<option value="FR">Французский</option>
+							<option value="IT">Итальянский</option>
+							<option value="ES">Испанский</option>
+							<option value="JP">Японский</option>
+							<option value="PT">Португальский</option>
+							<option value="TW">Тайваньский</option>
+							<option value="KO">Корейский</option>
+						</select>
+				</div>
+				<div class="col1">
+				<span class="span1">Тип</span>
+					<select class="bsearch" name="Type">
+						<option selected="selected" checked value="Any">Любой</option>
+						<option value="C">Существо</option>
+						<option value="L">Земля</option>
+						<option value="S">Волшебство</option>
+						<option value="I">Мгновенное заклинание</option>
+						<option value="E">Чары</option>
+						<option value="A">Артефакт</option>
+						<option value="P">Planeswalker</option>
+					</select>
+				</div>
+				<div class="col1">
+				<span class="span1">Цвет</span>
+					<select class="bsearch" name="Color">
+						<option selected="selected" checked value="Any">Любой</option>
+						<option value="White">Белый</option>
+						<option value="Green">Зеленый</option>
+						<option value="Red">Красный</option>
+						<option value="Blue">Синий</option>
+						<option value="Black">Черный</option>
+						<option value="Multicolor">Многоцветный</option>
+						<option value="Colorless">Бесцветный</option>
+						<option value="Lands">Земля</option>
+					</select>
+				</div>
+				<div class="col1">
+				<span class="span1">Редкость</span>
+					<select class="bsearch" name="Rarity">
+						<option selected="selected" checked value="Any">Любая</option>
+						<option value="C">Обычная</option>
+						<option value="U">Необычная</option>
+						<option value="R">Редкая</option>
+						<option value="M">Мифическая</option>
+						<option value="S">Промо</option>
+						<option value="OT">Токен</option>
+						<option value="OL">Plane</option>
+						<option value="OS">Scheme</option>
+						<option value="OP">Phenomenon</option>
+						<option value="OH">Карта героя</option>
+					</select>
+				</div>
+				<div class="col1">
+				<span class="span1">Фойл</span>
+					<select class="bsearch" name="Foil">
+						<option selected="selected" checked value="Any">Любой</option>
+						<option value="N">Обычные</option>
+						<option value="Y">Фойловые</option>
+					</select>
+				</div>
+				<div class="col1 price price-range">
+					<span class="span1">Цена карт</span>
+					от <input type="text" class="iprice price-min" size="25" value="3" data-min="3" name="minP"> <i>₽</i>
+					до <input type="text" class="iprice price-max" size="25" value="24260" data-max="24260" name="maxP"> <i>₽</i>
+					<!-- <input class="cartrange" type="range" min="0" max="100" step="1" value="50"> -->
+					<div class="slider"></div>
+				</div>
+				</div>
+			</div>
+			<input type="hidden" name="Page" id="Page" value="1">
+			<input type="hidden" name="Sort" id="Sort" value="name">
+			<input type="hidden" name="CardSet" value="">
+		</form>
+	</div>
+</div>
+<div class="page-out">
+
+
+<div class="wrap">
+	<div class="cartmtg">
+		<h3 class="titleblock">Результаты поиска<span class="search-number">Найдено: 71,825  карт</span></h3>
+
+	<ul class="tabsb">
+	<li class="active1"><a href="">1</a></li>
+	<li><a href="javascript:void(0)" onclick=loadPage(2)>2</a></li>
+			<li><a href="">...</a></li>
+	<li><a href="javascript:void(0)" onclick=loadPage(2872)>2872</a></li>
+	<li><a href="javascript:void(0)" onclick=loadPage(2873)>2873</a></li>
+	</ul>
+		<div class="tab_container">
+			<div id="taba" class="tab_content1">
+<div class="ctname">
+<p class="tname">
+<a href="javascript:void(0)" onclick=loadSort("-name")>
+Название
+<i class="fa fa-sort-desc"></i>
+
+</a>
+</p>
+<p class="lang">
+<a href="javascript:void(0)" onclick=loadSort("lang")>
+Язык
+
+
+</a>
+</p>
+<p class="nabor">
+<a href="javascript:void(0)" onclick=loadSort("set")>
+Сет
+
+
+</a>
+</p>
+<p class="foil">
+<a href="javascript:void(0)" onclick=loadSort("foil")>
+Фойл
+
+
+</a>
+</p>
+<p class="sost">
+<a href="javascript:void(0)" onclick=loadSort("cond")>
+Сост.
+
+
+</a>
+</p>
+<p class="redkost">
+<a href="javascript:void(0)" onclick=loadSort("rarity")>
+Редкость
+
+
+</a>
+</p>
+<p class="pprice">
+<a href="javascript:void(0)" onclick=loadSort("price")>
+Цена
+
+
+</a>
+</p>
+<p class="colvo">
+<a href="javascript:void(0)" onclick=loadSort("count")>
+Кол-во
+
+
+</a>
+</p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/other/10SWAMPS.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/other/10SWAMPS.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/other/10-bolot-raznykh-izdaniy_10swamps">10 Болот (разных изданий)</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-" title=""></i></p>
+    <p class="nabor"><span class="n-" title=""></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost"></p>
+    <p class="pprice">
+        24 <i>₽</i>
+    </p>
+    <p class="colvo">10 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;52d8dcede853af51d68831e5&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/other/10MOUNTAINS.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/other/10MOUNTAINS.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/other/10-gor-raznykh-izdaniy_10mountains">10 Гор (разных изданий)</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-" title=""></i></p>
+    <p class="nabor"><span class="n-" title=""></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost"></p>
+    <p class="pprice">
+        24 <i>₽</i>
+    </p>
+    <p class="colvo">12 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;52d8dcf8e853af51d68831e6&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/other/10FORESTS.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/other/10FORESTS.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/other/10-lesov-raznykh-izdaniy_10forests">10 Лесов (разных изданий)</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-" title=""></i></p>
+    <p class="nabor"><span class="n-" title=""></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost"></p>
+    <p class="pprice">
+        24 <i>₽</i>
+    </p>
+    <p class="colvo">12 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;52d8dd09e853af51d68831e7&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/other/10ISLANDS.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/other/10ISLANDS.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/other/10-ostrovov-raznykh-izdaniy_10islands">10 Островов (разных изданий)</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-" title=""></i></p>
+    <p class="nabor"><span class="n-" title=""></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost"></p>
+    <p class="pprice">
+        24 <i>₽</i>
+    </p>
+    <p class="colvo">10 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;52d8dce4e853af51d68831e4&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/other/10PLAINS.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/other/10PLAINS.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/other/10-ravnin-raznykh-izdaniy_10plains">10 Равнин (разных изданий)</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-" title=""></i></p>
+    <p class="nabor"><span class="n-" title=""></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost"></p>
+    <p class="pprice">
+        24 <i>₽</i>
+    </p>
+    <p class="colvo">10 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;52d8dcdce853af51d68831e3&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/other/Bundle_AER_ENGL.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/other/Bundle_AER_ENGL.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/other/bundle-aether-revolt-angl_bundle_aer_engl">Bundle Aether Revolt (англ.)</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-" title=""></i></p>
+    <p class="nabor"><span class="n-" title=""></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost"></p>
+    <p class="pprice">
+        2690 <i>₽</i>
+    </p>
+    <p class="colvo">1 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;58829dcde4b092c598441b95&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/other/Booster_RIX_RUS.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/other/Booster_RIX_RUS.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/other/buster-borba-za-iksalan-rus_booster_rix_rus">Бустер Борьба за Иксалан (рус.)</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-" title=""></i></p>
+    <p class="nabor"><span class="n-" title=""></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost"></p>
+    <p class="pprice">
+        220 <i>₽</i>
+    </p>
+    <p class="colvo">3 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5a732c164f0cc2696ddbf48a&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/other/Booster_GRN_RUS.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/other/Booster_GRN_RUS.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/other/buster-gildii-ravniki-rus_booster_grn_rus">Бустер Гильдии Равники (рус.)</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-" title=""></i></p>
+    <p class="nabor"><span class="n-" title=""></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost"></p>
+    <p class="pprice">
+        220 <i>₽</i>
+    </p>
+    <p class="colvo">12 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5bbc86ea4f0c5d23823c3a0b&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/other/Booster_EXL_RUS.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/other/Booster_EXL_RUS.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/other/buster-iksalan-rus_booster_exl_rus">Бустер Иксалан (рус.)</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-" title=""></i></p>
+    <p class="nabor"><span class="n-" title=""></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost"></p>
+    <p class="pprice">
+        220 <i>₽</i>
+    </p>
+    <p class="colvo">24 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5a7331854f0cc2696ddbf48e&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/other/DISPLEY_XLN_RUS.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/other/DISPLEY_XLN_RUS.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/other/displey-busterov-iksalan-rus_displey_xln_rus">Дисплей бустеров Иксалан (рус.)</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-" title=""></i></p>
+    <p class="nabor"><span class="n-" title=""></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost"></p>
+    <p class="pprice">
+        6490 <i>₽</i>
+    </p>
+    <p class="colvo">1 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;59dfadfbe4b02f0b434c94e1&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/other/Bundle_HOU.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/other/Bundle_HOU.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/other/podarochnyy-nabor-hour-of-devastation-angl_bundle_hou">Подарочный набор Hour of Devastation (англ.)</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-" title=""></i></p>
+    <p class="nabor"><span class="n-" title=""></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost"></p>
+    <p class="pprice">
+        2590 <i>₽</i>
+    </p>
+    <p class="colvo">1 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;596df65fe4b0b9d18d498abf&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/UST/ENG/65.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/UST/ENG/65.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/ust_eng/rumors-of-my-death---_65">"Rumors of My Death . . ."</a>
+        <br>
+        <span class="smallfont"></span>
+    </p>
+    <p class="lang"><i class="flag-GB" title="Английский"></i></p>
+    <p class="nabor"><span class="n-ust" title="Unstable"></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost">Необычная</p>
+    <p class="pprice">
+        8 <i>₽</i>
+    </p>
+    <p class="colvo">14 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5bf7dc634f0c1eebc4b536f0&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/EMN/RUS/115.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/EMN/RUS/115.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/emn_rus/abandon-reason_115">Променять Мудрость</a>
+        <br>
+        <span class="smallfont">Abandon Reason</span>
+    </p>
+    <p class="lang"><i class="flag-RU" title="Русский"></i></p>
+    <p class="nabor"><span class="n-emn" title="Eldritch Moon"></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost">Необычная</p>
+    <p class="pprice">
+        10 <i>₽</i>
+    </p>
+    <p class="colvo">11 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;578a4f8ce4b052d2e4c06c5f&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/EMN/RUS/115.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/EMN/RUS/115.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/emn_rus/abandon-reason_115">Променять Мудрость</a>
+        <br>
+        <span class="smallfont">Abandon Reason</span>
+    </p>
+    <p class="lang"><i class="flag-RU" title="Русский"></i></p>
+    <p class="nabor"><span class="n-emn" title="Eldritch Moon"></span></p>
+    <p class="foil">Фойл</p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost">Необычная</p>
+    <p class="pprice">
+        27 <i>₽</i>
+    </p>
+    <p class="colvo">1 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;578e5f6ce4b052d2e4c07000&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/HOU/ENG/158.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/HOU/ENG/158.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/hou_eng/abandoned-sarcophagus_158">Abandoned Sarcophagus</a>
+        <br>
+        <span class="smallfont">Брошенный Саркофаг</span>
+    </p>
+    <p class="lang"><i class="flag-GB" title="Английский"></i></p>
+    <p class="nabor"><span class="n-hou" title="Hour of Devastation"></span></p>
+    <p class="foil">Фойл</p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost">Редкая</p>
+    <p class="pprice">
+        55 <i>₽</i>
+    </p>
+    <p class="colvo">1 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5a391ee04f0c42c5aa703d05&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/HOU/FR/158.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/HOU/FR/158.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/hou_fr/abandoned-sarcophagus_158">Sarcophage abandonné</a>
+        <br>
+        <span class="smallfont">Abandoned Sarcophagus</span>
+    </p>
+    <p class="lang"><i class="flag-FR" title="Французский"></i></p>
+    <p class="nabor"><span class="n-hou" title="Hour of Devastation"></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost">Редкая</p>
+    <p class="pprice">
+        12 <i>₽</i>
+    </p>
+    <p class="colvo">1 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5a9d12b44f0cf76a870cc118&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/HOU/ENG/158.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/HOU/ENG/158.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/hou_eng/abandoned-sarcophagus_158">Abandoned Sarcophagus</a>
+        <br>
+        <span class="smallfont">Брошенный Саркофаг</span>
+    </p>
+    <p class="lang"><i class="flag-GB" title="Английский"></i></p>
+    <p class="nabor"><span class="n-hou" title="Hour of Devastation"></span></p>
+    <p class="foil">Фойл</p>
+<p class="sost" ><a href="/home/conditions.html#moderately-played"><span class="mp" title="Заметные повреждения">MP</span></a></p>
+    <p class="redkost">Редкая</p>
+    <p class="pprice">
+        45 <i>₽</i>
+    </p>
+    <p class="colvo">1 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5cf3e4af4f0ca5b112285fe7&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/HOU/RUS/158.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/HOU/RUS/158.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/hou_rus/abandoned-sarcophagus_158">Брошенный Саркофаг</a>
+        <br>
+        <span class="smallfont">Abandoned Sarcophagus</span>
+    </p>
+    <p class="lang"><i class="flag-RU" title="Русский"></i></p>
+    <p class="nabor"><span class="n-hou" title="Hour of Devastation"></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#moderately-played"><span class="mp" title="Заметные повреждения">MP</span></a></p>
+    <p class="redkost">Редкая</p>
+    <p class="pprice">
+        9 <i>₽</i>
+    </p>
+    <p class="colvo">1 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5d1de9674f0cd325d378e0ef&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/DDQ/ENG/50.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/DDQ/ENG/50.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/ddq_eng/abattoir-ghoul_50">Abattoir Ghoul</a>
+        <br>
+        <span class="smallfont">Скотобойный Упырь</span>
+    </p>
+    <p class="lang"><i class="flag-GB" title="Английский"></i></p>
+    <p class="nabor"><span class="n-ddq" title="Duel Decks: Blessed vs. Cursed"></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost">Необычная</p>
+    <p class="pprice">
+        6 <i>₽</i>
+    </p>
+    <p class="colvo">5 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;56fbf86de4b02ab659f0a267&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/ISD/ENG/85.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/ISD/ENG/85.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/isd_eng/abattoir-ghoul_85">Abattoir Ghoul</a>
+        <br>
+        <span class="smallfont">Скотобойный Упырь</span>
+    </p>
+    <p class="lang"><i class="flag-GB" title="Английский"></i></p>
+    <p class="nabor"><span class="n-isd" title="Innistrad"></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost">Необычная</p>
+    <p class="pprice">
+        9 <i>₽</i>
+    </p>
+    <p class="colvo">12 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5395a1002bf92737f94c3970&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/ISD/ENG/85.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/ISD/ENG/85.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/isd_eng/abattoir-ghoul_85">Abattoir Ghoul</a>
+        <br>
+        <span class="smallfont">Скотобойный Упырь</span>
+    </p>
+    <p class="lang"><i class="flag-GB" title="Английский"></i></p>
+    <p class="nabor"><span class="n-isd" title="Innistrad"></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#slightly-played"><span class="sp" title="Небольшие повреждения">SP</span></a></p>
+    <p class="redkost">Необычная</p>
+    <p class="pprice">
+        8 <i>₽</i>
+    </p>
+    <p class="colvo">1 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;56bb5ab3e4b0f7b20ee6099c&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/ISD/ENG/1.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/ISD/ENG/1.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/isd_eng/abbey-griffin_1">Abbey Griffin</a>
+        <br>
+        <span class="smallfont">Грифон Аббатства</span>
+    </p>
+    <p class="lang"><i class="flag-GB" title="Английский"></i></p>
+    <p class="nabor"><span class="n-isd" title="Innistrad"></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#slightly-played"><span class="sp" title="Небольшие повреждения">SP</span></a></p>
+    <p class="redkost">Обычная</p>
+    <p class="pprice">
+        4 <i>₽</i>
+    </p>
+    <p class="colvo">3 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5c9f295d4f0cd0940f78ab5f&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/ISD/RUS/1.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/ISD/RUS/1.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/isd_rus/abbey-griffin_1">Грифон Аббатства</a>
+        <br>
+        <span class="smallfont">Abbey Griffin</span>
+    </p>
+    <p class="lang"><i class="flag-RU" title="Русский"></i></p>
+    <p class="nabor"><span class="n-isd" title="Innistrad"></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#slightly-played"><span class="sp" title="Небольшие повреждения">SP</span></a></p>
+    <p class="redkost">Обычная</p>
+    <p class="pprice">
+        4 <i>₽</i>
+    </p>
+    <p class="colvo">12 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;532b56691d69f3ce2488f591&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/SOI/RUS/49.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/SOI/RUS/49.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/soi_rus/aberrant-researcher_49">Насекомовидный Ученый</a>
+        <br>
+        <span class="smallfont">Aberrant Researcher</span>
+    </p>
+    <p class="lang"><i class="flag-RU" title="Русский"></i></p>
+    <p class="nabor"><span class="n-soi" title="Shadows over Innistrad"></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#near-mint"><span class="nm" title="Почти новая">NM</span></a></p>
+    <p class="redkost">Необычная</p>
+    <p class="pprice">
+        9 <i>₽</i>
+    </p>
+    <p class="colvo">2 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5702220ee4b0d78b20f34411&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+<div class="ctclass">
+    <p class="tname">
+        <a class="tnameimg" href="#">
+            <span class="tnameimg"><img src="/cardImage/thumb/SOI/RUS/49.jpg" alt=""></span>
+            <span class="hoverimg"><img src="/cardImage/SOI/RUS/49.jpg" alt=""></span>
+        </a>
+        <a class="tnamec" href="/item/singles/soi_rus/aberrant-researcher_49">Насекомовидный Ученый</a>
+        <br>
+        <span class="smallfont">Aberrant Researcher</span>
+    </p>
+    <p class="lang"><i class="flag-RU" title="Русский"></i></p>
+    <p class="nabor"><span class="n-soi" title="Shadows over Innistrad"></span></p>
+    <p class="foil"></p>
+<p class="sost" ><a href="/home/conditions.html#slightly-played"><span class="sp" title="Небольшие повреждения">SP</span></a></p>
+    <p class="redkost">Необычная</p>
+    <p class="pprice">
+        7 <i>₽</i>
+    </p>
+    <p class="colvo">13 шт.</p>
+    <p class="right"><a class="bcart" href="#" onclick="return toCart(1, &quot;5739b509e4b048a8f702bd71&quot;)"><i class="fa fa-mycart"></i></a></p>
+</div>
+
+	<ul class="tabsb">
+	<li class="active1"><a href="">1</a></li>
+	<li><a href="javascript:void(0)" onclick=loadPage(2)>2</a></li>
+			<li><a href="">...</a></li>
+	<li><a href="javascript:void(0)" onclick=loadPage(2872)>2872</a></li>
+	<li><a href="javascript:void(0)" onclick=loadPage(2873)>2873</a></li>
+	</ul>
+			</div>
+		</div>
+	</div>
+	<div class="cartside">
+
+
+<h3 class="titleblock">Корзина</h3>
+<div class="cart-items">
+</div>
+<div class="cartb empty">
+    <p class="empty">В вашей корзине пока пусто</p>
+</div>
+
+	</div>
+</div>
+    </div>
+    <div class="clearfooter"></div>
+</div>
+
+<footer class="footer">
+	<div class="wrap">
+		<div class="ftop">
+			<div class="w50">
+				<p>© MTGSale.ru, 2014-2019</p>
+				<p><a href="#">admin@mtgsale.ru</a></p>
+				<p class="">+7 904 517-30-07</p>
+			</div>
+			<div class="w50">
+				<nav class="fnav">
+					<!--p><a href="/home/about">О нас</a></p-->
+					<p><a href="/home/delivery">Оплата и доставка</a></p>
+					<p><a href="/home/articles">Статьи</a></p>
+					<p><a href="/home/tournaments_season2">Турниры</a></p>
+					<p><a href="/home/buylist">Покупаем карты</a></p>
+					<p><a href="/home/faq">FAQ</a></p>
+				</nav>
+			</div>
+		</div>
+		<div class="fpayment">
+			<p class="left">Принимаем к оплате:</p>
+			<img src="/resources/website2/images/visa.png" alt="">
+			<img src="/resources/website2/images/mastercard.png" alt="">
+			<img src="/resources/website2/images/paypal.png" alt="">
+			<img src="/resources/website2/images/alfabank.png" alt="">
+			<img src="/resources/website2/images/yandex.png" alt="">
+			<p>и другие</p>
+		</div>
+		<div class="copyright">
+			<br>
+			<p>Wizards of the Coast, Magic: The Gathering, and their logos are trademarks of Wizards of the Coast LLC in the United States and other countries. This website is not affiliated with, endorsed, sponsored, or specifically approved by Wizards of the Coast LLC.</p>
+			<div class="sadesign">
+				<a href="http://sadesign.ru" class="sadesign">
+					Дизайн сайта<br><strong><img src="/resources/website2/images/sa-logo.png" alt="СА-Дизайн"></strong>
+				</a>
+			</div>
+		</div>
+	</div>
+	<div class="hide-layout"></div>
+</footer>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function (d, w, c) {
+        (w[c] = w[c] || []).push(function() {
+            try {
+                w.yaCounter23480479 = new Ya.Metrika({
+                    id:23480479,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true,
+                    webvisor:true
+                });
+            } catch(e) { }
+        });
+
+        var n = d.getElementsByTagName("script")[0],
+            s = d.createElement("script"),
+            f = function () { n.parentNode.insertBefore(s, n); };
+        s.type = "text/javascript";
+        s.async = true;
+        s.src = "https://mc.yandex.ru/metrika/watch.js";
+
+        if (w.opera == "[object Opera]") {
+            d.addEventListener("DOMContentLoaded", f, false);
+        } else { f(); }
+    })(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/23480479" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<script src="/resources/website2/js/jquery-2.1.3.min.js"></script>
+<script src="/resources/website2/js/jquery.flexslider-min.js"></script>
+<script src="/resources/website2/js/jquery.formstyler.js"></script>
+<script src="/resources/website2/js/lightbox-2.6.min.js"></script>
+<script src="/resources/website2/js/jquery-ui.min.js"></script>
+<script src="/resources/website2/js/ak.js"></script>
+<script src="/resources/website2/js/go.js"></script>
+<script src="/resources/website2/js/main.js"></script>
+<script>go.Carcas.init({"root":"/resources/website2/js","controllers":["layout", "searchResults"],"modules":["expand","priceRange","cart"]});</script>
+
+<script>
+    $( "#CardNameField" ).autocomplete(
+    {
+        source: "/nameautocomplete",
+        select:
+            function(event, ui) {
+                $(this).val(ui.item.value);
+                $(this).parents("form").submit();
+            }
+    });
+</script>
+
+	</body>
+</html>

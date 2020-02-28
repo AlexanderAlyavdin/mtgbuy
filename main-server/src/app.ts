@@ -1,5 +1,5 @@
 import express from 'express';
-var request = require('request');
+const request = require('request');
 
 const app = express();
 const port = process.env.PORT || 3030;
