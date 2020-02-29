@@ -1,4 +1,4 @@
-import ICardItem from './ICardItem';
+import ICardItem from '../interfaces/ICardItem';
 
 
 export const parseMtgSale = ({ dom, pTextsClassName, priceSelector, cardNameSelector, quantitySelector }):Array<ICardItem> => {

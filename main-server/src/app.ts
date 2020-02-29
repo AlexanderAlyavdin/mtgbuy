@@ -1,4 +1,4 @@
-import { parseMtgSale } from './parseMtgSale';
+import { parseMtgSale } from './parsers/mtgSaleParser';
 import express from 'express';
 import { JSDOM } from 'jsdom';
 
