@@ -1,9 +1,8 @@
-import { parseMtgSale } from './parsers/mtgSaleParser';
 import express from 'express';
-import { JSDOM } from 'jsdom';
+import config from './config';
+import MtgSaleParse from './parsers/mtgSaleParser';
 
 const app = express();
-const port = process.env.PORT || 3030;
 
 // Avoid CORS
 app.use((req, res, next) => {
@@ -13,19 +12,12 @@ app.use((req, res, next) => {
     next();
 });
 
-app.get('/', (req, response) => {
+app.get('/search', async (req, response) => {
   const cardName = req.query.cardName;
-  JSDOM.fromURL(`https://mtgsale.ru/home/search-results?Name=${cardName}`, {includeNodeLocations: true}).then((dom) => {
-      response.send(parseMtgSale({
-        dom,
-        pTextsClassName: 'ctclass',
-        priceSelector: '.pprice',
-        cardNameSelector: '.tnamec',
-        quantitySelector: '.colvo',
-      }));
-  });
+  const cardItems = await MtgSaleParse(cardName);
+  response.send(cardItems);
 });
 
-app.listen(port, () => {
-  console.log(`server is listening on ${port}`);
+app.listen(config.PORT, () => {
+  console.log(`server is listening on ${config.PORT}`);
 });
