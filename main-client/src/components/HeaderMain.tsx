@@ -1,56 +1,80 @@
 import React, { FunctionComponent } from 'react';
+import styled from 'styled-components';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import IconButton from '@material-ui/core/IconButton';
 import Typography from '@material-ui/core/Typography';
-import MenuIcon from '@material-ui/icons/Menu';
 import SearchIcon from '@material-ui/icons/Search';
 import InputBase from '@material-ui/core/InputBase';
 
-import './HeaderMain.scss';
-
-import makeBem from '../utils/make-bem';
 import getHtmlByCardName from '../utils/parsers/mtgsale-parser-copy';
-
-const { mainClass, bem } = makeBem('HeaderMain');
 
 interface HeaderProps {
   onSearch?(): void;
 }
 
-const HeaderMain: FunctionComponent<HeaderProps> = ({ onSearch }) => {
+const ApplicationBar = styled(AppBar)``;
+
+const SearchBar = styled.div`
+  position: relative;
+  background-color: fade(white, 0.15);
+  margin-right: 2px;
+  margin-left: 0;
+  width: auto;
+  min-width: 300px;
+  &:hover {
+    background-color: fade(white, 0.25);
+  }
+`;
+
+const IconSearch = styled(SearchIcon)`
+  width: 70px;
+  height: 100%;
+  position: absolute;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
+const SearchInput = styled(InputBase)`
+  .search-root {
+    align-self: flex-start;
+    color: inherit;
+  }
+  .search-input {
+    color: white;
+    padding: 8px 8px 8px 56px;
+    width: 100%;
+  }
+`;
+
+const handleSearch = (event: React.KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>): void => {
+  if (event.key === 'Enter') {
+    getHtmlByCardName((event.target as HTMLInputElement).value).then(res => {
+      console.log(res);
+    });
+  }
+};
+
+const HeaderMain: FunctionComponent<HeaderProps> = () => {
   return (
-    <AppBar position='static'>
+    <ApplicationBar position='static'>
       <Toolbar>
-        <IconButton edge='start' className={bem('menu-button')} color='inherit' aria-label='menu'>
-          <MenuIcon />
-        </IconButton>
-        <Typography variant='h6' className={bem('title')}>
-          Добро пожаловать! Введите имя карты для поиска:
-        </Typography>
-        <div className={bem('search')}>
-          <div className={bem('search-icon')}>
-            <SearchIcon />
-          </div>
-          <InputBase
-            onKeyDown={keyboardEvent => {
-              console.log(keyboardEvent.key);
-              if (keyboardEvent.key === 'Enter') {
-                getHtmlByCardName((keyboardEvent.target as HTMLInputElement).value).then(res => {
-                  console.log(res);
-                });
-              }
-            }}
+        <Typography variant='h6'>Добро пожаловать! Введите имя карты для поиска:</Typography>
+        <SearchBar>
+          <IconSearch />
+          <SearchInput
+            onKeyDown={handleSearch}
             placeholder='Search…'
             classes={{
-              root: bem('search-root'),
-              input: bem('search-input'),
+              root: 'search-root',
+              input: 'search-input',
             }}
             inputProps={{ 'aria-label': 'search' }}
           />
-        </div>
+        </SearchBar>
       </Toolbar>
-    </AppBar>
+    </ApplicationBar>
   );
 };
 
