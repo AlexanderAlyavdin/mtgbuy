@@ -1,20 +1,7 @@
-import React, { FunctionComponent, useEffect, useState } from 'react';
-
-import getHtmlByCardName from '../utils/parsers/mtgsale-parser-copy';
-
-import makeBem from '../utils/make-bem';
-import { JSDOM } from 'jsdom';
-
-const { mainClass } = makeBem('TestRoute');
+import React, { FunctionComponent } from 'react';
 
 const TestRoute: FunctionComponent = () => {
-  const [htmlResult, setHtmlResult] = useState(new JSDOM('<div></div>'));
-
-  useEffect(() => {
-    getHtmlByCardName('golos').then(html => setHtmlResult(html));
-  }, []);
-
-  return <div className={mainClass}>{htmlResult.window.document.textContent}</div>;
+  return <></>;
 };
 
 export default TestRoute;
