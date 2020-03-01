@@ -1,6 +1,6 @@
 import express from 'express';
 import config from './config';
-import MtgSaleParse from './parsers/mtgSaleParser';
+import MtgSale from './parsers/mtgSaleParser';
 
 const app = express();
 
@@ -14,7 +14,8 @@ app.use((req, res, next) => {
 
 app.get('/search', async (req, response) => {
   const cardName = req.query.cardName;
-  const cardItems = await MtgSaleParse(cardName);
+  const doc = await MtgSale.searchCard(cardName);
+  const cardItems = MtgSale.parseSearchResult(doc);
   response.send(cardItems);
 });
 
