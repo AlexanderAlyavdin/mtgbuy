@@ -13,6 +13,19 @@ const SearchRoute: FunctionComponent = () => {
   return (
     <>
       <HeaderMain onSearch={handleSearch} />
+      <Container maxWidth='sm'>
+        {cards &&
+          cards.map((card, index) => (
+            <Card key={index}>
+              <CardContent>
+                <Typography>{card.name}</Typography>
+                <Typography>{card.price}</Typography>
+                <Typography>{card.quantity}</Typography>
+                <Link href={card.link}>Открыть в магазине</Link>
+              </CardContent>
+            </Card>
+          ))}
+      </Container>
     </>
   );
 };
