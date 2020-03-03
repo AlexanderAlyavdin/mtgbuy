@@ -1,5 +1,6 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
+import { colors } from '@material-ui/core';
 
 const values = {
   xs: 0,
@@ -10,6 +11,10 @@ const values = {
 };
 
 export default createMuiTheme({
+  palette: {
+    primary: colors.amber,
+    secondary: colors.brown,
+  },
   breakpoints: {
     keys: ['xs', 'sm', 'md', 'lg', 'xl'],
     up: (key): string => `@media (min-width:${values[key as Breakpoint]}px)`,
