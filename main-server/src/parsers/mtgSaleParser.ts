@@ -1,4 +1,4 @@
-import ICardItem from '../interfaces/ICardItem';
+import ICardItem from '@shared/interfaces/ICardItem';
 import { JSDOM } from 'jsdom';
 
 const mtgSaleUrl = 'https://mtgsale.ru';
