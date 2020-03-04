@@ -1,10 +1,10 @@
 {
   "name": "main-server",
   "version": "1.0.0",
-  "main": "dist/app.js",
+  "main": "dist/main-server/src/app.js",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && node dist/app.js",
+    "start": "tsc && node dist/main-server/src/app.js",
     "start-demon": "tsc && nodemon",
     "test": "jest"
   },

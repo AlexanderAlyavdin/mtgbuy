@@ -3,5 +3,5 @@
   "ext": "ts",
   "verbose": true,
   "ignore": ["src/**/*.spec.ts"],
-  "exec": "tsc && node --inspect ./dist/app.js"
+  "exec": "tsc && node --inspect ./dist/main-server/src/app.js"
 }
