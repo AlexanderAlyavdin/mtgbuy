@@ -12,6 +12,10 @@ const quantitySelector = '.sale-count';
 const cardNameSelector = '.catalog-title';
 const linkSelector = '.catalog-title';
 
+const writeLog = (msg: string) => {
+  console.log(`[MtgTrade]: ${msg}`);
+};
+
 const getSearchUrl = (cardName: string): string => {
   return `${mtgTradeUrl}/search/?query=${cardName}`;
 };
@@ -38,8 +42,13 @@ const searchCard = async (cardName: string): Promise<Document> => {
 };
 
 const parseSearchResult = (document: Document): Array<ICardItem> => {
+  writeLog('Start parsing for mtgtrade search result');
+
   const searchResultList = document.querySelector('.search-results-list');
   const searchItems = Array.from(searchResultList.querySelectorAll('.search-item'));
+
+  writeLog(`Search items count: ${searchItems.length}`);
+
   return searchItems
     .map(
       (searchItem: HTMLElement): Array<ICardItem> => {
@@ -48,9 +57,14 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
         const salerItems = Array.from(searchItem.querySelectorAll(salerSelector)).map((item: HTMLElement) =>
           item.querySelector('tbody'),
         );
+
+        writeLog(`Salers count for card ${searchCardName}: ${salerItems.length}`);
+
         return salerItems
           .map(
-            (salerItem: HTMLElement): Array<ICardItem> => {
+            (salerItem: HTMLElement, index: number): Array<ICardItem> => {
+              writeLog(`Parsing price and quantity for saler #${index}`);
+
               return Array.from(salerItem.querySelectorAll('tr')).map((row: HTMLElement) => {
                 return {
                   name: searchCardName,
