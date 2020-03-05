@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "start": "tsc && node dist/main-server/src/app.js",
-    "start-demon": "tsc && nodemon",
+    "start-demon": "nodemon",
     "test": "jest"
   },
   "dependencies": {

@@ -2,6 +2,7 @@ import express from 'express';
 import config from './config';
 import MtgSale from './parsers/mtgSaleParser';
 import MtgTrade from './parsers/mtgTradeParser';
+import mtgTradeParser from './parsers/mtgTradeParser';
 
 const app = express();
 
@@ -18,8 +19,17 @@ app.use((req, res, next) => {
 
 app.get('/search', async (req, response) => {
   const cardName = req.query.cardName;
-  let cardItems = MtgSale.parseSearchResult(await MtgSale.searchCard(cardName));
-  cardItems = cardItems.concat(MtgTrade.parseSearchResult(await MtgTrade.searchCard(cardName)));
+  console.debug(`Processing search request for card ${cardName}`);
+
+  const mtgSaleSearchPromise = MtgSale.searchCard(cardName).then((result) => MtgSale.parseSearchResult(result));
+  const mtgTradeSearchPromise = MtgTrade.searchCard(cardName).then((result) => MtgTrade.parseSearchResult(result));
+  console.log("Searching on mtgsale and mtgtrade");
+
+  const mtgSaleSearchResult = await mtgSaleSearchPromise;
+  const mtgTradeSearchResult = await mtgTradeSearchPromise;
+  const cardItems = mtgSaleSearchResult.concat(mtgTradeSearchResult);
+
+  console.debug(`Sending result card items: ${cardItems.length} elems`);
   response.send(cardItems);
 });
 

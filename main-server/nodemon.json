@@ -2,6 +2,10 @@
   "watch": ["src"],
   "ext": "ts",
   "verbose": true,
-  "ignore": ["src/**/*.spec.ts"],
-  "exec": "tsc && node --inspect ./dist/main-server/src/app.js"
+  "ignore": [
+    "**/*.test.ts",
+    "**/*.spec.ts",
+    ".git",
+    "node_modules"],
+  "exec": "tsc && node --inspect dist/main-server/src/app.js"
 }
