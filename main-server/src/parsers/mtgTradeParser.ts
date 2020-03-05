@@ -1,76 +1,87 @@
-import ICardItem from '@shared/interfaces/ICardItem';
 import { JSDOM } from 'jsdom';
 import got from 'got';
 
+import Logger, { LogLevel } from '../utils/logger';
+import Helpers from '../utils/helpers';
+import ICardItem from '@shared/interfaces/ICardItem';
+
 const mtgTradeUrl = 'https://mtgtrade.net';
 
-const searchItemSelector = '.search-item';
-const salerSelector = '.search-card';
-const priceSelector = '.catalog-rate-price';
-const quantitySelector = '.sale-count';
-
-const cardNameSelector = '.catalog-title';
-const linkSelector = '.catalog-title';
-
-const writeLog = (msg: string) => {
-  console.log(`[MtgTrade]: ${msg}`);
+const Selectors = {
+  searchResultList: '.search-results-list',
+  searchItem: '.search-item',
+  saler: '.search-card',
+  price: '.catalog-rate-price',
+  quantity: '.sale-count',
+  cardName: '.catalog-title',
+  link: '.catalog-title',
 };
+
+const logger = new Logger('MtgTrade');
 
 const getSearchUrl = (cardName: string): string => {
   return `${mtgTradeUrl}/search/?query=${cardName}`;
 };
 
-const getPropText = (item: HTMLElement, selector: string): string => {
-  const elem = item.querySelector(selector);
-  return (
-    elem &&
-    elem.textContent
-      .replace(/(\r\n|\n|\r)/gm, '')
-      .replace(/\s\s+/g, ' ')
-      .trim()
-  );
-};
-
-const getPropAttribute = (item: HTMLElement, selector: string, attr: string): string => {
-  const elem = item.querySelector(selector);
-  return elem && elem.getAttribute(attr);
-};
-
 const searchCard = async (cardName: string): Promise<Document> => {
-  const res = await got(getSearchUrl(cardName), { rejectUnauthorized: false });
+  /*
+  TODO: solve one of:
+  1. internal request error for mtgtrade: failed to check first certificate
+  2. heroku hangs on this request with {rejectUnauthorized: false}
+  */
+  const res = await got(getSearchUrl(cardName), { rejectUnauthorized: true }).catch(error => {
+    logger.log(`Failed to get search result for ${getSearchUrl(cardName)}: ${error}`, LogLevel.Error);
+    return undefined;
+  });
+  if (!res) return undefined;
+
   return new JSDOM(res.body).window.document;
 };
 
 const parseSearchResult = (document: Document): Array<ICardItem> => {
-  writeLog('Start parsing for mtgtrade search result');
+  if (!document) return [];
 
-  const searchResultList = document.querySelector('.search-results-list');
-  const searchItems = Array.from(searchResultList.querySelectorAll('.search-item'));
+  logger.log('Start parsing search result');
 
-  writeLog(`Search items count: ${searchItems.length}`);
+  const searchResultList = document.querySelector(Selectors.searchResultList);
+  if (!searchResultList) {
+    logger.log('Failed to find search results');
+    return [];
+  }
 
-  return searchItems
+  const searchItems = searchResultList.querySelectorAll(Selectors.searchItem);
+  if (!searchItems) {
+    logger.log('Failed to find search items');
+    return [];
+  }
+
+  logger.log(`Search items count: ${searchItems.length}`);
+
+  return Array.from(searchItems)
     .map(
       (searchItem: HTMLElement): Array<ICardItem> => {
-        const searchCardName = getPropText(searchItem, cardNameSelector);
-        const linkRel = getPropAttribute(searchItem, linkSelector, 'href');
-        const salerItems = Array.from(searchItem.querySelectorAll(salerSelector)).map((item: HTMLElement) =>
-          item.querySelector('tbody'),
-        );
+        const searchCardName = Helpers.queryAndGetText(searchItem, Selectors.cardName);
+        const linkRel = Helpers.queryAndGetAttr(searchItem, Selectors.link, 'href');
+        const salerItems = searchItem.querySelectorAll(Selectors.saler);
+        if (!salerItems) {
+          logger.log('Failed to find saler items');
+          return [];
+        }
 
-        writeLog(`Salers count for card ${searchCardName}: ${salerItems.length}`);
+        logger.log(`Salers count for card ${searchCardName}: ${salerItems.length}`);
 
-        return salerItems
+        return Array.from(salerItems)
+          .map((item: HTMLElement) => item.querySelector('tbody'))
           .map(
             (salerItem: HTMLElement, index: number): Array<ICardItem> => {
-              writeLog(`Parsing price and quantity for saler #${index}`);
+              logger.log(`Parsing price and quantity for saler #${index}`);
 
               return Array.from(salerItem.querySelectorAll('tr')).map((row: HTMLElement) => {
                 return {
                   name: searchCardName,
                   link: linkRel && `${mtgTradeUrl}${linkRel}`,
-                  quantity: getPropText(row, quantitySelector),
-                  price: getPropText(row, priceSelector),
+                  quantity: Helpers.queryAndGetText(row, Selectors.quantity),
+                  price: Helpers.queryAndGetText(row, Selectors.price),
                 };
               });
             },
