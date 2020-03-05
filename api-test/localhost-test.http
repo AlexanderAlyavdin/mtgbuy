@@ -1,1 +1,1 @@
-GET http://localhost:3030/?cardName=golos
+GET http://localhost:3030/search?cardName=golos
