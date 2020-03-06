@@ -1,3 +1,20 @@
+import config from '../config';
+
+const appLogLevel = (): LogLevel => {
+  switch (config.LOG_LEVEL.toLowerCase()) {
+    case 'debug':
+      return LogLevel.Debug;
+    case 'info':
+      return LogLevel.Info;
+    case 'warning':
+      return LogLevel.Warning;
+    case 'error':
+      return LogLevel.Error;
+    default:
+      return LogLevel.Info;
+  }
+};
+
 enum LogLevel {
   Debug,
   Info,
@@ -12,6 +29,7 @@ class Logger {
     this.__label = label;
   }
   log(msg: string, level: LogLevel = LogLevel.Info) {
+    if (level < appLogLevel()) return;
     const message = `${this.__label}: ${msg}`;
 
     switch (level) {
