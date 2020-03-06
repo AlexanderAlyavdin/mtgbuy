@@ -55,4 +55,4 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
   return cardItems;
 };
 
-export default { searchCard, parseSearchResult };
+export default { hostUrl: mtgSaleUrl, searchCard, parseSearchResult };

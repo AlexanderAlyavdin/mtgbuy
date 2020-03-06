@@ -1,11 +1,11 @@
 import { JSDOM } from 'jsdom';
-import got from 'got';
+import http from 'http';
 
 import Logger, { LogLevel } from '../utils/logger';
 import Helpers from '../utils/helpers';
 import ICardItem from '@shared/interfaces/ICardItem';
 
-const mtgTradeUrl = 'https://mtgtrade.net';
+const mtgTradeUrl = 'http://mtgtrade.net';
 
 const Selectors = {
   searchResultList: '.search-results-list',
@@ -27,15 +27,27 @@ const searchCard = async (cardName: string): Promise<Document> => {
   /*
   TODO: solve one of:
   1. internal request error for mtgtrade: failed to check first certificate
-  2. heroku hangs on this request with {rejectUnauthorized: false}
-  */
-  const res = await got(getSearchUrl(cardName), { rejectUnauthorized: true, timeout: 5000 }).catch(error => {
+  2. heroku hangs on this request with {rejectUnauthorized: false} or http protocol
+
+  /* const res = await got(getSearchUrl(cardName), { rejectUnauthorized: true, timeout: 5000 }).catch(error => {
     logger.log(`Failed to get search result for ${getSearchUrl(cardName)}: ${error}`, LogLevel.Error);
     return undefined;
+  }); */
+  return new Promise((resolve, reject) => {
+    const req = http
+      .get(getSearchUrl(cardName), res => {
+        let html = '';
+        res.setEncoding('utf8');
+        res.on('data', chunk => {
+          html += chunk;
+        });
+        res.on('end', () => resolve(new JSDOM(html).window.document));
+      })
+      .on('error', err => {
+        logger.log(`Failed to get search result for ${getSearchUrl(cardName)}: ${err.message}`, LogLevel.Error);
+        reject(err);
+      });
   });
-  if (!res) return undefined;
-
-  return new JSDOM(res.body).window.document;
 };
 
 const parseSearchResult = (document: Document): Array<ICardItem> => {
@@ -92,4 +104,4 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
     .reduce((pre, cur) => pre.concat(cur));
 };
 
-export default { searchCard, parseSearchResult };
+export default { hostUrl: mtgTradeUrl, searchCard, parseSearchResult };
