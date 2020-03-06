@@ -5,7 +5,7 @@ import Logger, { LogLevel } from '../utils/logger';
 import Helpers from '../utils/helpers';
 import ICardItem from '@shared/interfaces/ICardItem';
 
-const mtgTradeUrl = 'https://mtgtrade.net';
+const mtgTradeUrl = 'http://mtgtrade.net';
 
 const Selectors = {
   searchResultList: '.search-results-list',
@@ -28,6 +28,7 @@ const searchCard = async (cardName: string): Promise<Document> => {
   TODO: solve one of:
   1. internal request error for mtgtrade: failed to check first certificate
   2. heroku hangs on this request with {rejectUnauthorized: false}
+  Temp solution: use http
   */
   const res = await got(getSearchUrl(cardName), { rejectUnauthorized: true }).catch(error => {
     logger.log(`Failed to get search result for ${getSearchUrl(cardName)}: ${error}`, LogLevel.Error);
