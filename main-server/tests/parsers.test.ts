@@ -11,13 +11,13 @@ const mtgSaleExpectedResult = [
     name: 'Гоулос, Неутомимый Пилигрим',
     price: '160 ₽',
     quantity: '17 шт.',
-    link: `${MtgSale.hostUrl}/item/singles/m20_rus/golos-tireless-pilgrim_226`,
+    link: 'https://mtgsale.ru/item/singles/m20_rus/golos-tireless-pilgrim_226',
   },
   {
     name: 'Гоулос, Неутомимый Пилигрим',
     price: '180 ₽',
     quantity: '1 шт.',
-    link: `${MtgSale.hostUrl}/item/singles/uppck_rus/golos-tireless-pilgrim_57`,
+    link: 'https://mtgsale.ru/item/singles/uppck_rus/golos-tireless-pilgrim_57',
   },
 ];
 
@@ -26,13 +26,13 @@ const mtgTradeExpectedResult = [
     name: 'Golos, Tireless Pilgrim',
     price: '188',
     quantity: '7',
-    link: `${MtgTrade.hostUrl}/store/single/Golos%2C+Tireless+Pilgrim/`,
+    link: 'http://mtgtrade.net/store/single/Golos%2C+Tireless+Pilgrim/',
   },
   {
     name: 'Golos, Tireless Pilgrim',
     price: '174',
     quantity: '12',
-    link: `${MtgTrade.hostUrl}/store/single/Golos%2C+Tireless+Pilgrim/`,
+    link: 'http://mtgtrade.net/store/single/Golos%2C+Tireless+Pilgrim/',
   },
 ];
 
