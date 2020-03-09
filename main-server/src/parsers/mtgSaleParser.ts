@@ -44,12 +44,14 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
   const cardItems = Array.from(searchResultElems).map((item: HTMLElement) => {
     const linkRel = Helpers.queryAndGetAttr(item, Selectors.link, 'href');
+    const quantity = Helpers.queryAndGetText(item, Selectors.quantity);
+    const price = Helpers.queryAndGetText(item, Selectors.price);
 
     return {
       name: Helpers.queryAndGetText(item, Selectors.cardName),
       link: linkRel && `${mtgSaleUrl}${linkRel}`,
-      quantity: Helpers.queryAndGetText(item, Selectors.quantity),
-      price: Helpers.queryAndGetText(item, Selectors.price),
+      quantity: quantity && quantity.split(' ')[0],
+      price: price && price.split(' ')[0],
     };
   });
   return cardItems;

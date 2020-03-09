@@ -4,8 +4,6 @@ import ICardItem from '@shared/interfaces/ICardItem';
 
 import Helpers from '../utils/helpers';
 import Logger, { LogLevel } from '../utils/logger';
-import { createSecretKey } from 'crypto';
-import { link } from 'fs';
 
 const logger = new Logger('CardPlace');
 const cardPlaceUrl = 'https://cardplace.ru';
@@ -49,7 +47,7 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
       const name = Helpers.queryAndGetText(nameCol, 'a');
       const linkRel = Helpers.queryAndGetAttr(nameCol, 'a', 'href');
-      const price = Helpers.cleanupString(priceCol.textContent);
+      const price = Helpers.cleanupString(priceCol.textContent).split(' ')[0];
       const quantity = Helpers.cleanupString(quantityCol.textContent);
 
       return {
