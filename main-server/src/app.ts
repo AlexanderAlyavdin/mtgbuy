@@ -4,6 +4,7 @@ import config from './config';
 import Logger, { LogLevel } from './utils/logger';
 import MtgSale from './parsers/mtgSaleParser';
 import MtgTrade from './parsers/mtgTradeParser';
+import CardPlace from './parsers/cardPlaceParser';
 
 const app = express();
 const logger = new Logger('App');
@@ -25,7 +26,8 @@ app.get('/search', async (req, response) => {
 
   const mtgSaleSearchPromise = MtgSale.searchCard(cardName).then(result => MtgSale.parseSearchResult(result));
   const mtgTradeSearchPromise = MtgTrade.searchCard(cardName).then(result => MtgTrade.parseSearchResult(result));
-  logger.log('Searching on mtgsale and mtgtrade');
+  const cardPlaceSearchPromise = CardPlace.searchCard(cardName).then(result => CardPlace.parseSearchResult(result));
+  logger.log('Searching on mtgsale | mtgtrade | cardplace');
 
   const mtgSaleSearchResult = await mtgSaleSearchPromise.catch(error => {
     logger.log(`Failed to get results from mtgsale: ${error}`, LogLevel.Error);
@@ -33,11 +35,16 @@ app.get('/search', async (req, response) => {
   });
 
   const mtgTradeSearchResult = await mtgTradeSearchPromise.catch(error => {
-    logger.log(`Failed to get results from mtgtrade: ${error}`);
+    logger.log(`Failed to get results from mtgtrade: ${error}`, LogLevel.Error);
     return [];
   });
 
-  const cardItems = mtgSaleSearchResult.concat(mtgTradeSearchResult);
+  const cardPlaceSearchResult = await cardPlaceSearchPromise.catch(error => {
+    logger.log(`Failed to get results from cardplace: ${error}`, LogLevel.Error);
+    return [];
+  });
+
+  const cardItems = cardPlaceSearchResult.concat(mtgSaleSearchResult.concat(mtgTradeSearchResult));
 
   logger.log(`Sending result card items: ${cardItems.length} elems`);
   response.send(cardItems);

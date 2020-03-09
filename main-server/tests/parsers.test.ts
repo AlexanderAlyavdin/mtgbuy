@@ -2,9 +2,11 @@ import fs from 'fs';
 import { JSDOM } from 'jsdom';
 import MtgSale from '../src/parsers/mtgSaleParser';
 import MtgTrade from '../src/parsers/mtgTradeParser';
+import CardPlace from '../src/parsers/cardPlaceParser';
 
 const mtgSaleTestHtml = fs.readFileSync(`${__dirname}/mtgSaleTestDoc.html`, 'utf-8');
 const mtgTradeTestHtml = fs.readFileSync(`${__dirname}/mtgTradeTestDoc.html`, 'utf-8');
+const cardPlceTestHtml = fs.readFileSync(`${__dirname}/cardPlaceTestDoc.html`, 'utf-8');
 
 const mtgSaleExpectedResult = [
   {
@@ -36,14 +38,35 @@ const mtgTradeExpectedResult = [
   },
 ];
 
-test('Parsed mtgSale test document has correct card items:', async () => {
+const cardPlaceExpectedResult = [
+  {
+    name: 'Golos, Tireless Pilgrim',
+    price: '903 руб',
+    quantity: '0',
+    link: 'https://cardplace.ru/item/mtg_m20_golos_tireless_pilgrim_foil_236416/',
+  },
+  {
+    name: 'Golos, Tireless Pilgrim',
+    price: '170 руб',
+    quantity: '0',
+    link: 'https://cardplace.ru/item/mtg_m20_golos_tireless_pilgrim_236136/',
+  },
+];
+
+test('Parsed mtgSale test document has correct card items:', () => {
   const cardItems = MtgSale.parseSearchResult(new JSDOM(mtgSaleTestHtml).window.document);
 
   expect(cardItems).toStrictEqual(mtgSaleExpectedResult);
 });
 
-test('Parsed mtgTrade test document has correct card items:', async () => {
+test('Parsed mtgTrade test document has correct card items:', () => {
   const cardItems = MtgTrade.parseSearchResult(new JSDOM(mtgTradeTestHtml).window.document);
 
   expect(cardItems).toStrictEqual(mtgTradeExpectedResult);
+});
+
+test('Parsed cardPlace test document has corrent card items:', () => {
+  const cardItems = CardPlace.parseSearchResult(new JSDOM(cardPlceTestHtml).window.document);
+
+  expect(cardItems).toStrictEqual(cardPlaceExpectedResult);
 });
