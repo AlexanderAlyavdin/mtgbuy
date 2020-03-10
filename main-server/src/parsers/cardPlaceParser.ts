@@ -47,8 +47,8 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
       const name = Helpers.queryAndGetText(nameCol, 'a');
       const linkRel = Helpers.queryAndGetAttr(nameCol, 'a', 'href');
-      const price = Helpers.cleanupString(priceCol.textContent).split(' ')[0];
-      const quantity = Helpers.cleanupString(quantityCol.textContent);
+      const price = parseInt(Helpers.cleanupString(priceCol.textContent).split(' ')[0]);
+      const quantity = parseInt(Helpers.cleanupString(quantityCol.textContent));
 
       return {
         name,

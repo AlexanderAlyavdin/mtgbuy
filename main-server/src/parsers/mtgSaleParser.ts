@@ -1,6 +1,7 @@
 import { JSDOM } from 'jsdom';
 
 import ICardItem from '@shared/interfaces/ICardItem';
+
 import Helpers from '../utils/helpers';
 import Logger, { LogLevel } from '../utils/logger';
 
@@ -50,8 +51,8 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
     return {
       name: Helpers.queryAndGetText(item, Selectors.cardName),
       link: linkRel && `${mtgSaleUrl}${linkRel}`,
-      quantity: quantity && quantity.split(' ')[0],
-      price: price && price.split(' ')[0],
+      quantity: quantity && parseInt(quantity.split(' ')[0]),
+      price: price && parseInt(price.split(' ')[0]),
     };
   });
   return cardItems;

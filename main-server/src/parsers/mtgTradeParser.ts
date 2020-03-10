@@ -1,9 +1,10 @@
 import { JSDOM } from 'jsdom';
 import http from 'http';
 
+import ICardItem from '@shared/interfaces/ICardItem';
+
 import Logger, { LogLevel } from '../utils/logger';
 import Helpers from '../utils/helpers';
-import ICardItem from '@shared/interfaces/ICardItem';
 
 const mtgTradeUrl = 'http://mtgtrade.net';
 
@@ -92,16 +93,16 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
                 return {
                   name: searchCardName,
                   link: linkRel && `${mtgTradeUrl}${linkRel}`,
-                  quantity: Helpers.queryAndGetText(row, Selectors.quantity),
-                  price: Helpers.queryAndGetText(row, Selectors.price),
+                  quantity: parseInt(Helpers.queryAndGetText(row, Selectors.quantity)),
+                  price: parseInt(Helpers.queryAndGetText(row, Selectors.price)),
                 };
               });
             },
           )
-          .reduce((pre, cur) => pre.concat(cur));
+          .reduce((pre, cur) => pre.concat(cur), []);
       },
     )
-    .reduce((pre, cur) => pre.concat(cur));
+    .reduce((pre, cur) => pre.concat(cur), []);
 };
 
 export default { hostUrl: mtgTradeUrl, searchCard, parseSearchResult };

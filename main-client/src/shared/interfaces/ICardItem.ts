@@ -1,6 +1,6 @@
 export default interface CardItem {
-  price: string;
+  price: number;
   name: string;
   link: string;
-  quantity: string;
+  quantity: number;
 }
