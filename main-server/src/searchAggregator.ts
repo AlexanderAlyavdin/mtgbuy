@@ -8,7 +8,7 @@ import CardPlace from './parsers/cardPlaceParser';
 
 const logger = new Logger('SearchAggregator');
 
-const search = async (cardName: string): Promise<Array<ICardItem>> => {
+const search = async (cardName: string, filterOnStock: boolean = true): Promise<Array<ICardItem>> => {
   const mtgSaleSearchPromise = MtgSale.searchCard(cardName).then(result => MtgSale.parseSearchResult(result));
   const mtgTradeSearchPromise = MtgTrade.searchCard(cardName).then(result => MtgTrade.parseSearchResult(result));
   const cardPlaceSearchPromise = CardPlace.searchCard(cardName).then(result => CardPlace.parseSearchResult(result));
@@ -29,7 +29,12 @@ const search = async (cardName: string): Promise<Array<ICardItem>> => {
     return [];
   });
 
-  return cardPlaceSearchResult.concat(mtgSaleSearchResult.concat(mtgTradeSearchResult));
+  let cardItems = cardPlaceSearchResult.concat(mtgSaleSearchResult.concat(mtgTradeSearchResult));
+  if (filterOnStock) {
+    cardItems = cardItems.filter((item: ICardItem) => item.quantity > 0);
+  }
+
+  return cardItems;
 };
 
 export default { search };

@@ -3,7 +3,7 @@ import body_parser from 'body-parser';
 
 import config from './config';
 import Logger, { LogLevel } from './utils/logger';
-import SearchAggregator from './search-aggregator';
+import SearchAggregator from './searchAggregator';
 
 const app = express();
 const logger = new Logger('App');
@@ -23,10 +23,11 @@ app.use(body_parser.json());
 
 app.get('/search', async (req, response) => {
   const cardName = req.query.cardName;
+  const onStock = req.query.hasOwnProperty('onStock') ? req.query.onStock.toLowerCase() === 'true' : undefined;
 
   logger.log(`Processing search request for card ${cardName}`);
 
-  const cardItems = await SearchAggregator.search(cardName).catch(error => {
+  const cardItems = await SearchAggregator.search(cardName, onStock).catch(error => {
     logger.log(`Error occured while searching: ${error}`);
     return [];
   });

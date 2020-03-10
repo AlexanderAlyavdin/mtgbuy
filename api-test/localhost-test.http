@@ -1,1 +1,5 @@
 GET http://localhost:3030/search?cardName=golos
+
+############
+
+GET http://localhost:3030/search?cardName=golos&onStock=false
