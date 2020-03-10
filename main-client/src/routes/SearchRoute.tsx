@@ -18,9 +18,9 @@ const SearchRoute: FunctionComponent = () => {
           cards.map((card, index) => (
             <Card key={index}>
               <CardContent>
-                <Typography>{card.name}</Typography>
-                <Typography>{card.price}</Typography>
-                <Typography>{card.quantity}</Typography>
+                <Typography>Имя: {card.name}</Typography>
+                <Typography>Цена: {card.price}</Typography>
+                <Typography>Кол-во: {card.quantity}</Typography>
                 <Link href={card.link}>Открыть в магазине</Link>
               </CardContent>
             </Card>
