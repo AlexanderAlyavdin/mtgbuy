@@ -20,6 +20,7 @@
     "node": "^10.0.0",
     "nodemon": "^2.0.2",
     "npm": "^6.0.0",
+    "scryfall-sdk": "^1.6.1",
     "tslint": "^6.0.0",
     "typescript": "^3.8.3",
     "yarn": "^1.21.1"

@@ -4,6 +4,7 @@ import body_parser from 'body-parser';
 import config from './config';
 import Logger, { LogLevel } from './utils/logger';
 import SearchAggregator from './searchAggregator';
+import CardInfo from './utils/cardInfo';
 
 const app = express();
 const logger = new Logger('App');
@@ -34,6 +35,14 @@ app.get('/search', async (req, response) => {
 
   logger.log(`Sending result card items: ${cardItems.length} elems`);
   response.send(cardItems);
+});
+
+app.get('/suggestions', async (req, response) => {
+  const result = await CardInfo.autoCompleteName(req.query.partName).catch(error => {
+    logger.log(`Error on autocompletion for ${req.query.partName}: ${error}`);
+    return [];
+  });
+  response.send(result);
 });
 
 app.listen(config.PORT, () => {
