@@ -11,45 +11,55 @@ const cardPlceTestHtml = fs.readFileSync(`${__dirname}/cardPlaceTestDoc.html`, '
 const mtgSaleExpectedResult = [
   {
     name: 'Гоулос, Неутомимый Пилигрим',
-    price: '160',
-    quantity: '17',
+    price: 160,
+    quantity: 17,
     link: 'https://mtgsale.ru/item/singles/m20_rus/golos-tireless-pilgrim_226',
+    condition: 'NM',
+    language: 'Русский',
   },
   {
     name: 'Гоулос, Неутомимый Пилигрим',
-    price: '180',
-    quantity: '1',
+    price: 180,
+    quantity: 1,
     link: 'https://mtgsale.ru/item/singles/uppck_rus/golos-tireless-pilgrim_57',
+    condition: 'NM',
+    language: 'Русский',
   },
 ];
 
 const mtgTradeExpectedResult = [
   {
     name: 'Golos, Tireless Pilgrim',
-    price: '188',
-    quantity: '7',
+    price: 188,
+    quantity: 7,
     link: 'http://mtgtrade.net/store/single/Golos%2C+Tireless+Pilgrim/',
+    condition: 'NM',
+    language: 'ru',
   },
   {
     name: 'Golos, Tireless Pilgrim',
-    price: '174',
-    quantity: '12',
+    price: 174,
+    quantity: 12,
     link: 'http://mtgtrade.net/store/single/Golos%2C+Tireless+Pilgrim/',
+    condition: 'NM',
+    language: 'ru',
   },
 ];
 
 const cardPlaceExpectedResult = [
   {
     name: 'Golos, Tireless Pilgrim',
-    price: '903',
-    quantity: '0',
+    price: 903,
+    quantity: 0,
     link: 'https://cardplace.ru/item/mtg_m20_golos_tireless_pilgrim_foil_236416/',
+    language: 'Английский',
   },
   {
     name: 'Golos, Tireless Pilgrim',
-    price: '170',
-    quantity: '0',
+    price: 170,
+    quantity: 0,
     link: 'https://cardplace.ru/item/mtg_m20_golos_tireless_pilgrim_236136/',
+    language: 'Английский',
   },
 ];
 

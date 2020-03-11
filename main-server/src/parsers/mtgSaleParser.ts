@@ -14,6 +14,8 @@ const Selectors = {
   cardName: '.tnamec',
   link: '.tnamec',
   quantity: '.colvo',
+  condition: '.sost',
+  language: '.lang',
 };
 
 const getSearchUrl = (cardName: string): string => {
@@ -47,12 +49,16 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
     const linkRel = Helpers.queryAndGetAttr(item, Selectors.link, 'href');
     const quantity = Helpers.queryAndGetText(item, Selectors.quantity);
     const price = Helpers.queryAndGetText(item, Selectors.price);
+    const condition = Helpers.queryAndGetText(item, Selectors.condition);
+    const language = Helpers.queryAndGetAttr(item.querySelector(Selectors.language), 'i', 'title');
 
     return {
       name: Helpers.queryAndGetText(item, Selectors.cardName),
       link: linkRel && `${mtgSaleUrl}${linkRel}`,
       quantity: quantity && parseInt(quantity.split(' ')[0]),
       price: price && parseInt(price.split(' ')[0]),
+      condition,
+      language,
     };
   });
   return cardItems;

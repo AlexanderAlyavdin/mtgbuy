@@ -16,6 +16,8 @@ const Selectors = {
   quantity: '.sale-count',
   cardName: '.catalog-title',
   link: '.catalog-title',
+  condition: '.js-card-quality-tooltip',
+  cardProperties: '.card-properties',
 };
 
 const logger = new Logger('MtgTrade');
@@ -95,6 +97,8 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
                   link: linkRel && `${mtgTradeUrl}${linkRel}`,
                   quantity: parseInt(Helpers.queryAndGetText(row, Selectors.quantity)),
                   price: parseInt(Helpers.queryAndGetText(row, Selectors.price)),
+                  condition: Helpers.queryAndGetText(row, Selectors.condition),
+                  language: Helpers.cleanupString(Helpers.queryAndGetText(row, Selectors.cardProperties).split('|')[0]),
                 };
               });
             },

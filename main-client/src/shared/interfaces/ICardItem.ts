@@ -3,4 +3,6 @@ export default interface CardItem {
   name: string;
   link: string;
   quantity: number;
+  condition?: string;
+  language: string;
 }

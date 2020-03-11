@@ -42,11 +42,13 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
     (row: HTMLElement): ICardItem => {
       const columns = row.querySelectorAll('td');
       const nameCol = columns.item(2);
+      const langCol = columns.item(3);
       const priceCol = columns.item(6);
       const quantityCol = columns.item(7);
 
       const name = Helpers.queryAndGetText(nameCol, 'a');
       const linkRel = Helpers.queryAndGetAttr(nameCol, 'a', 'href');
+      const language = Helpers.queryAndGetAttr(langCol, 'img', 'title');
       const price = parseInt(Helpers.cleanupString(priceCol.textContent).split(' ')[0]);
       const quantity = parseInt(Helpers.cleanupString(quantityCol.textContent));
 
@@ -55,6 +57,7 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
         link: linkRel && `${cardPlaceUrl}${linkRel}`,
         price,
         quantity,
+        language,
       };
     },
   );
