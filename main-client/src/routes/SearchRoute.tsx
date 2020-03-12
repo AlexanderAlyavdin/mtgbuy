@@ -22,7 +22,15 @@ const SearchRoute: FunctionComponent = () => {
                 <Typography>Цена: {card.price}</Typography>
                 <Typography>Кол-во: {card.quantity}</Typography>
                 <Typography>Язык: {card.language}</Typography>
-                <Typography>Состояние: {card.condition || '-'}</Typography>
+                {card.condition && <Typography>Состояние: {card.condition}</Typography>}
+                <Typography>
+                  Магазин: <Link href={card.platformUrl}>{card.platform}</Link>
+                </Typography>
+                {card.trader && (
+                  <Typography>
+                    Продавец: <Link href={card.traderUrl}>{card.trader}</Link>
+                  </Typography>
+                )}
                 <Link href={card.link}>Открыть в магазине</Link>
               </CardContent>
             </Card>
