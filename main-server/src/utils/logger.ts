@@ -34,16 +34,16 @@ class Logger {
 
     switch (level) {
       case LogLevel.Debug:
-        console.debug(message);
+        console.debug(`[debug] ${message}`);
         break;
       case LogLevel.Info:
-        console.info(message);
+        console.info(`[info] ${message}`);
         break;
       case LogLevel.Warning:
-        console.warn(message);
+        console.warn(`[warning] ${message}`);
         break;
       case LogLevel.Error:
-        console.error(message);
+        console.error(`[error] ${message}`);
         break;
       default:
         console.log(message);
