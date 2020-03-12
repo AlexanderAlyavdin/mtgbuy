@@ -5,4 +5,9 @@ const getHtmlByCardName = async (cardName: string): Promise<any> => {
   return response.json();
 };
 
-export default getHtmlByCardName;
+const getSuggestions = async (partName: string): Promise<string[]> => {
+  const response = await fetch(`${BASE_URL}suggestions?partName=${partName}`);
+  return response.json();
+};
+
+export default { getHtmlByCardName, getSuggestions };

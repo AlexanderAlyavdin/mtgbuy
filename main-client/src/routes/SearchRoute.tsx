@@ -2,7 +2,7 @@ import React, { FunctionComponent, useState } from 'react';
 import HeaderMain from '../components/HeaderMain';
 import ICardItem from 'shared/interfaces/ICardItem';
 
-import getHtmlByCardName from '../utils/parsers/mtgsale-parser-copy';
+import Server from '../utils/parsers/mtgsale-parser-copy';
 import { Container, Card, CardContent, Typography, Link, CircularProgress, Backdrop } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 
@@ -22,7 +22,7 @@ const SearchRoute: FunctionComponent = () => {
   const handleSearch = (value: string): Promise<void> => {
     setSearching(true);
 
-    return getHtmlByCardName(value)
+    return Server.getHtmlByCardName(value)
       .then(res => setCards(res))
       .finally(() => setSearching(false));
   };
