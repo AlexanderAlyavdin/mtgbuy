@@ -34,6 +34,8 @@ const search = async (cardName: string, filterOnStock: boolean = true): Promise<
     cardItems = cardItems.filter((item: ICardItem) => item.quantity > 0);
   }
 
+  cardItems.sort((first: ICardItem, second: ICardItem): number => first.price - second.price);
+
   return cardItems;
 };
 
