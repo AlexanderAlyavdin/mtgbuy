@@ -6,14 +6,16 @@ import Helpers from '../utils/helpers';
 import Logger, { LogLevel } from '../utils/logger';
 
 const logger = new Logger('CardPlace');
-const cardPlaceUrl = 'https://cardplace.ru';
+
+const hostUrl = 'https://cardplace.ru';
+const shopName = 'CardPlace.ru';
 
 const Selectors = {
   searchResultTable: '.singlestable',
 };
 
 const getSearchUrl = (cardName: string): string => {
-  return `${cardPlaceUrl}/directory/new_search/${cardName}/mtg/1`;
+  return `${hostUrl}/directory/new_search/${cardName}/mtg/1`;
 };
 
 const searchCard = async (cardName: string): Promise<Document> => {
@@ -54,13 +56,15 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
       return {
         name,
-        link: linkRel && `${cardPlaceUrl}${linkRel}`,
+        link: linkRel && `${hostUrl}${linkRel}`,
         price,
         quantity,
         language,
+        platform: shopName,
+        platformUrl: hostUrl,
       };
     },
   );
 };
 
-export default { hostUrl: cardPlaceUrl, searchCard, parseSearchResult };
+export default { shopName, hostUrl, searchCard, parseSearchResult };
