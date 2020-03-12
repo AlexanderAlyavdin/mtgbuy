@@ -1,14 +1,31 @@
-import React, { FunctionComponent, useState, useEffect } from 'react';
+import React, { FunctionComponent, useState } from 'react';
 import HeaderMain from '../components/HeaderMain';
 import ICardItem from 'shared/interfaces/ICardItem';
 
 import getHtmlByCardName from '../utils/parsers/mtgsale-parser-copy';
-import { Container, Card, CardContent, Typography, Link } from '@material-ui/core';
+import { Container, Card, CardContent, Typography, Link, CircularProgress, Backdrop } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  backdrop: {
+    zIndex: theme.zIndex.drawer + 1,
+    color: '#fff',
+  },
+}));
 
 const SearchRoute: FunctionComponent = () => {
-  const [cards, setCards] = useState<Array<ICardItem> | undefined>(undefined);
+  const classes = useStyles();
 
-  const handleSearch = (value: string): Promise<void> => getHtmlByCardName(value).then(res => setCards(res));
+  const [cards, setCards] = useState<Array<ICardItem> | undefined>(undefined);
+  const [searching, setSearching] = useState<boolean>(false);
+
+  const handleSearch = (value: string): Promise<void> => {
+    setSearching(true);
+
+    return getHtmlByCardName(value)
+      .then(res => setCards(res))
+      .finally(() => setSearching(false));
+  };
 
   return (
     <>
@@ -36,6 +53,10 @@ const SearchRoute: FunctionComponent = () => {
             </Card>
           ))}
       </Container>
+      <Backdrop open={searching} className={classes.backdrop}>
+        <CircularProgress />
+      </Backdrop>
+      )
     </>
   );
 };
