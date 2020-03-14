@@ -8,7 +8,7 @@ import InputBase from '@material-ui/core/InputBase';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import Server from '../utils/parsers/mtgsale-parser-copy';
-import { CircularProgress, IconButton } from '@material-ui/core';
+import { CircularProgress, IconButton, InputAdornment } from '@material-ui/core';
 
 const SearchBar = styled.div`
   position: relative;
@@ -42,8 +42,8 @@ interface SearchInputProps {
 const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState<string[]>([]);
-  const [partName, setPartName] = React.useState<string>('');
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [partName, setPartName] = React.useState('');
+  const [loading, setLoading] = React.useState(false);
 
   const getSuggestionsThrottled = React.useRef(
     throttle(700, (val: string) => {
@@ -99,11 +99,9 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
             ref={params.InputProps.ref}
             inputProps={params.inputProps}
             placeholder='Search...'
-            value={partName}
-            onChange={(e): void => setPartName(e.target.value)}
             classes={{ input: 'search-input' }}
             endAdornment={
-              <React.Fragment>
+              <InputAdornment variant='outlined' position='end'>
                 <CircularProgress color='inherit' size={20} style={{ visibility: loading ? 'visible' : 'hidden' }} />
                 <IconButton
                   color='inherit'
@@ -112,7 +110,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
                   style={{ visibility: partName ? 'visible' : 'hidden' }}>
                   <CloseIcon color='inherit' />
                 </IconButton>
-              </React.Fragment>
+              </InputAdornment>
             }
           />
         )}
