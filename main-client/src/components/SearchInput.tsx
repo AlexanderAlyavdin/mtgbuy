@@ -1,11 +1,14 @@
 import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
+import { throttle } from 'throttle-debounce';
 
 import SearchIcon from '@material-ui/icons/Search';
+import CloseIcon from '@material-ui/icons/Close';
 import InputBase from '@material-ui/core/InputBase';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
 import Server from '../utils/parsers/mtgsale-parser-copy';
+import { CircularProgress, IconButton } from '@material-ui/core';
 
 const SearchBar = styled.div`
   position: relative;
@@ -42,21 +45,31 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
   const [partName, setPartName] = React.useState<string>('');
   const [loading, setLoading] = React.useState<boolean>(false);
 
+  const getSuggestionsThrottled = React.useRef(
+    throttle(700, (val: string) => {
+      let active = true;
+
+      setLoading(true);
+      (async () => {
+        const response = await Server.getSuggestions(val);
+
+        if (active) {
+          setOptions(response as string[]);
+        }
+      })().finally(() => setLoading(false));
+
+      return () => {
+        active = false;
+      };
+    }),
+  );
+
   React.useEffect(() => {
-    let active = true;
-
-    setLoading(true);
-    (async () => {
-      const response = await Server.getSuggestions(partName).finally(() => setLoading(false));
-
-      if (active) {
-        setOptions(response as string[]);
-      }
-    })();
-
-    return () => {
-      active = false;
-    };
+    if (partName) {
+      getSuggestionsThrottled.current(partName);
+    } else {
+      setOptions([]);
+    }
   }, [partName]);
 
   React.useEffect(() => {
@@ -70,21 +83,35 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
       <Icon />
       <Autocomplete
         style={{ paddingLeft: '56px' }}
-        open={open}
+        open={open && options.length > 0}
         onOpen={() => setOpen(true)}
         onClose={() => setOpen(false)}
+        inputValue={partName}
         onChange={(e: any, value: any) => onSearch && value && onSearch(value)}
+        onInputChange={(e, val) => setPartName(val)}
         options={options}
         loading={loading}
-        loadingText={'Loading...'}
         freeSolo={true}
         renderInput={params => (
           <Input
             ref={params.InputProps.ref}
             inputProps={params.inputProps}
             placeholder='Search...'
+            value={partName}
             onChange={e => setPartName(e.target.value)}
             classes={{ input: 'search-input' }}
+            endAdornment={
+              <React.Fragment>
+                <CircularProgress color='inherit' size={20} style={{ visibility: loading ? 'visible' : 'hidden' }} />
+                <IconButton
+                  color='inherit'
+                  size='small'
+                  onClick={e => setPartName('')}
+                  style={{ visibility: partName ? 'visible' : 'hidden' }}>
+                  <CloseIcon color='inherit' />
+                </IconButton>
+              </React.Fragment>
+            }
           />
         )}
       />
