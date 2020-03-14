@@ -1,4 +1,4 @@
-import React, { FunctionComponent } from 'react';
+import React, { FunctionComponent, ChangeEvent, ReactElement } from 'react';
 import styled from 'styled-components';
 import { throttle } from 'throttle-debounce';
 
@@ -50,7 +50,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
       let active = true;
 
       setLoading(true);
-      (async () => {
+      (async (): Promise<void> => {
         const response = await Server.getSuggestions(val);
 
         if (active) {
@@ -58,7 +58,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
         }
       })().finally(() => setLoading(false));
 
-      return () => {
+      return (): void => {
         active = false;
       };
     }),
@@ -84,21 +84,23 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
       <Autocomplete
         style={{ paddingLeft: '56px' }}
         open={open && options.length > 0}
-        onOpen={() => setOpen(true)}
-        onClose={() => setOpen(false)}
+        onOpen={(): void => setOpen(true)}
+        onClose={(): void => setOpen(false)}
         inputValue={partName}
-        onChange={(e: any, value: any) => onSearch && value && onSearch(value)}
-        onInputChange={(e, val) => setPartName(val)}
+        onChange={(_e: ChangeEvent<{}>, value: string | null): void =>
+          onSearch && value ? onSearch(value) : undefined
+        }
+        onInputChange={(_e, val): void => setPartName(val)}
         options={options}
         loading={loading}
         freeSolo={true}
-        renderInput={params => (
+        renderInput={(params): ReactElement => (
           <Input
             ref={params.InputProps.ref}
             inputProps={params.inputProps}
             placeholder='Search...'
             value={partName}
-            onChange={e => setPartName(e.target.value)}
+            onChange={(e): void => setPartName(e.target.value)}
             classes={{ input: 'search-input' }}
             endAdornment={
               <React.Fragment>
@@ -106,7 +108,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
                 <IconButton
                   color='inherit'
                   size='small'
-                  onClick={e => setPartName('')}
+                  onClick={(): void => setPartName('')}
                   style={{ visibility: partName ? 'visible' : 'hidden' }}>
                   <CloseIcon color='inherit' />
                 </IconButton>

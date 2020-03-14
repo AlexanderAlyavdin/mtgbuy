@@ -16,7 +16,7 @@ const HeaderMain: FunctionComponent<HeaderProps> = ({ onSearch }) => {
     <ApplicationBar position='static'>
       <Toolbar>
         <Typography variant='h6'>Добро пожаловать! Введите имя карты для поиска:</Typography>
-        <SearchInput onSearch={value => onSearch && onSearch(value)} />
+        <SearchInput onSearch={(value: string): void => onSearch && onSearch(value)} />
       </Toolbar>
     </ApplicationBar>
   );

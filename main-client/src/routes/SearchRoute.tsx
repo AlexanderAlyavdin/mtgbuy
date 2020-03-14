@@ -22,7 +22,7 @@ const SearchRoute: FunctionComponent = () => {
   const handleSearch = (value: string): Promise<void> => {
     setSearching(true);
 
-    return Server.getHtmlByCardName(value)
+    return Server.searchCards(value)
       .then(res => setCards(res))
       .finally(() => setSearching(false));
   };
