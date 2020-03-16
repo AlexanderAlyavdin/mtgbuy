@@ -51,41 +51,37 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
   logger.log(`Search items count: ${searchItems.length}`);
 
-  return Array.from(searchItems)
-    .flatMap((searchItem: HTMLElement): Array<ICardItem> => {
-      const searchCardName = queryAndGetText(searchItem, Selectors.cardName);
-      const linkRel = queryAndGetAttr(searchItem, Selectors.link, 'href');
-      const sellerItems = searchItem.querySelectorAll(Selectors.seller);
-      if (!sellerItems) {
-        logger.log('Failed to find seller items');
-        return [];
-      }
+  return Array.from(searchItems).flatMap((searchItem: HTMLElement): Array<ICardItem> => {
+    const searchCardName = queryAndGetText(searchItem, Selectors.cardName);
+    const linkRel = queryAndGetAttr(searchItem, Selectors.link, 'href');
+    const sellerItems = searchItem.querySelectorAll(Selectors.seller);
+    if (!sellerItems) {
+      logger.log('Failed to find seller items');
+      return [];
+    }
 
-      logger.log(`sellers count for card ${searchCardName}: ${sellerItems.length}`);
+    logger.log(`sellers count for card ${searchCardName}: ${sellerItems.length}`);
 
-      return Array.from(sellerItems)
-        .flatMap((sellerItem: HTMLElement, index: number): Array<ICardItem> => {
-          logger.log(`Parsing price and quantity for seller #${index}`);
+    return Array.from(sellerItems).flatMap((sellerItem: HTMLElement, index: number): Array<ICardItem> => {
+      logger.log(`Parsing price and quantity for seller #${index}`);
 
-          const rows = sellerItem.querySelectorAll('tbody tr');
-          const traderUrlRel = queryAndGetAttr(rows[0], Selectors.traderName, 'href');
+      const rows = sellerItem.querySelectorAll('tbody tr');
+      const traderUrlRel = queryAndGetAttr(rows[0], Selectors.traderName, 'href');
 
-          return Array.from(rows).map((row: HTMLElement) => {
-            return {
-              name: searchCardName,
-              link: linkRel && `${hostUrl}${linkRel}`,
-              quantity: parseInt(queryAndGetText(row, Selectors.quantity)),
-              price: parseInt(queryAndGetText(row, Selectors.price)),
-              condition: queryAndGetText(row, Selectors.condition),
-              language: cleanupString(queryAndGetText(row, Selectors.cardProperties).split('|')[0]),
-              platform: shopName,
-              platformUrl: hostUrl,
-              trader: queryAndGetText(rows[0], Selectors.traderName),
-              traderUrl: traderUrlRel && `${hostUrl}${traderUrlRel}`,
-            };
-          });
-        })
-    })
+      return Array.from(rows).map((row: HTMLElement) => ({
+        name: searchCardName,
+        link: linkRel && `${hostUrl}${linkRel}`,
+        quantity: parseInt(queryAndGetText(row, Selectors.quantity)),
+        price: parseInt(queryAndGetText(row, Selectors.price)),
+        condition: queryAndGetText(row, Selectors.condition),
+        language: cleanupString(queryAndGetText(row, Selectors.cardProperties).split('|')[0]),
+        platform: shopName,
+        platformUrl: hostUrl,
+        trader: queryAndGetText(rows[0], Selectors.traderName),
+        traderUrl: traderUrlRel && `${hostUrl}${traderUrlRel}`,
+      }));
+    });
+  });
 };
 
 export default { shopName, hostUrl, searchCard, parseSearchResult };
