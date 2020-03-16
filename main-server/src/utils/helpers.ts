@@ -1,16 +1,16 @@
-const cleanupString = (text: string): string => {
+export const cleanupString = (text: string): string => {
   return text
     .replace(/(\r\n|\n|\r)/gm, '')
     .replace(/\s\s+/g, ' ')
     .trim();
 };
 
-const queryAndGetAttr = (item: HTMLElement, selector: string, attr: string): string => {
+export const queryAndGetAttr = (item: Element, selector: string, attr: string): string => {
   const elem = item.querySelector(selector);
   return elem && elem.getAttribute(attr);
 };
 
-const queryAndGetText = (item: HTMLElement, selector: string): string => {
+export const queryAndGetText = (item: Element, selector: string): string => {
   const elem = item.querySelector(selector);
   return elem && cleanupString(elem.textContent);
 };
