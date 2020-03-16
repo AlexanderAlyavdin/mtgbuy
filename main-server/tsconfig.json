@@ -6,12 +6,13 @@
       "moduleResolution": "node",
       "sourceMap": true,
       "outDir": "dist",
+      "lib": ["es2019", "dom", "esnext.array"],
       "baseUrl": "./src",
       "paths": {
         "@shared/*": ["../../main-client/src/shared/*"],
       }
     },
-    "lib": ["es2015"],
+
     "exclude": [
         "tests/**/*"
     ],
