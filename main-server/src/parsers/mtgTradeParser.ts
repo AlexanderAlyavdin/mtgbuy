@@ -5,7 +5,7 @@ import http from 'http';
 import ICardItem from '@shared/interfaces/ICardItem';
 
 import Logger, { LogLevel } from '../utils/logger';
-import { queryAndGetText, cleanupString, queryAndGetAttr } from '../utils/helpers';
+import { cleanupString, query, queryAll } from '../utils/helpers';
 
 const logger = new Logger('MtgTrade');
 
@@ -43,7 +43,7 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
   logger.log('Start parsing search result');
 
-  const searchItems = document.querySelectorAll(`${Selectors.searchResultList} ${Selectors.searchItem}`);
+  const searchItems = queryAll(document, `${Selectors.searchResultList} ${Selectors.searchItem}`);
   if (!searchItems) {
     logger.log('Failed to find search items');
     return [];
@@ -51,10 +51,10 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
   logger.log(`Search items count: ${searchItems.length}`);
 
-  return Array.from(searchItems).flatMap((searchItem: HTMLElement): Array<ICardItem> => {
-    const searchCardName = queryAndGetText(searchItem, Selectors.cardName);
-    const linkRel = queryAndGetAttr(searchItem, Selectors.link, 'href');
-    const sellerItems = searchItem.querySelectorAll(Selectors.seller);
+  return searchItems.flatMap((searchItem: HTMLElement): Array<ICardItem> => {
+    const searchCardName = query(searchItem, Selectors.cardName).text;
+    const linkRel = query(searchItem, Selectors.link).href;
+    const sellerItems = queryAll(searchItem, Selectors.seller);
     if (!sellerItems) {
       logger.log('Failed to find seller items');
       return [];
@@ -62,22 +62,22 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
     logger.log(`sellers count for card ${searchCardName}: ${sellerItems.length}`);
 
-    return Array.from(sellerItems).flatMap((sellerItem: HTMLElement, index: number): Array<ICardItem> => {
+    return sellerItems.flatMap((sellerItem: HTMLElement, index: number): Array<ICardItem> => {
       logger.log(`Parsing price and quantity for seller #${index}`);
 
-      const rows = sellerItem.querySelectorAll('tbody tr');
-      const traderUrlRel = queryAndGetAttr(rows[0], Selectors.traderName, 'href');
+      const rows = queryAll(sellerItem, 'tbody tr');
+      const traderUrlRel = query(rows[0], Selectors.traderName).href;
 
-      return Array.from(rows).map((row: HTMLElement) => ({
+      return rows.map((row: HTMLElement) => ({
         name: searchCardName,
         link: linkRel && `${hostUrl}${linkRel}`,
-        quantity: parseInt(queryAndGetText(row, Selectors.quantity)),
-        price: parseInt(queryAndGetText(row, Selectors.price)),
-        condition: queryAndGetText(row, Selectors.condition),
-        language: cleanupString(queryAndGetText(row, Selectors.cardProperties).split('|')[0]),
+        quantity: query(row, Selectors.quantity).textAsInt,
+        price: query(row, Selectors.price).textAsInt,
+        condition: query(row, Selectors.condition).text,
+        language: cleanupString(query(row, Selectors.cardProperties).text.split('|')[0]),
         platform: shopName,
         platformUrl: hostUrl,
-        trader: queryAndGetText(rows[0], Selectors.traderName),
+        trader: query(rows[0], Selectors.traderName).text,
         traderUrl: traderUrlRel && `${hostUrl}${traderUrlRel}`,
       }));
     });
