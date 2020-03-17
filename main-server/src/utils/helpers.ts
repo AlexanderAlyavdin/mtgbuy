@@ -1,3 +1,5 @@
+import { IAdvancedQuery } from "./IAdvancedQuery";
+
 export const cleanupString = (text: string): string => {
   return text
     .replace(/(\r\n|\n|\r)/gm, '')
@@ -17,7 +19,7 @@ export const queryAndGetText = (item: Element, selector: string): string => {
 
 export const query = (root: Element | Document, selector: string) => {
   const element = root.querySelector(selector);
-  return {
+  const advancedQuery: IAdvancedQuery = {
     get elem() {
       return element;
     },
@@ -34,6 +36,7 @@ export const query = (root: Element | Document, selector: string) => {
       return element && element.getAttribute(attrName);
     },
   };
+  return advancedQuery;
 };
 
 export const queryAll = (root: Element | Document, selector: string) => Array.from(root.querySelectorAll(selector));

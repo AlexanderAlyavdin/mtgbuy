@@ -1,11 +1,11 @@
-import { shopName, hostUrl, hostUrlHttp, Selectors } from './constants/mtgTrade';
+import { shopName, hostUrl, hostUrlHttp, Selector, queryMtgTrade as query } from './constants/mtgTrade';
 import { JSDOM } from 'jsdom';
 import http from 'http';
 
 import ICardItem from '@shared/interfaces/ICardItem';
 
 import Logger, { LogLevel } from '../utils/logger';
-import { cleanupString, query, queryAll } from '../utils/helpers';
+import { cleanupString, queryAll} from '../utils/helpers';
 
 const logger = new Logger('MtgTrade');
 
@@ -43,7 +43,7 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
   logger.log('Start parsing search result');
 
-  const searchItems = queryAll(document, `${Selectors.searchResultList} ${Selectors.searchItem}`);
+  const searchItems = queryAll(document, `${Selector.searchResultList} ${Selector.searchItem}`);
   if (!searchItems) {
     logger.log('Failed to find search items');
     return [];
@@ -52,9 +52,10 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
   logger.log(`Search items count: ${searchItems.length}`);
 
   return searchItems.flatMap((searchItem: HTMLElement): Array<ICardItem> => {
-    const searchCardName = query(searchItem, Selectors.cardName).text;
-    const linkRel = query(searchItem, Selectors.link).href;
-    const sellerItems = queryAll(searchItem, Selectors.seller);
+    const item = query(searchItem);
+    const searchCardName = item.cardName.text;
+    const linkRel = item.link.href;
+    const sellerItems = queryAll(searchItem, Selector.seller);
     if (!sellerItems) {
       logger.log('Failed to find seller items');
       return [];
@@ -66,20 +67,22 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
       logger.log(`Parsing price and quantity for seller #${index}`);
 
       const rows = queryAll(sellerItem, 'tbody tr');
-      const traderUrlRel = query(rows[0], Selectors.traderName).href;
+      const traderUrlRel = query(rows[0]).traderName.href;
 
-      return rows.map((row: HTMLElement) => ({
-        name: searchCardName,
-        link: linkRel && `${hostUrl}${linkRel}`,
-        quantity: query(row, Selectors.quantity).textAsInt,
-        price: query(row, Selectors.price).textAsInt,
-        condition: query(row, Selectors.condition).text,
-        language: cleanupString(query(row, Selectors.cardProperties).text.split('|')[0]),
-        platform: shopName,
-        platformUrl: hostUrl,
-        trader: query(rows[0], Selectors.traderName).text,
-        traderUrl: traderUrlRel && `${hostUrl}${traderUrlRel}`,
-      }));
+      return rows.map(row => query(row)).map(row => {
+        return {
+          name: searchCardName,
+          link: linkRel && `${hostUrl}${linkRel}`,
+          quantity: row.quantity.textAsInt,
+          price: row.price.textAsInt,
+          condition: row.condition.text,
+          language: cleanupString(row.cardProperties.text.split('|')[0]),
+          platform: shopName,
+          platformUrl: hostUrl,
+          trader: query(rows[0]).traderName.text,
+          traderUrl: traderUrlRel && `${hostUrl}${traderUrlRel}`,
+        };
+      });
     });
   });
 };
