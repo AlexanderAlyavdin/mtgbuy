@@ -1,4 +1,4 @@
-import { shopName, hostUrl, hostUrlHttp, Selector, queryMtgTrade as query } from './constants/mtgTrade';
+import { shopName, hostUrl, hostUrlHttp, queryMtgTrade as query, Selector } from './constants/mtgTrade';
 import { JSDOM } from 'jsdom';
 import http from 'http';
 
@@ -53,33 +53,30 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
   return searchItems.flatMap((searchItem: HTMLElement): Array<ICardItem> => {
     const item = query(searchItem);
-    const searchCardName = item.cardName.text;
-    const linkRel = item.link.href;
     const sellerItems = queryAll(searchItem, Selector.seller);
     if (!sellerItems) {
       logger.log('Failed to find seller items');
       return [];
     }
-
-    logger.log(`sellers count for card ${searchCardName}: ${sellerItems.length}`);
+    logger.log(`sellers count for card ${item.cardName()}: ${sellerItems.length}`);
 
     return sellerItems.flatMap((sellerItem: HTMLElement, index: number): Array<ICardItem> => {
       logger.log(`Parsing price and quantity for seller #${index}`);
 
       const rows = queryAll(sellerItem, 'tbody tr');
-      const traderUrlRel = query(rows[0]).traderName.href;
+      const traderUrlRel = query(rows[0]).traderName();
 
       return rows.map(row => query(row)).map(row => {
         return {
-          name: searchCardName,
-          link: linkRel && `${hostUrl}${linkRel}`,
-          quantity: row.quantity.textAsInt,
-          price: row.price.textAsInt,
-          condition: row.condition.text,
-          language: cleanupString(row.cardProperties.text.split('|')[0]),
+          name: item.cardName(),
+          link: item.link() && `${hostUrl}${item.link()}`,
+          quantity: row.quantity(),
+          price: row.price(),
+          condition: row.condition(),
+          language: cleanupString(row.cardProperties().split('|')[0]),
           platform: shopName,
           platformUrl: hostUrl,
-          trader: query(rows[0]).traderName.text,
+          trader: query(rows[0]).traderName(),
           traderUrl: traderUrlRel && `${hostUrl}${traderUrlRel}`,
         };
       });

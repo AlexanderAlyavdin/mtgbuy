@@ -1,5 +1,3 @@
-import { IAdvancedQuery } from "./IAdvancedQuery";
-
 export const cleanupString = (text: string): string => {
   return text
     .replace(/(\r\n|\n|\r)/gm, '')
@@ -17,26 +15,53 @@ export const queryAndGetText = (item: Element, selector: string): string => {
   return elem && cleanupString(elem.textContent);
 };
 
-export const query = (root: Element | Document, selector: string) => {
-  const element = root.querySelector(selector);
-  const advancedQuery: IAdvancedQuery = {
-    get elem() {
-      return element;
-    },
-    get textAsInt() {
-      return element && parseInt(cleanupString(element.textContent));
-    },
-    get text() {
-      return element && cleanupString(element.textContent);
-    },
-    get href() {
-      return element && element.getAttribute('href');
-    },
-    getAttribute(attrName: string) {
-      return element && element.getAttribute(attrName);
-    },
+export interface IAdvancedQuery {
+  elem(): Element | undefined;
+  textAsInt(): number | undefined;
+  text(): string | undefined;
+  href(): string | undefined;
+}
+
+export class ConfigItem<T extends keyof IAdvancedQuery> {
+  type: T;
+  selector: string;
+  constructor(selector: string, type: T) {
+    this.selector = selector;
+    this.type = type;
+  }
+}
+
+export interface IConfig {
+  [key: string]: ConfigItem<keyof IAdvancedQuery>;
+}
+
+export type ModifiedQuery<T extends IConfig> = {
+  readonly [ Prop in keyof T]: IAdvancedQuery[T[Prop]['type']];
+}
+
+export const queryConcrete = <T extends IConfig>(config: T) => {
+  return (root: Element | Document) => {
+    const modifiedQuery = {};
+    const keys = Object.keys(config) as Array<keyof T>;
+    keys.forEach(key => {
+      const selector = config[key].selector;
+      const action = config[key].type;
+      Object.defineProperty(modifiedQuery, key, {
+        value: () => query(root, selector)[action](),
+      });
+    });
+    return modifiedQuery as ModifiedQuery<T>;
   };
-  return advancedQuery;
+};
+
+export const query = (root: Element | Document, selector: string): IAdvancedQuery => {
+  const element = root.querySelector(selector);
+  return {
+    elem: () => element,
+    textAsInt: () => element && parseInt(cleanupString(element.textContent)),
+    text: () => element && cleanupString(element.textContent),
+    href: () => element && element.getAttribute('href'),
+  };
 };
 
 export const queryAll = (root: Element | Document, selector: string) => Array.from(root.querySelectorAll(selector));
