@@ -2,23 +2,11 @@ import { JSDOM } from 'jsdom';
 
 import ICardItem from '@shared/interfaces/ICardItem';
 
-import Helpers from '../utils/helpers';
+import { queryAll } from '../utils/helpers';
 import Logger, { LogLevel } from '../utils/logger';
+import { shopName, hostUrl, queryMtgSale as query, Selector } from './constants/mtgSale';
 
 const logger = new Logger('MtgSale');
-
-const shopName = 'MTG sale';
-const hostUrl = 'https://mtgsale.ru';
-
-const Selectors = {
-  searchResult: '.ctclass',
-  price: '.pprice',
-  cardName: '.tnamec',
-  link: '.tnamec',
-  quantity: '.colvo',
-  condition: '.sost',
-  language: '.lang',
-};
 
 const getSearchUrl = (cardName: string): string => {
   return `${hostUrl}/home/search-results?Name=${cardName}`;
@@ -39,7 +27,7 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
   logger.log('Start parsing search result');
 
-  const searchResultElems = document.querySelectorAll(Selectors.searchResult);
+  const searchResultElems = queryAll(document, Selector.searchResultList);
   if (!searchResultElems) {
     logger.log('Failed to extract search results');
     return [];
@@ -49,19 +37,18 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
   const cardItems = Array.from(searchResultElems).map(
     (item: HTMLElement): ICardItem => {
-      const linkRel = Helpers.queryAndGetAttr(item, Selectors.link, 'href');
-      const quantity = Helpers.queryAndGetText(item, Selectors.quantity);
-      const price = Helpers.queryAndGetText(item, Selectors.price);
-      const condition = Helpers.queryAndGetText(item, Selectors.condition);
-      const language = Helpers.queryAndGetAttr(item.querySelector(Selectors.language), 'i', 'title');
+      const queryItem = query(item);
+      const linkRel = queryItem.link();
+      const quantity = queryItem.quantity();
+      const price = queryItem.price();
 
       return {
-        name: Helpers.queryAndGetText(item, Selectors.cardName),
+        name: queryItem.cardName(),
         link: linkRel && `${hostUrl}${linkRel}`,
         quantity: quantity && parseInt(quantity.split(' ')[0]),
         price: price && parseInt(price.split(' ')[0]),
-        condition,
-        language,
+        condition: queryItem.condition(),
+        language: queryItem.language(),
         platform: shopName,
         platformUrl: hostUrl,
       };

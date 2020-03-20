@@ -1,4 +1,3 @@
-import { shopName, hostUrl, hostUrlHttp, queryMtgTrade as query, Selector } from './constants/mtgTrade';
 import { JSDOM } from 'jsdom';
 import http from 'http';
 
@@ -6,6 +5,7 @@ import ICardItem from '@shared/interfaces/ICardItem';
 
 import Logger, { LogLevel } from '../utils/logger';
 import { cleanupString, queryAll } from '../utils/helpers';
+import { shopName, hostUrl, hostUrlHttp, queryMtgTrade as query, Selector } from './constants/mtgTrade';
 
 const logger = new Logger('MtgTrade');
 
