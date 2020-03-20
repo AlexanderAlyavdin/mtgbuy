@@ -20,6 +20,7 @@ export interface IAdvancedQuery {
   textAsInt(): number | undefined;
   text(): string | undefined;
   href(): string | undefined;
+  title(): string | undefined;
 }
 
 export class ConfigItem<T extends keyof IAdvancedQuery> {
@@ -36,8 +37,8 @@ export interface IConfig {
 }
 
 export type ModifiedQuery<T extends IConfig> = {
-  readonly [ Prop in keyof T]: IAdvancedQuery[T[Prop]['type']];
-}
+  readonly [Prop in keyof T]: IAdvancedQuery[T[Prop]['type']];
+};
 
 export const queryConcrete = <T extends IConfig>(config: T) => {
   return (root: Element | Document) => {
@@ -61,6 +62,7 @@ export const query = (root: Element | Document, selector: string): IAdvancedQuer
     textAsInt: () => element && parseInt(cleanupString(element.textContent)),
     text: () => element && cleanupString(element.textContent),
     href: () => element && element.getAttribute('href'),
+    title: () => element && element.getAttribute('title'),
   };
 };
 
