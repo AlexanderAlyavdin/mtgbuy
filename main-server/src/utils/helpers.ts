@@ -5,16 +5,6 @@ export const cleanupString = (text: string): string => {
     .trim();
 };
 
-export const queryAndGetAttr = (item: Element, selector: string, attr: string): string => {
-  const elem = item.querySelector(selector);
-  return elem && elem.getAttribute(attr);
-};
-
-export const queryAndGetText = (item: Element, selector: string): string => {
-  const elem = item.querySelector(selector);
-  return elem && cleanupString(elem.textContent);
-};
-
 export interface IAdvancedQuery {
   elem(): Element | undefined;
   textAsInt(): number | undefined;
@@ -67,5 +57,3 @@ export const query = (root: Element | Document, selector: string): IAdvancedQuer
 };
 
 export const queryAll = (root: Element | Document, selector: string) => Array.from(root.querySelectorAll(selector));
-
-export default { cleanupString, queryAndGetAttr, queryAndGetText };
