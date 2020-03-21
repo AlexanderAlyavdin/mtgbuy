@@ -1,21 +1,19 @@
 import React, { FunctionComponent, useState } from 'react';
 import HeaderMain from '../components/HeaderMain';
 import ICardItem from 'shared/interfaces/ICardItem';
-
+import styled from 'styled-components';
+import theme from '../theme';
 import Server from '../utils/parsers/mtgsale-parser-copy';
-import { Container, Card, CardContent, Typography, Link, CircularProgress, Backdrop } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Container, CircularProgress, Backdrop } from '@material-ui/core';
+import MtgCard from 'components/MtgCard';
+import MtgCardInfo from 'components/MtgCardInfo';
 
-const useStyles = makeStyles(theme => ({
-  backdrop: {
-    zIndex: theme.zIndex.drawer + 1,
-    color: '#fff',
-  },
-}));
+const StyledBackdrop = styled(Backdrop)`
+  z-index: ${theme.zIndex.drawer} + 1;
+  color: '#fff';
+`;
 
 const SearchRoute: FunctionComponent = () => {
-  const classes = useStyles();
-
   const [cards, setCards] = useState<Array<ICardItem> | undefined>(undefined);
   const [searching, setSearching] = useState<boolean>(false);
 
@@ -27,35 +25,23 @@ const SearchRoute: FunctionComponent = () => {
       .finally(() => setSearching(false));
   };
 
+  const cardInfo = {
+    name: 'Golos',
+    imageUrl: 'https://magicalter.com/wp-content/uploads/2020/01/Golos-mtg-alters.jpg',
+    description:
+      'When Golos, Tireless Pilgrim enters the battlefield, you may search your library for a land card, put that card onto the battlefield tapped, then shuffle your library.',
+  };
+
   return (
     <>
       <HeaderMain onSearch={handleSearch} />
-      <Container maxWidth='sm'>
-        {cards &&
-          cards.map((card, index) => (
-            <Card key={index}>
-              <CardContent>
-                <Typography>Имя: {card.name}</Typography>
-                <Typography>Цена: {card.price}</Typography>
-                <Typography>Кол-во: {card.quantity}</Typography>
-                <Typography>Язык: {card.language}</Typography>
-                {card.condition && <Typography>Состояние: {card.condition}</Typography>}
-                <Typography>
-                  Магазин: <Link href={card.platformUrl}>{card.platform}</Link>
-                </Typography>
-                {card.trader && (
-                  <Typography>
-                    Продавец: <Link href={card.traderUrl}>{card.trader}</Link>
-                  </Typography>
-                )}
-                <Link href={card.link}>Открыть в магазине</Link>
-              </CardContent>
-            </Card>
-          ))}
+      <Container maxWidth='md'>{cardInfo && <MtgCardInfo cardInfo={cardInfo} />}</Container>
+      <Container maxWidth='md'>
+        {cards && cards.map((card, index) => <MtgCard key={index} cardModel={card} />)}
       </Container>
-      <Backdrop open={searching} className={classes.backdrop}>
+      <StyledBackdrop open={searching}>
         <CircularProgress />
-      </Backdrop>
+      </StyledBackdrop>
       )
     </>
   );
