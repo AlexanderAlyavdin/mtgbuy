@@ -6,12 +6,12 @@ import styled from 'styled-components';
 import theme from '../theme';
 import Server from '../utils/parsers/mtgsale-parser-copy';
 import { Container, CircularProgress, Backdrop } from '@material-ui/core';
-import MtgCard from 'components/MtgCard';
 import MtgCardInfo from 'components/MtgCardInfo';
+import MtgCardTable from 'components/MtgCardTable';
 
 const StyledBackdrop = styled(Backdrop)`
-  z-index: ${theme.zIndex.drawer} + 1;
-  color: '#fff';
+  z-index: ${theme.zIndex.drawer + 100};
+  color: #fff;
 `;
 
 const SearchRoute: FunctionComponent = () => {
@@ -32,13 +32,16 @@ const SearchRoute: FunctionComponent = () => {
   return (
     <>
       <HeaderMain onSearch={handleSearch} />
-      <Container maxWidth='md'>{cardInfo && <MtgCardInfo cardInfo={cardInfo} />}</Container>
-      <Container maxWidth='md'>
-        {cards && cards.map((card, index) => <MtgCard key={index} cardModel={card} />)}
-      </Container>
-      <StyledBackdrop open={searching}>
-        <CircularProgress />
-      </StyledBackdrop>
+      {searching ? (
+        <StyledBackdrop open={searching}>
+          <CircularProgress />
+        </StyledBackdrop>
+      ) : (
+        <Container maxWidth='md'>
+          {cardInfo && <MtgCardInfo cardInfo={cardInfo} />}
+          {cards && <MtgCardTable cardModels={cards} />}
+        </Container>
+      )}
       )
     </>
   );
