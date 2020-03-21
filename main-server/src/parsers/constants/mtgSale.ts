@@ -9,11 +9,11 @@ export enum Selector {
 
 export const queryMtgSale = queryConcrete(
   Object.freeze({
-    price: new ConfigItem('.pprice', 'text'),
-    quantity: new ConfigItem('.colvo', 'text'),
+    priceText: new ConfigItem('.pprice', 'text'),
+    quantityText: new ConfigItem('.colvo', 'text'),
     cardName: new ConfigItem('.tnamec', 'text'),
     link: new ConfigItem('.tnamec', 'href'),
     condition: new ConfigItem('.sost', 'text'),
-    language: new ConfigItem('.lang i', 'title'),
+    languageElem: new ConfigItem('.lang i', 'elem'),
   }),
 );

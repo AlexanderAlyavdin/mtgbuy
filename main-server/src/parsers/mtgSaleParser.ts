@@ -40,16 +40,28 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
     (item: HTMLElement): ICardItem => {
       const queryItem = query(item);
       const linkRel = queryItem.link();
-      const quantity = queryItem.quantity();
-      const price = queryItem.price();
+
+      let language: string;
+      try {
+        language = queryItem
+          .languageElem()
+          .getAttribute('class')
+          .split('-')[1]
+          .toLowerCase();
+      } catch (error) {
+        logger.log(`Failed to parse language: ${error}`);
+      }
+
+      const quantityText = queryItem.quantityText();
+      const priceText = queryItem.priceText();
 
       return {
         name: queryItem.cardName(),
         link: linkRel && `${hostUrl}${linkRel}`,
-        quantity: quantity && parseInt(quantity.split(' ')[0]),
-        price: price && parseInt(price.split(' ')[0]),
+        quantity: quantityText && parseInt(quantityText.split(' ')[0]),
+        price: priceText && parseInt(priceText.split(' ')[0]),
         condition: queryItem.condition() as Condition,
-        language: queryItem.language(),
+        language,
         platform: shopName,
         platformUrl: hostUrl,
       };
