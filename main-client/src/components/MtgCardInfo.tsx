@@ -12,7 +12,7 @@ const Header = styled(CardHeader)`
 `;
 
 const Image = styled(CardMedia)`
-  height: 20vw;
+  height: 30vh;
   background-size: contain;
   background-repeat: no-repeat;
 `;

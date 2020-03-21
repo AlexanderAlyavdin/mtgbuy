@@ -22,22 +22,22 @@ const MtgCardTable: FunctionComponent<MtgCardTableProps> = ({ cardModels }) => {
       <Table aria-label='simple table'>
         <TableHead>
           <TableRow>
-            <TableCell align='right'>
+            <TableCell>
               <MonetizationOn />
             </TableCell>
-            <TableCell align='right'>
+            <TableCell>
               <Storage />
             </TableCell>
-            <TableCell align='right'>
+            <TableCell>
               <Translate />
             </TableCell>
-            <TableCell align='right'>
+            <TableCell>
               <Waves />
             </TableCell>
-            <TableCell align='right'>
+            <TableCell>
               <StoreOutlined />
             </TableCell>
-            <TableCell align='right'>
+            <TableCell>
               <PersonOutline />
             </TableCell>
             <TableCell></TableCell>
@@ -65,19 +65,19 @@ const MtgCardTable: FunctionComponent<MtgCardTableProps> = ({ cardModels }) => {
               }
               return (
                 <TableRow key={index}>
-                  <TableCell component='th' scope='row' align='right'>
+                  <TableCell component='th' scope='row'>
                     {price}
                   </TableCell>
-                  <TableCell align='right'>{quantity}</TableCell>
-                  <TableCell align='right'>{language}</TableCell>
-                  <TableCell align='right'>
+                  <TableCell>{quantity}</TableCell>
+                  <TableCell>{language}</TableCell>
+                  <TableCell>
                     <span style={{ color: conditionColor }}>{condition}</span>
                   </TableCell>
-                  <TableCell align='right'>
+                  <TableCell>
                     <Link href={platformUrl}>{platform}</Link>
                   </TableCell>
-                  <TableCell align='right'>{traderUrl ? <Link href={traderUrl}>{trader}</Link> : trader}</TableCell>
-                  <TableCell align='right'>
+                  <TableCell>{traderUrl ? <Link href={traderUrl}>{trader}</Link> : trader}</TableCell>
+                  <TableCell>
                     <Link href={link}>
                       <ShoppingCart />
                     </Link>
