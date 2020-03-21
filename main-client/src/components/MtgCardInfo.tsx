@@ -17,6 +17,10 @@ const Image = styled(CardMedia)`
   background-repeat: no-repeat;
 `;
 
+const DescriptionLabel = styled(Typography)`
+  white-space: pre-line;
+`;
+
 const MtgCardInfo: FunctionComponent<MtgCardInfoProps> = ({ cardInfo }) => {
   const { name, description, imageUrl } = cardInfo;
   return (
@@ -27,7 +31,7 @@ const MtgCardInfo: FunctionComponent<MtgCardInfoProps> = ({ cardInfo }) => {
       </Container>
 
       <CardContent>
-        <Typography>{description}</Typography>
+        <DescriptionLabel>{description}</DescriptionLabel>
       </CardContent>
     </Card>
   );
