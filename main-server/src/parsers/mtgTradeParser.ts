@@ -67,13 +67,16 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
           const rows = queryAll(sellerItem, 'tbody tr');
           const traderUrlRel = query(rows[0]).traderUrl();
+          const link = traderUrlRel
+            ? `${hostUrl}/store/single${traderUrlRel}?query=${encodeURIComponent(item.cardName())}`
+            : item.link() && `${hostUrl}${item.link()}`;
 
           return rows
             .map(row => query(row))
             .map(row => {
               return {
                 name: item.cardName(),
-                link: item.link() && `${hostUrl}${item.link()}`,
+                link,
                 quantity: row.quantity(),
                 price: row.price(),
                 condition: row.condition(),
