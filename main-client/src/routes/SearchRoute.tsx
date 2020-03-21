@@ -1,6 +1,7 @@
 import React, { FunctionComponent, useState } from 'react';
 import HeaderMain from '../components/HeaderMain';
 import ICardItem from 'shared/interfaces/ICardItem';
+import ICardInfo from 'shared/interfaces/ICardInfo';
 import styled from 'styled-components';
 import theme from '../theme';
 import Server from '../utils/parsers/mtgsale-parser-copy';
@@ -14,22 +15,18 @@ const StyledBackdrop = styled(Backdrop)`
 `;
 
 const SearchRoute: FunctionComponent = () => {
+  const [cardInfo, setCardInfo] = useState<ICardInfo | undefined>(undefined);
   const [cards, setCards] = useState<Array<ICardItem> | undefined>(undefined);
   const [searching, setSearching] = useState<boolean>(false);
 
   const handleSearch = (value: string): Promise<void> => {
     setSearching(true);
 
+    Server.getCardInfo(value).then(res => setCardInfo(res));
+
     return Server.searchCards(value)
       .then(res => setCards(res))
       .finally(() => setSearching(false));
-  };
-
-  const cardInfo = {
-    name: 'Golos',
-    imageUrl: 'https://magicalter.com/wp-content/uploads/2020/01/Golos-mtg-alters.jpg',
-    description:
-      'When Golos, Tireless Pilgrim enters the battlefield, you may search your library for a land card, put that card onto the battlefield tapped, then shuffle your library.',
   };
 
   return (

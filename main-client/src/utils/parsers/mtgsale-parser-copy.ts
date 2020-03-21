@@ -1,4 +1,5 @@
 import ICardItem from '../../shared/interfaces/ICardItem';
+import ICardInfo from '../../shared/interfaces/ICardInfo';
 
 const BASE_URL = process.env.NODE_ENV === 'development' ? 'http://localhost:3030/' : 'https://mtgbuy.herokuapp.com/';
 
@@ -12,4 +13,9 @@ const getSuggestions = async (partName: string): Promise<string[]> => {
   return response.json();
 };
 
-export default { searchCards, getSuggestions };
+const getCardInfo = async (cardName: string): Promise<ICardInfo> => {
+  const response = await fetch(`${BASE_URL}cardinfo?cardName=${cardName}`);
+  return response.json();
+};
+
+export default { searchCards, getSuggestions, getCardInfo };
