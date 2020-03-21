@@ -6,6 +6,7 @@ import ICardItem from '@shared/interfaces/ICardItem';
 import Logger, { LogLevel } from '../utils/logger';
 import { cleanupString, queryAll } from '../utils/helpers';
 import { shopName, hostUrl, hostUrlHttp, queryMtgTrade as query, Selector } from './constants/mtgTrade';
+import Condition from '@shared/constants/condition';
 
 const logger = new Logger('MtgTrade');
 
@@ -79,7 +80,7 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
                 link,
                 quantity: row.quantity(),
                 price: row.price(),
-                condition: row.condition(),
+                condition: row.condition() as Condition,
                 language: cleanupString(row.cardProperties().split('|')[0]),
                 platform: shopName,
                 platformUrl: hostUrl,
