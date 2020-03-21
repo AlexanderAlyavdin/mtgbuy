@@ -2,17 +2,11 @@ import { JSDOM } from 'jsdom';
 
 import ICardItem from '@shared/interfaces/ICardItem';
 
-import Helpers from '../utils/helpers';
+import { queryAll } from '../utils/helpers';
 import Logger, { LogLevel } from '../utils/logger';
+import { hostUrl, shopName, queryCardPlace as query, Selector } from './constants/cardPlace';
 
 const logger = new Logger('CardPlace');
-
-const hostUrl = 'https://cardplace.ru';
-const shopName = 'CardPlace.ru';
-
-const Selectors = {
-  searchResultTable: '.singlestable',
-};
 
 const getSearchUrl = (cardName: string): string => {
   return `${hostUrl}/directory/new_search/${cardName}/mtg/1`;
@@ -33,33 +27,23 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
   logger.log('Start parsing search result');
 
-  const searchResultTable = document.querySelector(Selectors.searchResultTable);
+  const searchResultTable = document.querySelector(Selector.searchResultTable);
   if (!searchResultTable) {
     logger.log('Cant find search results');
     return [];
   }
 
-  const searchResults = searchResultTable.querySelector('tbody').querySelectorAll('tr');
-  return Array.from(searchResults).map(
+  const searchResults = queryAll(searchResultTable, 'tbody tr');
+  return searchResults.map(
     (row: HTMLElement): ICardItem => {
-      const columns = row.querySelectorAll('td');
-      const nameCol = columns.item(2);
-      const langCol = columns.item(3);
-      const priceCol = columns.item(6);
-      const quantityCol = columns.item(7);
-
-      const name = Helpers.queryAndGetText(nameCol, 'a');
-      const linkRel = Helpers.queryAndGetAttr(nameCol, 'a', 'href');
-      const language = Helpers.queryAndGetAttr(langCol, 'img', 'title');
-      const price = parseInt(Helpers.cleanupString(priceCol.textContent).split(' ')[0]);
-      const quantity = parseInt(Helpers.cleanupString(quantityCol.textContent));
+      const queryRow = query(row);
 
       return {
-        name,
-        link: linkRel && `${hostUrl}${linkRel}`,
-        price,
-        quantity,
-        language,
+        name: queryRow.cardName(),
+        link: queryRow.link() && `${hostUrl}${queryRow.link()}`,
+        price: parseInt(queryRow.priceText().split(' ')[0]),
+        quantity: queryRow.quantity(),
+        language: queryRow.language(),
         platform: shopName,
         platformUrl: hostUrl,
       };
