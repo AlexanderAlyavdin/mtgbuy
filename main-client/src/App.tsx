@@ -3,21 +3,27 @@ import { Router, Switch, Route } from 'react-router-dom';
 import { History } from 'history';
 import TestRoute from './routes/Test';
 import SearchRoute from './routes/SearchRoute';
-import { ThemeProvider } from 'styled-components';
+import { palette, PaletteProps } from '@material-ui/system';
+import styled, { ThemeProvider } from 'styled-components';
 import Box from '@material-ui/core/Box';
-import theme from './theme';
+import theme from 'theme';
 import { StylesProvider } from '@material-ui/styles';
 
 type AppProps = {
   routerHistory: History;
 };
 
+const MainBox = styled(Box)<PaletteProps>`
+  ${palette}
+  min-height: 100vh;
+`;
+
 const App: FunctionComponent<AppProps> = ({ routerHistory }) => {
   return (
     <Router history={routerHistory}>
       <StylesProvider injectFirst>
         <ThemeProvider theme={theme}>
-          <Box>
+          <MainBox bgcolor='secondary.light'>
             <Switch>
               <Route exact path='/'>
                 <SearchRoute />
@@ -29,7 +35,7 @@ const App: FunctionComponent<AppProps> = ({ routerHistory }) => {
                 <TestRoute />
               </Route>
             </Switch>
-          </Box>
+          </MainBox>
         </ThemeProvider>
       </StylesProvider>
     </Router>
