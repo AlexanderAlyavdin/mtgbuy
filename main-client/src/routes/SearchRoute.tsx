@@ -14,6 +14,12 @@ const StyledBackdrop = styled(Backdrop)`
   color: #fff;
 `;
 
+const StyledContainer = styled(Container)`
+  ${theme.breakpoints.down('xs')} {
+    padding: 0;
+  }
+`;
+
 const SearchRoute: FunctionComponent = () => {
   const [cardInfo, setCardInfo] = useState<ICardInfo | undefined>(undefined);
   const [cards, setCards] = useState<Array<ICardItem> | undefined>(undefined);
@@ -37,12 +43,11 @@ const SearchRoute: FunctionComponent = () => {
           <CircularProgress />
         </StyledBackdrop>
       ) : (
-        <Container maxWidth='md'>
+        <StyledContainer maxWidth='md'>
           {cardInfo && <MtgCardInfo cardInfo={cardInfo} />}
           {cards && <MtgCardTable cardModels={cards} />}
-        </Container>
+        </StyledContainer>
       )}
-      )
     </>
   );
 };

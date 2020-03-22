@@ -1,9 +1,9 @@
 import React, { FunctionComponent, ChangeEvent, ReactElement } from 'react';
 import styled from 'styled-components';
+import theme from 'theme';
 import { throttle } from 'throttle-debounce';
 
-import SearchIcon from '@material-ui/icons/Search';
-import CloseIcon from '@material-ui/icons/Close';
+import { Search as SearchIcon, Close as CloseIcon } from '@material-ui/icons';
 import InputBase from '@material-ui/core/InputBase';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 
@@ -11,30 +11,37 @@ import Server from '../utils/parsers/mtgsale-parser-copy';
 import { CircularProgress, IconButton, InputAdornment } from '@material-ui/core';
 
 const SearchBar = styled.div`
-  position: relative;
-  width: auto;
-  min-width: 300px;
-`;
-
-const Icon = styled(SearchIcon)`
-  width: 70px;
-  height: 100%;
-  position: absolute;
-  pointer-events: none;
+  width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 `;
 
+const Icon = styled(SearchIcon)`
+  flex: 0 0 30px;
+  min-height: 20px;
+  height: 10vw;
+  max-height: 40px;
+`;
+
 const Input = styled(InputBase)`
-  align-self: flex-start;
   color: inherit;
+  width: 100%;
   .search-input {
-    color: white;
+    color: inherit;
+    ${theme.breakpoints.down('xs')} {
+      font-size: 14px;
+    }
     padding: 8px 8px 8px 0px;
     width: 100%;
   }
 `;
+
+const StyledAutocomplete = styled(Autocomplete)`
+  margin-left: 10px;
+  flex: 1 1 300px;
+  max-width: 700px;
+` as typeof Autocomplete;
 
 interface SearchInputProps {
   onSearch?(value: string): void;
@@ -81,8 +88,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
   return (
     <SearchBar>
       <Icon />
-      <Autocomplete
-        style={{ paddingLeft: '56px' }}
+      <StyledAutocomplete
         open={open && options.length > 0}
         onOpen={(): void => setOpen(true)}
         onClose={(): void => setOpen(false)}
@@ -98,7 +104,7 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
           <Input
             ref={params.InputProps.ref}
             inputProps={params.inputProps}
-            placeholder='Search...'
+            placeholder='Введите имя карты для поиска...'
             classes={{ input: 'search-input' }}
             endAdornment={
               <InputAdornment variant='outlined' position='end'>
