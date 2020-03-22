@@ -1,5 +1,6 @@
 import React, { FunctionComponent, ChangeEvent, ReactElement } from 'react';
 import styled from 'styled-components';
+import theme from 'theme';
 import { throttle } from 'throttle-debounce';
 
 import { Search as SearchIcon, Close as CloseIcon } from '@material-ui/icons';
@@ -28,6 +29,9 @@ const Input = styled(InputBase)`
   width: 100%;
   .search-input {
     color: inherit;
+    ${theme.breakpoints.down('xs')} {
+      font-size: 14px;
+    }
     padding: 8px 8px 8px 0px;
     width: 100%;
   }
