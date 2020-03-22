@@ -13,6 +13,6 @@ export const queryCardPlace = queryConcrete(
     quantity: new ConfigItem('td:nth-child(8)', 'textAsInt'),
     cardName: new ConfigItem('td:nth-child(3) a', 'text'),
     link: new ConfigItem('td:nth-child(3) a', 'href'),
-    languageElem: new ConfigItem('td:nth-child(4) img', 'elem'),
+    languageRuName: new ConfigItem('td:nth-child(4) img', 'title'),
   }),
 );

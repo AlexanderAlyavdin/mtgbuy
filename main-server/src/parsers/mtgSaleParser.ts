@@ -1,11 +1,13 @@
 import { JSDOM } from 'jsdom';
 
 import ICardItem from '@shared/interfaces/ICardItem';
+import Condition from '@shared/constants/condition';
 
 import { queryAll } from '../utils/helpers';
 import Logger, { LogLevel } from '../utils/logger';
+import { rusNameTo2Code } from '../utils/isoLanguageCodes';
+
 import { shopName, hostUrl, queryMtgSale as query, Selector } from './constants/mtgSale';
-import Condition from '@shared/constants/condition';
 
 const logger = new Logger('MtgSale');
 
@@ -41,17 +43,6 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
       const queryItem = query(item);
       const linkRel = queryItem.link();
 
-      let language: string;
-      try {
-        language = queryItem
-          .languageElem()
-          .getAttribute('class')
-          .split('-')[1]
-          .toLowerCase();
-      } catch (error) {
-        logger.log(`Failed to parse language: ${error}`);
-      }
-
       const quantityText = queryItem.quantityText();
       const priceText = queryItem.priceText();
 
@@ -61,7 +52,7 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
         quantity: quantityText && parseInt(quantityText.split(' ')[0]),
         price: priceText && parseInt(priceText.split(' ')[0]),
         condition: queryItem.condition() as Condition,
-        language,
+        language: rusNameTo2Code(queryItem.languageRuName()),
         platform: shopName,
         platformUrl: hostUrl,
       };

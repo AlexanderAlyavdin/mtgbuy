@@ -1,10 +1,11 @@
-import path from 'path';
 import { JSDOM } from 'jsdom';
 
 import ICardItem from '@shared/interfaces/ICardItem';
 
 import { queryAll } from '../utils/helpers';
 import Logger, { LogLevel } from '../utils/logger';
+import { rusNameTo2Code } from '../utils/isoLanguageCodes';
+
 import { hostUrl, shopName, queryCardPlace as query, Selector } from './constants/cardPlace';
 
 const logger = new Logger('CardPlace');
@@ -39,19 +40,12 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
     (row: HTMLElement): ICardItem => {
       const queryRow = query(row);
 
-      let language: string;
-      try {
-        language = path.parse(queryRow.languageElem().getAttribute('src')).name;
-      } catch (error) {
-        logger.log(`Failed to parse language: ${error}`);
-      }
-
       return {
         name: queryRow.cardName(),
         link: queryRow.link() && `${hostUrl}${queryRow.link()}`,
         price: parseInt(queryRow.priceText().split(' ')[0]),
         quantity: queryRow.quantity(),
-        language,
+        language: rusNameTo2Code(queryRow.languageRuName()),
         platform: shopName,
         platformUrl: hostUrl,
       };

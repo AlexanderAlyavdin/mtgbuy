@@ -2,11 +2,12 @@ import { JSDOM } from 'jsdom';
 import http from 'http';
 
 import ICardItem from '@shared/interfaces/ICardItem';
+import Condition from '@shared/constants/condition';
 
 import Logger, { LogLevel } from '../utils/logger';
 import { cleanupString, queryAll } from '../utils/helpers';
+
 import { shopName, hostUrl, hostUrlHttp, queryMtgTrade as query, Selector } from './constants/mtgTrade';
-import Condition from '@shared/constants/condition';
 
 const logger = new Logger('MtgTrade');
 

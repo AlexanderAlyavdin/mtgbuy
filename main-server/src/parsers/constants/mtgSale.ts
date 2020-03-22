@@ -14,6 +14,6 @@ export const queryMtgSale = queryConcrete(
     cardName: new ConfigItem('.tnamec', 'text'),
     link: new ConfigItem('.tnamec', 'href'),
     condition: new ConfigItem('.sost', 'text'),
-    languageElem: new ConfigItem('.lang i', 'elem'),
+    languageRuName: new ConfigItem('.lang i', 'title'),
   }),
 );
