@@ -16,7 +16,7 @@ const mtgSaleExpectedResult = [
     link: 'https://mtgsale.ru/item/singles/m20_rus/golos-tireless-pilgrim_226',
     condition: 'NM',
     language: 'ru',
-    platform: 'MTG sale',
+    platform: 'MtgSale',
     platformUrl: 'https://mtgsale.ru',
   },
   {
@@ -26,7 +26,7 @@ const mtgSaleExpectedResult = [
     link: 'https://mtgsale.ru/item/singles/uppck_rus/golos-tireless-pilgrim_57',
     condition: 'NM',
     language: 'ru',
-    platform: 'MTG sale',
+    platform: 'MtgSale',
     platformUrl: 'https://mtgsale.ru',
   },
 ];
@@ -39,7 +39,7 @@ const mtgTradeExpectedResult = [
     link: 'https://mtgtrade.net/store/single/user/25957/?query=Golos%2C%20Tireless%20Pilgrim',
     condition: 'NM',
     language: 'ru',
-    platform: 'MtgTrade.net',
+    platform: 'MtgTrade',
     platformUrl: 'https://mtgtrade.net',
     trader: 'BGArena',
     traderUrl: 'https://mtgtrade.net/user/25957/',
@@ -51,7 +51,7 @@ const mtgTradeExpectedResult = [
     link: 'https://mtgtrade.net/store/single/user/12910/?query=Golos%2C%20Tireless%20Pilgrim',
     condition: 'NM',
     language: 'ru',
-    platform: 'MtgTrade.net',
+    platform: 'MtgTrade',
     platformUrl: 'https://mtgtrade.net',
     trader: 'Арена Воронеж',
     traderUrl: 'https://mtgtrade.net/user/12910/',
@@ -65,7 +65,7 @@ const cardPlaceExpectedResult = [
     quantity: 0,
     link: 'https://cardplace.ru/item/mtg_m20_golos_tireless_pilgrim_foil_236416/',
     language: 'en',
-    platform: 'CardPlace.ru',
+    platform: 'CardPlace',
     platformUrl: 'https://cardplace.ru',
   },
   {
@@ -74,7 +74,7 @@ const cardPlaceExpectedResult = [
     quantity: 0,
     link: 'https://cardplace.ru/item/mtg_m20_golos_tireless_pilgrim_236136/',
     language: 'en',
-    platform: 'CardPlace.ru',
+    platform: 'CardPlace',
     platformUrl: 'https://cardplace.ru',
   },
 ];

@@ -1,7 +1,7 @@
 import { queryConcrete, ConfigItem } from '../../utils/helpers';
 
 export const hostUrl = 'https://cardplace.ru';
-export const shopName = 'CardPlace.ru';
+export const shopName = 'CardPlace';
 
 export const enum Selector {
   searchResultTable = '.singlestable',

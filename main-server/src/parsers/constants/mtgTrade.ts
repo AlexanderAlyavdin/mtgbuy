@@ -2,7 +2,7 @@ import { queryConcrete, ConfigItem } from '../../utils/helpers';
 
 export const hostUrl = `https://mtgtrade.net`;
 export const hostUrlHttp = `http://mtgtrade.net`;
-export const shopName = 'MtgTrade.net';
+export const shopName = 'MtgTrade';
 
 export enum Selector {
   searchResultList = '.search-results-list',

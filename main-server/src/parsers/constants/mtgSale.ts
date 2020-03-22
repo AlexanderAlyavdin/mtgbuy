@@ -1,7 +1,7 @@
 import { queryConcrete, ConfigItem } from '../../utils/helpers';
 
 export const hostUrl = `https://mtgsale.ru`;
-export const shopName = 'MTG sale';
+export const shopName = 'MtgSale';
 
 export enum Selector {
   searchResultList = '.ctclass',
