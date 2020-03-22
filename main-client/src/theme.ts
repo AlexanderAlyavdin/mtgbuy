@@ -1,6 +1,5 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 import { Breakpoint } from '@material-ui/core/styles/createBreakpoints';
-import { colors } from '@material-ui/core';
 
 const values = {
   xs: 0,
@@ -12,23 +11,19 @@ const values = {
 
 export default createMuiTheme({
   palette: {
-    primary: colors.amber,
-    secondary: colors.brown,
+    primary: {
+      light: '#be9c91',
+      main: '#8d6e63',
+      dark: '#5f4339',
+    },
+    secondary: {
+      light: '#8e8e8e',
+      main: '#616161',
+      dark: '#373737',
+    },
   },
   breakpoints: {
     keys: ['xs', 'sm', 'md', 'lg', 'xl'],
     up: (key): string => `@media (min-width:${values[key as Breakpoint]}px)`,
-  },
-  overrides: {
-    MuiButton: {
-      root: {
-        fontWeight: 'bold',
-        backgroundColor: 'red',
-        margin: '10px',
-        '&:hover': {
-          backgroundColor: 'green',
-        },
-      },
-    },
   },
 });
