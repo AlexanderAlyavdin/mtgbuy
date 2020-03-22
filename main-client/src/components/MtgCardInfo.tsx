@@ -43,10 +43,10 @@ const MtgCardInfo: FunctionComponent<MtgCardInfoProps> = ({ cardInfo }) => {
 
       <CardContent>
         <DescriptionLabel>
-          {descriptionArray.map(desc => {
+          {descriptionArray.map((desc, index) => {
             if (iconRegexp.test(desc)) {
               const code = desc.replace('{', '').replace('}', '');
-              return <ManaIcon src={getIconHref(code)} />;
+              return <ManaIcon key={index} src={getIconHref(code)} />;
             }
             return desc;
           })}
