@@ -42,7 +42,6 @@ const SearchRoute: FunctionComponent = () => {
           {cards && <MtgCardTable cardModels={cards} />}
         </Container>
       )}
-      )
     </>
   );
 };
