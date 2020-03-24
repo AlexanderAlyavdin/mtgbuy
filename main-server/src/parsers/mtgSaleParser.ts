@@ -11,9 +11,8 @@ import { shopName, hostUrl, queryMtgSale as query, Selector } from './constants/
 
 const logger = new Logger('MtgSale');
 
-const getSearchUrl = (cardName: string): string => {
-  return `${hostUrl}/home/search-results?Name=${cardName}`;
-};
+const getSearchUrl = (cardName: string): string =>
+  `${hostUrl}/home/search-results?Name=${encodeURIComponent(cardName)}`;
 
 const searchCard = async (cardName: string): Promise<Document> => {
   const dom = await JSDOM.fromURL(getSearchUrl(cardName)).catch(error => {

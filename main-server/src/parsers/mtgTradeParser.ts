@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom';
 import http from 'http';
+import got from 'got';
 
 import ICardItem from '@shared/interfaces/ICardItem';
 import Condition from '@shared/constants/condition';
@@ -11,9 +12,9 @@ import { shopName, hostUrl, hostUrlHttp, queryMtgTrade as query, Selector } from
 
 const logger = new Logger('MtgTrade');
 
-const getSearchUrl = (cardName: string): string => `${hostUrlHttp}/search/?query=${cardName}`;
+const getSearchUrl = (cardName: string): string => `${hostUrl}/search/?query=${encodeURIComponent(cardName)}`;
 
-const searchCard = async (cardName: string): Promise<Document> => {
+const searchCardHttp = async (cardName: string): Promise<Document> => {
   /*
   TODO: solve one of:
   1. internal request error for mtgtrade: failed to check first certificate
@@ -38,6 +39,14 @@ const searchCard = async (cardName: string): Promise<Document> => {
         reject(err);
       });
   });
+};
+
+const searchCard = async (cardName: string): Promise<Document> => {
+  const res = await got(getSearchUrl(cardName), { rejectUnauthorized: false, timeout: 5000 }).catch(error => {
+    logger.log(`Failed to get search result for ${getSearchUrl(cardName)}: ${error}`, LogLevel.Error);
+    return undefined;
+  });
+  return new JSDOM(res.body).window.document;
 };
 
 const parseSearchResult = (document: Document): Array<ICardItem> => {
