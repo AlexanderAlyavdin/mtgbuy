@@ -15,6 +15,7 @@ const getSearchUrl = (cardName: string): string =>
   `${hostUrl}/home/search-results?Name=${encodeURIComponent(cardName)}`;
 
 const searchCard = async (cardName: string): Promise<Document> => {
+  logger.log(`Send request: ${getSearchUrl(cardName)}`);
   const dom = await JSDOM.fromURL(getSearchUrl(cardName)).catch(error => {
     logger.log(`Failed to get search result for ${getSearchUrl(cardName)}: ${error}`, LogLevel.Error);
     return undefined;
