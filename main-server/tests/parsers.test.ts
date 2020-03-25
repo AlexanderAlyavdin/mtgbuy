@@ -10,7 +10,7 @@ const cardPlceTestHtml = fs.readFileSync(`${__dirname}/cardPlaceTestDoc.html`, '
 
 const mtgSaleExpectedResult = [
   {
-    name: 'Гоулос, Неутомимый Пилигрим',
+    name: 'Golos, Tireless Pilgrim',
     price: 160,
     quantity: 17,
     link: 'https://mtgsale.ru/item/singles/m20_rus/golos-tireless-pilgrim_226',
@@ -20,7 +20,7 @@ const mtgSaleExpectedResult = [
     platformUrl: 'https://mtgsale.ru',
   },
   {
-    name: 'Гоулос, Неутомимый Пилигрим',
+    name: 'Golos, Tireless Pilgrim',
     price: 180,
     quantity: 1,
     link: 'https://mtgsale.ru/item/singles/uppck_rus/golos-tireless-pilgrim_57',

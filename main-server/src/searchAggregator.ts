@@ -23,6 +23,10 @@ const compareCardNames = (leftName: string, rightName: string): boolean => {
   const wordRegex = /[A-Za-z0-9]+/g;
   const leftWords = leftName.match(wordRegex);
   const rightWords = rightName.match(wordRegex);
+  if (!leftWords || !rightWords) {
+    logger.log(`Failed names comparison: ${leftName} ${rightName}`, LogLevel.Warning);
+    return false;
+  }
   return leftWords.length === rightWords.length && leftWords.every((word, index) => word === rightWords[index]);
 };
 

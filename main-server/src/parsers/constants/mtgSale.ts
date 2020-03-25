@@ -12,6 +12,7 @@ export const queryMtgSale = queryConcrete(
     priceText: new ConfigItem('.pprice', 'text'),
     quantityText: new ConfigItem('.colvo', 'text'),
     cardName: new ConfigItem('.tnamec', 'text'),
+    secondCardName: new ConfigItem('.tname .smallfont', 'text'),
     link: new ConfigItem('.tnamec', 'href'),
     condition: new ConfigItem('.sost', 'text'),
     languageRuName: new ConfigItem('.lang i', 'title'),

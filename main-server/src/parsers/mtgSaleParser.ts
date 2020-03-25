@@ -45,14 +45,15 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
       const quantityText = queryItem.quantityText();
       const priceText = queryItem.priceText();
+      const language = rusNameTo2Code(queryItem.languageRuName());
 
       return {
-        name: queryItem.cardName(),
+        name: language === 'en' ? queryItem.cardName() : queryItem.secondCardName(),
         link: linkRel && `${hostUrl}${linkRel}`,
         quantity: quantityText && parseInt(quantityText.split(' ')[0]),
         price: priceText && parseInt(priceText.split(' ')[0]),
         condition: queryItem.condition() as Condition,
-        language: rusNameTo2Code(queryItem.languageRuName()),
+        language,
         platform: shopName,
         platformUrl: hostUrl,
       };

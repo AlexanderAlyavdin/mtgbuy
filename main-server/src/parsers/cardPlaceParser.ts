@@ -40,12 +40,21 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
     (row: HTMLElement): ICardItem => {
       const queryRow = query(row);
 
+      let cardName = queryRow.cardName();
+      const language = rusNameTo2Code(queryRow.languageRuName());
+      if (language !== 'en') {
+        const parenthesesContent = cardName.match(/\((.*?)\)/);
+        if (parenthesesContent && parenthesesContent.length >= 2) {
+          cardName = parenthesesContent[1];
+        }
+      }
+
       return {
-        name: queryRow.cardName(),
+        name: cardName,
         link: queryRow.link() && `${hostUrl}${queryRow.link()}`,
         price: parseInt(queryRow.priceText().split(' ')[0]),
         quantity: queryRow.quantity(),
-        language: rusNameTo2Code(queryRow.languageRuName()),
+        language,
         platform: shopName,
         platformUrl: hostUrl,
       };
