@@ -53,6 +53,24 @@ app.get('/cardinfo', async (req, response) => {
   response.send(result);
 });
 
+app.post('/bulksearch', async (req, response) => {
+  const cards = req.body;
+
+  if (!Array.isArray(cards)) {
+    logger.log(`BulkSearch: wrong input ${cards}`);
+    response.send([]);
+    return;
+  }
+
+  logger.log(`Start bulk search for ${cards}`);
+
+  const result = await SearchAggregator.bulkSearch(cards).catch(error => {
+    logger.log(`BulkSearch: Error on bulk search: ${error}`);
+    return {};
+  });
+  response.send(result);
+});
+
 app.listen(config.PORT, () => {
   logger.log(`server is listening on ${config.PORT}`);
 });
