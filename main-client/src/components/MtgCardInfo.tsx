@@ -2,6 +2,7 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { Card, CardContent, Typography, CardHeader, CardMedia, Container } from '@material-ui/core';
 import ICardInfo from 'shared/interfaces/ICardInfo';
+import getIconHref from '../utils/icon-mapping';
 
 interface MtgCardInfoProps {
   cardInfo: ICardInfo;
@@ -17,12 +18,22 @@ const Image = styled(CardMedia)`
   background-repeat: no-repeat;
 `;
 
+const ManaIcon = styled.img`
+  height: 1rem;
+  background-size: contain;
+  background-repeat: no-repeat;
+`;
+
 const DescriptionLabel = styled(Typography)`
   white-space: pre-line;
 `;
 
 const MtgCardInfo: FunctionComponent<MtgCardInfoProps> = ({ cardInfo }) => {
   const { name, description, imageUrl } = cardInfo;
+
+  const iconRegexp = /({[^{]*})/;
+  const descriptionArray = description.split(iconRegexp).filter(d => d !== '');
+
   return (
     <Card>
       <Header title={name} />
@@ -31,7 +42,15 @@ const MtgCardInfo: FunctionComponent<MtgCardInfoProps> = ({ cardInfo }) => {
       </Container>
 
       <CardContent>
-        <DescriptionLabel>{description}</DescriptionLabel>
+        <DescriptionLabel>
+          {descriptionArray.map(desc => {
+            if (iconRegexp.test(desc)) {
+              const code = desc.replace('{', '').replace('}', '');
+              return <ManaIcon src={getIconHref(code)} />;
+            }
+            return desc;
+          })}
+        </DescriptionLabel>
       </CardContent>
     </Card>
   );
