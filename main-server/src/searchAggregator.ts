@@ -14,7 +14,7 @@ const logger = new Logger('SearchAggregator');
 
 const preprocessCardName = async (cardName: string): Promise<string> => {
   cardName = await CardInfoBase.getConvenientName(cardName);
-  // Fox multiface cards
+  // Fix multiface cards
   if (cardName) {
     cardName = cardName.replace('//', '');
   }

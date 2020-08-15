@@ -14,9 +14,10 @@ const logger = new Logger('MtgTrade');
 const getSearchUrl = (cardName: string): string => `${hostUrl}/search/?query=${encodeURIComponent(cardName)}`;
 
 const searchCard = async (cardName: string): Promise<Document> => {
-  logger.log(`Send request: ${getSearchUrl(cardName)}`);
-  const res = await got(getSearchUrl(cardName), { rejectUnauthorized: false, timeout: 5000 }).catch(error => {
-    logger.log(`Failed to get search result for ${getSearchUrl(cardName)}: ${error}`, LogLevel.Error);
+  const url = getSearchUrl(cardName);
+  logger.log(`Send request: ${url}`);
+  const res = await got(url, { rejectUnauthorized: false, timeout: 5000 }).catch(error => {
+    logger.log(`Failed to get search result for ${url}: ${error}`, LogLevel.Error);
     return undefined;
   });
   return new JSDOM(res.body).window.document;

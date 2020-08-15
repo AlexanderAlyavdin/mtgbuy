@@ -1,4 +1,5 @@
 import { JSDOM } from 'jsdom';
+import got from 'got';
 
 import ICardItem from '@shared/interfaces/ICardItem';
 
@@ -14,14 +15,14 @@ const getSearchUrl = (cardName: string): string =>
   `${hostUrl}/directory/new_search/${encodeURIComponent(cardName)}/mtg/1`;
 
 const searchCard = async (cardName: string): Promise<Document> => {
-  logger.log(`Send request: ${getSearchUrl(cardName)}`);
-  const dom = await JSDOM.fromURL(getSearchUrl(cardName)).catch(error => {
-    logger.log(`Failed to get search result for ${getSearchUrl(cardName)}: ${error}`, LogLevel.Error);
+  const url = getSearchUrl(cardName);
+  logger.log(`Send request: ${url}`);
+  const res = await got(url).catch(error => {
+    logger.log(`Failed to get search result for ${url}: ${error}`, LogLevel.Error);
     return undefined;
   });
-  if (!dom) return undefined;
 
-  return dom.window.document;
+  return new JSDOM(res.body).window.document;
 };
 
 const parseSearchResult = (document: Document): Array<ICardItem> => {
