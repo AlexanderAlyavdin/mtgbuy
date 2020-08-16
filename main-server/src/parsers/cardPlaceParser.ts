@@ -2,6 +2,7 @@ import { JSDOM } from 'jsdom';
 import got from 'got';
 
 import ICardItem from '@shared/interfaces/ICardItem';
+import ISearchResult from '@shared/interfaces/ISearchResult';
 
 import { queryAll } from '../utils/helpers';
 import Logger, { LogLevel } from '../utils/logger';
@@ -14,7 +15,7 @@ const logger = new Logger('CardPlace');
 const getSearchUrl = (cardName: string): string =>
   `${hostUrl}/directory/new_search/${encodeURIComponent(cardName)}/mtg/1`;
 
-const searchCard = async (cardName: string): Promise<Document> => {
+const sendSearchCardRequest = async (cardName: string): Promise<Document> => {
   const url = getSearchUrl(cardName);
   logger.log(`Send request: ${url}`);
   const res = await got(url).catch(error => {
@@ -63,4 +64,27 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
   );
 };
 
-export default { shopName, hostUrl, searchCard, parseSearchResult };
+const searchCard = async (cardName: string): Promise<Array<ICardItem>> => {
+  logger.log(`Search card: ${cardName}`);
+  return sendSearchCardRequest(cardName)
+    .then(result => parseSearchResult(result))
+    .catch(error => {
+      logger.log(`Failed to get search results: ${error}`, LogLevel.Error);
+      return [];
+    });
+};
+
+const searchCardList = async (cardNames: Array<string>): Promise<Array<ISearchResult>> => {
+  logger.log(`Search card list: ${cardNames}`);
+  return await Promise.all(
+    cardNames.map(async (cardName: string) => {
+      const result = await searchCard(cardName);
+      return { cardName, searchResult: result };
+    }),
+  ).catch(error => {
+    logger.log(`Failed to get search results for card list: ${error}`, LogLevel.Error);
+    return [];
+  });
+};
+
+export default { shopName, hostUrl, searchCard, searchCardList };

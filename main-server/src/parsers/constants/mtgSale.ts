@@ -5,6 +5,8 @@ export const shopName = 'MtgSale';
 
 export enum Selector {
   searchResultList = '.ctclass',
+  cardListOneResult = '.card_result',
+  cardListOneTitle = 'p strong'
 }
 
 export const queryMtgSale = queryConcrete(

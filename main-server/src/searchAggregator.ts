@@ -12,6 +12,8 @@ import CardPlace from './parsers/cardPlaceParser';
 
 const logger = new Logger('SearchAggregator');
 
+const shopList = [MtgSale, MtgTrade, CardPlace];
+
 const preprocessCardName = async (cardName: string): Promise<string> => {
   cardName = await CardInfoBase.getConvenientName(cardName);
   // Fix multiface cards
@@ -41,19 +43,18 @@ const search = async (cardName: string, filterOnStock: boolean = true): Promise<
   }
   logger.log(`Card name after preprocessing: ${cardName}`);
 
-  const runSearch = (shop: ICardShop): Promise<Array<ICardItem>> => {
-    return shop
-      .searchCard(cardName)
-      .then(result => shop.parseSearchResult(result))
-      .catch(error => {
-        logger.log(`Failed to get results from ${shop.shopName}: ${error}`, LogLevel.Error);
-        return [];
-      });
+  const runSearch = async (shop: ICardShop): Promise<Array<ICardItem>> => {
+    try {
+      return shop.searchCard(cardName);
+    } catch (error) {
+      logger.log(`Failed to get results from ${shop.shopName}: ${error}`, LogLevel.Error);
+      return [];
+    }
   };
 
-  const searchPromises = [runSearch(MtgSale), runSearch(MtgTrade), runSearch(CardPlace)];
+  const searchPromises = shopList.map((shop: ICardShop) => runSearch(shop));
 
-  logger.log('Searching on mtgsale | mtgtrade | cardplace');
+  logger.log(`Searching on ${shopList.map((shop: ICardShop) => shop.shopName).join(' | ')}`);
 
   let cardItems = await Promise.all(searchPromises)
     .then(result => result.flat())
@@ -74,25 +75,45 @@ const search = async (cardName: string, filterOnStock: boolean = true): Promise<
 };
 
 const bulkSearch = async (cardNames: Array<string>): Promise<Array<ISearchResult>> => {
-  const searchPromises = cardNames.map(
-    async (cardName: string): Promise<ISearchResult> => {
-      const preprocessedCardName = await preprocessCardName(cardName);
-      if (!preprocessedCardName) {
-        return { cardName, searchResult: [], error: 'Invalid name' };
-      }
-      return await search(preprocessedCardName)
-        .then((result: Array<ICardItem>) => ({ cardName: preprocessedCardName, searchResult: result }))
-        .catch(error => {
-          logger.log(`Error bulk search for card ${preprocessedCardName}: ${error}`);
-          return { cardName: preprocessedCardName, searchResult: [], error: 'Search failed' };
-        });
-    },
-  );
+  logger.log(`Start bulk search for: ${cardNames}`);
 
-  return await Promise.all(searchPromises).catch(error => {
-    logger.log(`Error while aggregating bulk search results: ${error}`, LogLevel.Error);
-    return [];
-  });
+  const preprocessedCardNames = await Promise.all(cardNames.map(name => preprocessCardName(name)));
+  logger.log(`Preprocessed card names: ${preprocessedCardNames}`);
+
+  const runSearch = async (shop: ICardShop): Promise<Array<ISearchResult>> => {
+    try {
+      return shop.searchCardList(preprocessedCardNames);
+    } catch (error) {
+      logger.log(`Failed to get results from ${shop.shopName}: ${error}`, LogLevel.Error);
+      return [];
+    }
+  };
+
+  const searchPromises = shopList.map((shop: ICardShop) => runSearch(shop));
+
+  logger.log(`Searching card list on ${shopList.map((shop: ICardShop) => shop.shopName).join(' | ')}`);
+
+  let searchResults = [];
+  await Promise.all(searchPromises)
+    .then(results => results.flat())
+    .then(results => {
+      results.forEach((value: ISearchResult) => {
+        const existing = searchResults.filter(e => e.cardName == value.cardName);
+        if (existing.length > 0) {
+          existing[0].searchResult.push(...value.searchResult);
+        } else {
+          searchResults.push(value);
+        }
+      });
+    })
+    .catch(error => {
+      logger.log(`Error while aggregating bulk search results: ${error}`, LogLevel.Error);
+      return [];
+    });
+
+  //TODO: add filers and sort
+
+  return searchResults;
 };
 
 export default { search, bulkSearch };

@@ -7,3 +7,13 @@ GET http://localhost:3030/search?cardName=golos&onStock=false
 ############
 
 GET http://localhost:3030/cardinfo?cardName=Golos%2C%20Tireless%20Pilgrim
+
+############
+
+POST http://localhost:3030/bulksearch
+content-type: application/json
+
+[
+    "Golos, Tireless Pilgrim",
+    "Sisay, Weatherlight Captain"
+]

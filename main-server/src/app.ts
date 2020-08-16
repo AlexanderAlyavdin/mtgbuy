@@ -62,8 +62,6 @@ app.post('/bulksearch', async (req, response) => {
     return;
   }
 
-  logger.log(`Start bulk search for ${cards}`);
-
   const result = await SearchAggregator.bulkSearch(cards).catch(error => {
     logger.log(`BulkSearch: Error on bulk search: ${error}`);
     return {};
