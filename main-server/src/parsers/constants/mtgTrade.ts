@@ -17,7 +17,7 @@ export const queryMtgTrade = queryConcrete(
     cardName: new ConfigItem('.catalog-title', 'text'),
     link: new ConfigItem('.catalog-title', 'href'),
     condition: new ConfigItem('.js-card-quality-tooltip', 'text'),
-    cardProperties: new ConfigItem('.card-properties', 'text'),
+    language: new ConfigItem('.lang-item-info', 'title'),
     traderName: new ConfigItem('.trader-name .js-crop-text a', 'text'),
     traderUrl: new ConfigItem('.trader-name .js-crop-text a', 'href'),
   }),

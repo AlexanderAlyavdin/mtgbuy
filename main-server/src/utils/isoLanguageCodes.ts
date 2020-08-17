@@ -788,7 +788,7 @@ export const mapCode3to2 = (code: string): string => {
 };
 
 export const rusNameTo3Code = (langName: string): string => {
-  return Object.keys(langNames).find(key => langNames[key].name === langName);
+  return Object.keys(langNames).find(key => langNames[key].name.toLowerCase() === langName.toLowerCase());
 };
 
 export const rusNameTo2Code = (langName: string): string => {

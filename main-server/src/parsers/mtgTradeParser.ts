@@ -6,7 +6,8 @@ import ISearchResult from '@shared/interfaces/ISearchResult';
 import Condition from '@shared/constants/condition';
 
 import Logger, { LogLevel } from '../utils/logger';
-import { cleanupString, queryAll } from '../utils/helpers';
+import { queryAll } from '../utils/helpers';
+import { rusNameTo2Code } from '../utils/isoLanguageCodes';
 
 import { shopName, hostUrl, queryMtgTrade as query, Selector } from './constants/mtgTrade';
 
@@ -66,7 +67,7 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
                 quantity: row.quantity(),
                 price: row.price(),
                 condition: row.condition() as Condition,
-                language: cleanupString(row.cardProperties().split('|')[0]),
+                language: rusNameTo2Code(row.language()),
                 platform: shopName,
                 platformUrl: hostUrl,
                 trader: query(rows[0]).traderName(),
