@@ -3,7 +3,7 @@ import { JSDOM } from 'jsdom';
 
 import rewire from 'rewire';
 
-const CardPlace = rewire('../dist/main-server/src/parsers/cardPlaceParser.js');
+const CardPlace = rewire('../dist/main-server/src/shops/cardPlace.js');
 const parseSearchResult = CardPlace.__get__('parseSearchResult');
 
 const cardSearchTestHtml = fs.readFileSync(`${__dirname}/cardPlaceTestDoc.html`, 'utf-8');

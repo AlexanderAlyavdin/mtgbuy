@@ -4,7 +4,7 @@ import { JSDOM } from 'jsdom';
 import rewire from 'rewire';
 import { timeStamp } from 'console';
 
-const MtgSale = rewire('../dist/main-server/src/parsers/mtgSaleParser.js');
+const MtgSale = rewire('../dist/main-server/src/shops/mtgSale.js');
 const parseSearchResult = MtgSale.__get__('parseSearchResult');
 const parseCardListResult = MtgSale.__get__('parseCardListResult');
 

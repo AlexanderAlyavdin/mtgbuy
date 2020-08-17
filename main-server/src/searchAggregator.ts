@@ -6,9 +6,9 @@ import ICardShop from './interfaces/ICardShop';
 import Logger, { LogLevel } from './utils/logger';
 import CardInfoBase from './utils/cardInfoBase';
 
-import MtgSale from './parsers/mtgSaleParser';
-import MtgTrade from './parsers/mtgTradeParser';
-import CardPlace from './parsers/cardPlaceParser';
+import MtgSale from './shops/mtgSale';
+import MtgTrade from './shops/mtgTrade';
+import CardPlace from './shops/cardPlace';
 
 const logger = new Logger('SearchAggregator');
 

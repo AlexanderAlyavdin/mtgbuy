@@ -3,7 +3,7 @@ import { JSDOM } from 'jsdom';
 
 import rewire from 'rewire';
 
-const MtgTrade = rewire('../dist/main-server/src/parsers/mtgTradeParser.js');
+const MtgTrade = rewire('../dist/main-server/src/shops/mtgTrade.js');
 const parseSearchResult = MtgTrade.__get__('parseSearchResult');
 
 const cardSearchTestHtml = fs.readFileSync(`${__dirname}/mtgTradeTestDoc.html`, 'utf-8');
