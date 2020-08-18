@@ -1,5 +1,5 @@
 import { JSDOM } from 'jsdom';
-import got from 'got';
+import got, { Response } from 'got';
 import FormData from 'form-data';
 
 import ICardItem from '@shared/interfaces/ICardItem';
@@ -13,20 +13,6 @@ import { rusNameTo2Code } from '../utils/isoLanguageCodes';
 import { shopName, hostUrl, queryMtgSale, Selector } from './constants/mtgSale';
 
 const logger = new Logger('MtgSale');
-
-const getSearchUrl = (cardName: string): string =>
-  `${hostUrl}/home/search-results?Name=${encodeURIComponent(cardName)}`;
-
-const sendSearchCardRequest = async (cardName: string): Promise<Document> => {
-  const url = getSearchUrl(cardName);
-  logger.log(`Send request: ${url}`);
-  const res = await got(url).catch(error => {
-    logger.log(`Failed to get search result for ${url}: ${error}`, LogLevel.Error);
-    return undefined;
-  });
-
-  return new JSDOM(res.body).window.document;
-};
 
 const sendSearchCardListRequest = async (cardList: Array<string>): Promise<Document> => {
   const form = new FormData();
@@ -102,13 +88,35 @@ const parseSearchResult = (document: Document | HTMLElement): Array<ICardItem> =
 };
 
 const searchCard = async (cardName: string): Promise<Array<ICardItem>> => {
-  try {
-    const result = await sendSearchCardRequest(cardName);
-    return parseSearchResult(result);
-  } catch (error) {
-    logger.log(`Failed to get search results: ${error}`, LogLevel.Error);
-    return [];
-  }
+  return got.paginate
+    .all<ICardItem>(`${hostUrl}/home/search-results`, {
+      searchParams: {
+        Name: cardName,
+        Page: 1,
+      },
+      _pagination: {
+        paginate: (response: Response, allItems: Array<ICardItem>, currentItems: Array<ICardItem>) => {
+          const url = response.request.options.url;
+          const page = Number(url.searchParams.get('Page'));
+          logger.log(`Got response for search url: ${url.href}`);
+
+          if (currentItems.length == 0) {
+            logger.log(`Search pagination finished on ${page} page`, LogLevel.Debug);
+            return false;
+          }
+
+          logger.log(`Send search request for page: ${page + 1}`);
+          url.searchParams.set('Page', `${page + 1}`);
+          return { url };
+        },
+        transform: (response: Response<'text'>): Array<ICardItem> =>
+          parseSearchResult(new JSDOM(response.body).window.document),
+      },
+    })
+    .catch(error => {
+      logger.log(`Failed to get search results: ${error}`, LogLevel.Error);
+      return [];
+    });
 };
 
 const searchCardList = async (cardNames: Array<string>): Promise<Array<ISearchResult>> => {

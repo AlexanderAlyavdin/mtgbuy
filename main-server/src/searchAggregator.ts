@@ -111,7 +111,7 @@ const bulkSearch = async (cardNames: Array<string>): Promise<Array<ISearchResult
       return [];
     });
 
-  //TODO: add filers and sort
+  //TODO: add filters and sort
 
   return searchResults;
 };
