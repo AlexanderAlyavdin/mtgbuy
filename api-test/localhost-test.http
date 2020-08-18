@@ -11,6 +11,14 @@ GET http://localhost:3030/cardinfo?cardName=Golos%2C%20Tireless%20Pilgrim
 
 ############
 
+GET http://localhost:3030/suggestions?partName=fire
+
+############
+
+GET http://localhost:3030/suggestions?partName=огонь
+
+############
+
 POST http://localhost:3030/bulksearch
 content-type: application/json
 
