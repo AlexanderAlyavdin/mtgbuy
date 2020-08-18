@@ -29,7 +29,7 @@ app.get('/search', async (req, response) => {
   logger.log(`Processing search request for card ${cardName}`);
 
   const cardItems = await SearchAggregator.search(cardName, onStock).catch(error => {
-    logger.log(`Error occured while searching: ${error}`);
+    logger.log(`Error occured while searching: ${error}`, LogLevel.Error);
     return [];
   });
 
@@ -39,7 +39,7 @@ app.get('/search', async (req, response) => {
 
 app.get('/suggestions', async (req, response) => {
   const result = await CardInfoBase.autoCompleteName(req.query.partName).catch(error => {
-    logger.log(`Error on autocompletion for ${req.query.partName}: ${error}`);
+    logger.log(`Error on autocompletion for ${req.query.partName}: ${error}`, LogLevel.Error);
     return [];
   });
   response.send(result);
@@ -47,7 +47,7 @@ app.get('/suggestions', async (req, response) => {
 
 app.get('/cardinfo', async (req, response) => {
   const result = await CardInfoBase.getCardInfo(req.query.cardName).catch(error => {
-    logger.log(`Error on getting card info for ${req.query.cardName}: ${error}`);
+    logger.log(`Error on getting card info for ${req.query.cardName}: ${error}`, LogLevel.Error);
     return {};
   });
   response.send(result);
@@ -57,13 +57,13 @@ app.post('/bulksearch', async (req, response) => {
   const cards = req.body;
 
   if (!Array.isArray(cards)) {
-    logger.log(`BulkSearch: wrong input ${cards}`);
+    logger.log(`BulkSearch: wrong input ${cards}`, LogLevel.Warning);
     response.send([]);
     return;
   }
 
   const result = await SearchAggregator.bulkSearch(cards).catch(error => {
-    logger.log(`BulkSearch: Error on bulk search: ${error}`);
+    logger.log(`BulkSearch: Error on bulk search: ${error}`, LogLevel.Error);
     return {};
   });
   response.send(result);
