@@ -6,10 +6,10 @@ export const shopName = 'MtgSale';
 export enum Selector {
   searchResultList = '.ctclass',
   cardListOneResult = '.card_result',
-  cardListOneTitle = 'p strong'
+  cardListOneTitle = 'p strong',
 }
 
-export const queryMtgSale = queryConcrete(
+export const queryCardItem = queryConcrete(
   Object.freeze({
     priceText: new ConfigItem('.pprice', 'text'),
     quantityText: new ConfigItem('.colvo', 'text'),

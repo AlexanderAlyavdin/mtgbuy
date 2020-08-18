@@ -7,9 +7,11 @@ export enum Selector {
   searchResultList = '.search-results-list',
   searchItem = '.search-item',
   seller = '.search-card',
+  itemRow = 'tbody tr',
+  currentPage = '.pagination-item.current',
 }
 
-export const queryMtgTrade = queryConcrete(
+export const queryCardItem = queryConcrete(
   Object.freeze({
     seller: new ConfigItem('.search-card', 'elem'),
     price: new ConfigItem('.catalog-rate-price', 'textAsInt'),

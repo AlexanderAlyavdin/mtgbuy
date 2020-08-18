@@ -10,7 +10,7 @@ import { queryAll, query } from '../utils/helpers';
 import Logger, { LogLevel } from '../utils/logger';
 import { rusNameTo2Code } from '../utils/isoLanguageCodes';
 
-import { shopName, hostUrl, queryMtgSale, Selector } from './constants/mtgSale';
+import { shopName, hostUrl, queryCardItem, Selector } from './constants/mtgSale';
 
 const logger = new Logger('MtgSale');
 
@@ -65,7 +65,7 @@ const parseSearchResult = (document: Document | HTMLElement): Array<ICardItem> =
 
   const cardItems = Array.from(searchResultElems).map(
     (item: HTMLElement): ICardItem => {
-      const queryItem = queryMtgSale(item);
+      const queryItem = queryCardItem(item);
       const linkRel = queryItem.link();
 
       const quantityText = queryItem.quantityText();
@@ -88,6 +88,7 @@ const parseSearchResult = (document: Document | HTMLElement): Array<ICardItem> =
 };
 
 const searchCard = async (cardName: string): Promise<Array<ICardItem>> => {
+  // TODO: return parsed items if error occured on some page
   return got.paginate
     .all<ICardItem>(`${hostUrl}/home/search-results`, {
       searchParams: {

@@ -6,10 +6,10 @@ import ISearchResult from '@shared/interfaces/ISearchResult';
 import Condition from '@shared/constants/condition';
 
 import Logger, { LogLevel } from '../utils/logger';
-import { queryAll } from '../utils/helpers';
+import { queryAll, query } from '../utils/helpers';
 import { rusNameTo2Code } from '../utils/isoLanguageCodes';
 
-import { shopName, hostUrl, queryMtgTrade as query, Selector } from './constants/mtgTrade';
+import { shopName, hostUrl, queryCardItem, Selector } from './constants/mtgTrade';
 
 const logger = new Logger('MtgTrade');
 
@@ -28,7 +28,7 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
   return searchItems.flatMap(
     (searchItem: HTMLElement): Array<ICardItem> => {
-      const item = query(searchItem);
+      const item = queryCardItem(searchItem);
       const sellerItems = queryAll(searchItem, Selector.seller);
       if (!sellerItems) {
         logger.log('Failed to find seller items');
@@ -40,14 +40,21 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
         (sellerItem: HTMLElement, index: number): Array<ICardItem> => {
           logger.log(`Parsing price and quantity for seller #${index}`);
 
-          const rows = queryAll(sellerItem, 'tbody tr');
-          const traderUrlRel = query(rows[0]).traderUrl();
+          const rows = queryAll(sellerItem, Selector.itemRow);
+          if (rows.length == 0) {
+            logger.log(`Result rows are empty`, LogLevel.Warning);
+            return [];
+          }
+
+          const firstItem = queryCardItem(rows[0]);
+          const traderName = firstItem.traderName();
+          const traderUrlRel = firstItem.traderUrl();
           const link = traderUrlRel
             ? `${hostUrl}/store/single${traderUrlRel}?query=${encodeURIComponent(item.cardName())}`
             : item.link() && `${hostUrl}${item.link()}`;
 
           return rows
-            .map(row => query(row))
+            .map(row => queryCardItem(row))
             .map(row => {
               return {
                 name: item.cardName(),
@@ -58,7 +65,7 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
                 language: rusNameTo2Code(row.language()),
                 platform: shopName,
                 platformUrl: hostUrl,
-                trader: query(rows[0]).traderName(),
+                trader: traderName,
                 traderUrl: traderUrlRel && `${hostUrl}${traderUrlRel}`,
               };
             });
@@ -78,13 +85,13 @@ const searchCard = async (cardName: string): Promise<Array<ICardItem>> => {
         page: 1,
       },
       _pagination: {
-        paginate: (response: Response, allItems: Array<ICardItem>, currentItems: Array<ICardItem>) => {
+        paginate: (response: Response<'text'>, allItems: Array<ICardItem>, currentItems: Array<ICardItem>) => {
           const url = response.request.options.url;
           const page = Number(url.searchParams.get('page'));
           logger.log(`Got response for search url: ${url.href}`);
 
           if (currentItems.length == 0) {
-            logger.log(`Search pagination finished on ${page} page`, LogLevel.Debug);
+            logger.log(`Search pagination finished on page ${page}`, LogLevel.Debug);
             return false;
           }
 
@@ -92,8 +99,16 @@ const searchCard = async (cardName: string): Promise<Array<ICardItem>> => {
           url.searchParams.set('page', `${page + 1}`);
           return { url };
         },
-        transform: (response: Response<'text'>): Array<ICardItem> =>
-          parseSearchResult(new JSDOM(response.body).window.document),
+        transform: (response: Response<'text'>): Array<ICardItem> => {
+          const page = Number(response.request.options.url.searchParams.get('page'));
+          const dom = new JSDOM(response.body).window.document;
+          const currentPage = query(dom, Selector.currentPage).textAsInt();
+
+          // MtgTrade returns last page when page param is larger
+          if (page != currentPage) return [];
+
+          return parseSearchResult(new JSDOM(response.body).window.document);
+        },
       },
     })
     .catch(error => {

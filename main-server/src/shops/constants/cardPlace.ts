@@ -5,9 +5,10 @@ export const shopName = 'CardPlace';
 
 export const enum Selector {
   searchResultTable = '.singlestable',
+  itemRow = 'tbody tr',
 }
 
-export const queryCardPlace = queryConcrete(
+export const queryCardItem = queryConcrete(
   Object.freeze({
     priceText: new ConfigItem('td:nth-child(7)', 'text'),
     quantity: new ConfigItem('td:nth-child(8)', 'textAsInt'),

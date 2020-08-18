@@ -8,7 +8,7 @@ import { queryAll } from '../utils/helpers';
 import Logger, { LogLevel } from '../utils/logger';
 import { rusNameTo2Code } from '../utils/isoLanguageCodes';
 
-import { hostUrl, shopName, queryCardPlace as query, Selector } from './constants/cardPlace';
+import { hostUrl, shopName, queryCardItem, Selector } from './constants/cardPlace';
 
 const logger = new Logger('CardPlace');
 
@@ -37,10 +37,10 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
     return [];
   }
 
-  const searchResults = queryAll(searchResultTable, 'tbody tr');
+  const searchResults = queryAll(searchResultTable, Selector.itemRow);
   return searchResults.map(
     (row: HTMLElement): ICardItem => {
-      const queryRow = query(row);
+      const queryRow = queryCardItem(row);
 
       let cardName = queryRow.cardName();
       const language = rusNameTo2Code(queryRow.languageRuName());
