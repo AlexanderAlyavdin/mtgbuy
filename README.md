@@ -1,12 +1,33 @@
-# mtgbuy
-Аггрегатор для российского сегмента торговли картами Magic the Gathering
+# MtgBuy
+> Aggregator platform for the Russian segment of Magic the Gathering card trading.
 
-For collaborations: use yarn instead of npm as js package manager.
+### Currently supported shops
+* [MtgTrade](https://mtgtrade.net)
+* [MtgSale](https://mtgsale.ru)
+* [CardPlace](https://cardplace.ru)
 
-Initial shops: mtgtrade.net, mtgsale.ru
+### Prerequisites
+* Yarn
+* Node.js
+* Recommended VSCode extensions:
+    * Prettier
+    * ESLint
+    * REST Client
+    * Visual Studio IntelliCode
 
-Idea: use XParh for HTML parsing. Both of the shops use frontend-less
-configuration and just spit html out.
+### Run
+* Run server
+```bash
+cd main-server
+yarn install
+yarn start
+```
+* Run client
+```bash
+cd main-client
+yarn install
+yarn start
+```
 
-Also it's possible to use https://developer.mozilla.org/ru/docs/Web/API/DOMParser for HTML-parsing - just render
-the page as a dom and then use document.querySelector
+### Collaboration
+* Use yarn instead of npm as js package manager
