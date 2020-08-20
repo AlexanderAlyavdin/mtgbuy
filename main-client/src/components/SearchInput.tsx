@@ -53,7 +53,12 @@ const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
     <SearchBar>
       <StyledSearchIcon />
       <StyledAutocomplete
-        onChange={(_e, value) => value && onSearch(value)}
+        onChange={(_e, value) => {
+          if (value) {
+            setInputValue(value);
+            onSearch(value);
+          }
+        }}
         options={options}
         freeSolo={true}
         renderInput={params => (
