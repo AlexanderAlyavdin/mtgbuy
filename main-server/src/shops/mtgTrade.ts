@@ -34,11 +34,11 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
         logger.log('Failed to find seller items');
         return [];
       }
-      logger.log(`sellers count for card ${item.cardName()}: ${sellerItems.length}`);
+      logger.log(`Sellers count for card ${item.cardName()}: ${sellerItems.length}`, LogLevel.Debug);
 
       return sellerItems.flatMap(
         (sellerItem: HTMLElement, index: number): Array<ICardItem> => {
-          logger.log(`Parsing price and quantity for seller #${index}`);
+          logger.log(`Parsing price and quantity for seller #${index}`, LogLevel.Debug);
 
           const rows = queryAll(sellerItem, Selector.itemRow);
           if (rows.length == 0) {
@@ -55,20 +55,18 @@ const parseSearchResult = (document: Document): Array<ICardItem> => {
 
           return rows
             .map(row => queryCardItem(row))
-            .map(row => {
-              return {
-                name: item.cardName(),
-                link,
-                quantity: row.quantity(),
-                price: row.price(),
-                condition: row.condition() as Condition,
-                language: rusNameTo2Code(row.language()),
-                platform: shopName,
-                platformUrl: hostUrl,
-                trader: traderName,
-                traderUrl: traderUrlRel && `${hostUrl}${traderUrlRel}`,
-              };
-            });
+            .map(row => ({
+              name: item.cardName(),
+              link,
+              quantity: row.quantity(),
+              price: row.price(),
+              condition: row.condition() as Condition,
+              language: rusNameTo2Code(row.language()),
+              platform: shopName,
+              platformUrl: hostUrl,
+              trader: traderName,
+              traderUrl: traderUrlRel && `${hostUrl}${traderUrlRel}`,
+            }));
         },
       );
     },

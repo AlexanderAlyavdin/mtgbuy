@@ -1,14 +1,12 @@
-import React, { FunctionComponent, ChangeEvent, ReactElement } from 'react';
+import React, { FunctionComponent, useRef, useState, useEffect } from 'react';
 import styled from 'styled-components';
-import theme from 'theme';
 import { throttle } from 'throttle-debounce';
 
-import { Search as SearchIcon, Close as CloseIcon } from '@material-ui/icons';
-import InputBase from '@material-ui/core/InputBase';
-import Autocomplete from '@material-ui/lab/Autocomplete';
+import { Search as SearchIcon } from '@material-ui/icons';
+import { Autocomplete } from '@material-ui/lab';
+import CardNameInput from './CardNameInput';
 
 import Server from '../utils/parsers/mtgsale-parser-copy';
-import { CircularProgress, IconButton, InputAdornment } from '@material-ui/core';
 
 const SearchBar = styled.div`
   width: 100%;
@@ -17,24 +15,11 @@ const SearchBar = styled.div`
   justify-content: center;
 `;
 
-const Icon = styled(SearchIcon)`
+const StyledSearchIcon = styled(SearchIcon)`
   flex: 0 0 30px;
   min-height: 20px;
   height: 10vw;
   max-height: 40px;
-`;
-
-const Input = styled(InputBase)`
-  color: inherit;
-  width: 100%;
-  .search-input {
-    color: inherit;
-    ${theme.breakpoints.down('xs')} {
-      font-size: 14px;
-    }
-    padding: 8px 8px 8px 0px;
-    width: 100%;
-  }
 `;
 
 const StyledAutocomplete = styled(Autocomplete)`
@@ -44,80 +29,47 @@ const StyledAutocomplete = styled(Autocomplete)`
 ` as typeof Autocomplete;
 
 interface SearchInputProps {
-  onSearch?(value: string): void;
+  onSearch(value: string): void;
 }
+
 const SearchInput: FunctionComponent<SearchInputProps> = ({ onSearch }) => {
-  const [open, setOpen] = React.useState(false);
-  const [options, setOptions] = React.useState<string[]>([]);
-  const [partName, setPartName] = React.useState('');
-  const [loading, setLoading] = React.useState(false);
+  const [options, setOptions] = useState<Array<string>>([]);
+  const [inputValue, setInputValue] = useState('');
+  const [isLoading, setLoading] = useState(false);
 
-  const getSuggestionsThrottled = React.useRef(
-    throttle(700, (val: string) => {
-      let active = true;
-
+  const getSuggestions = useRef(
+    throttle(700, async (value: string) => {
       setLoading(true);
-      (async (): Promise<void> => {
-        const response = await Server.getSuggestions(val);
-
-        if (active) {
-          setOptions(response as string[]);
-        }
-      })().finally(() => setLoading(false));
-
-      return (): void => {
-        active = false;
-      };
+      setOptions(value ? await Server.getSuggestions(value) : []);
+      setLoading(false);
     }),
-  );
+  ).current;
 
-  React.useEffect(() => {
-    if (partName) {
-      getSuggestionsThrottled.current(partName);
-    } else {
-      setOptions([]);
-    }
-  }, [partName]);
-
-  React.useEffect(() => {
-    if (!open) {
-      setOptions([]);
-    }
-  }, [open]);
+  useEffect(() => {
+    getSuggestions(inputValue);
+  }, [inputValue]);
 
   return (
     <SearchBar>
-      <Icon />
+      <StyledSearchIcon />
       <StyledAutocomplete
-        open={open && options.length > 0}
-        onOpen={(): void => setOpen(true)}
-        onClose={(): void => setOpen(false)}
-        inputValue={partName}
-        onChange={(_e: ChangeEvent<{}>, value: string | null): void =>
-          onSearch && value ? onSearch(value) : undefined
-        }
-        onInputChange={(_e, val): void => setPartName(val)}
+        onChange={(_e, value) => {
+          if (value) {
+            setInputValue(value);
+            onSearch(value);
+          }
+        }}
         options={options}
-        loading={loading}
         freeSolo={true}
-        renderInput={(params): ReactElement => (
-          <Input
-            ref={params.InputProps.ref}
-            inputProps={params.inputProps}
-            placeholder='Введите имя карты для поиска...'
-            classes={{ input: 'search-input' }}
-            endAdornment={
-              <InputAdornment variant='outlined' position='end'>
-                <CircularProgress color='inherit' size={20} style={{ visibility: loading ? 'visible' : 'hidden' }} />
-                <IconButton
-                  color='inherit'
-                  size='small'
-                  onClick={(): void => setPartName('')}
-                  style={{ visibility: partName ? 'visible' : 'hidden' }}>
-                  <CloseIcon color='inherit' />
-                </IconButton>
-              </InputAdornment>
-            }
+        renderInput={params => (
+          <CardNameInput
+            value={inputValue}
+            onChange={v => setInputValue(v)}
+            showLoadingSpinner={isLoading}
+            autocompleteProps={{
+              ref: params.InputProps.ref,
+              inputProps: params.inputProps,
+            }}
           />
         )}
       />
