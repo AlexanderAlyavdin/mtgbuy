@@ -4,7 +4,7 @@ import got from 'got';
 import ICardItem from '@shared/interfaces/ICardItem';
 import ISearchResult from '@shared/interfaces/ISearchResult';
 
-import { queryAll } from '../utils/helpers';
+import { queryAll } from '../utils/queryHelpers';
 import Logger, { LogLevel } from '../utils/logger';
 import { rusNameTo2Code } from '../utils/isoLanguageCodes';
 

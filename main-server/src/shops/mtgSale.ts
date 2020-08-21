@@ -6,7 +6,7 @@ import ICardItem from '@shared/interfaces/ICardItem';
 import ISearchResult from '@shared/interfaces/ISearchResult';
 import Condition from '@shared/constants/condition';
 
-import { queryAll, query } from '../utils/helpers';
+import { queryAll, query } from '../utils/queryHelpers';
 import Logger, { LogLevel } from '../utils/logger';
 import { rusNameTo2Code } from '../utils/isoLanguageCodes';
 

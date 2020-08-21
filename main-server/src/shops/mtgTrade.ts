@@ -6,7 +6,7 @@ import ISearchResult from '@shared/interfaces/ISearchResult';
 import Condition from '@shared/constants/condition';
 
 import Logger, { LogLevel } from '../utils/logger';
-import { queryAll, query } from '../utils/helpers';
+import { queryAll, query } from '../utils/queryHelpers';
 import { rusNameTo2Code } from '../utils/isoLanguageCodes';
 
 import { shopName, hostUrl, queryCardItem, Selector } from './constants/mtgTrade';

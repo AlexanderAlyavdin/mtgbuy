@@ -1,4 +1,4 @@
-import { queryConcrete, ConfigItem } from '../../utils/helpers';
+import { queryConcrete, ConfigItem } from '../../utils/queryHelpers';
 
 export const hostUrl = `https://mtgsale.ru`;
 export const shopName = 'MtgSale';

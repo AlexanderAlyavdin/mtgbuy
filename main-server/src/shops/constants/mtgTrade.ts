@@ -1,4 +1,4 @@
-import { queryConcrete, ConfigItem } from '../../utils/helpers';
+import { queryConcrete, ConfigItem } from '../../utils/queryHelpers';
 
 export const hostUrl = `https://mtgtrade.net`;
 export const shopName = 'MtgTrade';
