@@ -9,7 +9,8 @@ import Logger, { LogLevel } from '../utils/logger';
 import { queryAll, query } from '../utils/queryHelpers';
 import { rusNameTo2Code } from '../utils/isoLanguageCodes';
 
-import { shopName, hostUrl, queryCardItem, Selector } from './constants/mtgTrade';
+import { shopName, hostUrl, queryCardItem, Selector, queryUserCardItem } from './constants/mtgTrade';
+import ICardPreview from '@shared/interfaces/ICardPreview';
 
 const logger = new Logger('MtgTrade');
 
@@ -128,4 +129,39 @@ const searchCardList = async (cardNames: Array<string>): Promise<Array<ISearchRe
   });
 };
 
-export default { shopName, hostUrl, searchCard, searchCardList };
+const explore = async (url: string): Promise<Array<ICardPreview>> => {
+  logger.log(`Explore url: ${url}`);
+
+  return await got(url, { rejectUnauthorized: false, timeout: 10000 })
+    .then(result => {
+      const dom = new JSDOM(result.body).window.document;
+      return parseUserCards(dom);
+    })
+    .catch(error => {
+      logger.log(`Error while exploring url: ${error}`, LogLevel.Error);
+      return [];
+    });
+};
+
+const parseUserCards = (document: Document): Array<ICardPreview> => {
+  const cardRows = queryAll(document, Selector.userCardRow);
+  const userSinglesLink = `${hostUrl}${query(document, Selector.userSinglesRelLink).href()}`;
+
+  if (cardRows.length == 0) {
+    logger.log(`No cards found: ${userSinglesLink}`, LogLevel.Warning);
+    return [];
+  }
+
+  return cardRows.map(row => {
+    const item = queryUserCardItem(row);
+    const cardName = item.name();
+    const linkCardName = cardName.split('/')[0].trim();
+    return {
+      name: cardName,
+      imageUrl: `${hostUrl}${item.imageUrlRel()}`,
+      link: `${userSinglesLink}?query=${encodeURIComponent(linkCardName)}`,
+    };
+  });
+};
+
+export default { shopName, hostUrl, searchCard, searchCardList, explore };

@@ -9,6 +9,8 @@ export enum Selector {
   seller = '.search-card',
   itemRow = 'tbody tr',
   currentPage = '.pagination-item.current',
+  userCardRow = 'tr.card-row.my-collection-card',
+  userSinglesRelLink = 'ul.user-edit-form-menu.js-user-edit-form-menu.user-store-menu li:nth-child(1) a',
 }
 
 export const queryCardItem = queryConcrete(
@@ -22,5 +24,12 @@ export const queryCardItem = queryConcrete(
     language: new ConfigItem('.lang-item-info', 'title'),
     traderName: new ConfigItem('.trader-name .js-crop-text a', 'text'),
     traderUrl: new ConfigItem('.trader-name .js-crop-text a', 'href'),
+  }),
+);
+
+export const queryUserCardItem = queryConcrete(
+  Object.freeze({
+    name: new ConfigItem('td:nth-child(2) a', 'text'),
+    imageUrlRel: new ConfigItem('td:nth-child(1) img', 'src'),
   }),
 );

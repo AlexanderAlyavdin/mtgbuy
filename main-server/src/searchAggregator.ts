@@ -1,5 +1,6 @@
 import ICardItem from '@shared/interfaces/ICardItem';
 import ISearchResult from '@shared/interfaces/ISearchResult';
+import ICardPreview from '@shared/interfaces/ICardPreview';
 
 import ICardShop from './interfaces/ICardShop';
 
@@ -12,7 +13,7 @@ import CardPlace from './shops/cardPlace';
 
 const logger = new Logger('SearchAggregator');
 
-const shopList = [MtgSale, MtgTrade, CardPlace];
+const shopList: Array<ICardShop> = [MtgSale, MtgTrade, CardPlace];
 
 const preprocessCardName = async (cardName: string): Promise<string> => {
   cardName = await CardInfoBase.getConvenientName(cardName);
@@ -116,4 +117,19 @@ const bulkSearch = async (cardNames: Array<string>): Promise<Array<ISearchResult
   return searchResults;
 };
 
-export default { search, bulkSearch };
+const explore = async (url: string): Promise<Array<ICardPreview>> => {
+  const found = shopList.find(shop => url.startsWith(shop.hostUrl));
+  if (!found) {
+    logger.log(`No shop found to explore url: ${url}`, LogLevel.Error);
+    return [];
+  }
+
+  if (!found.explore) {
+    logger.log(`Target shop does not support explore yet: ${found.shopName}`, LogLevel.Error);
+    return [];
+  }
+
+  return await found.explore(url);
+};
+
+export default { search, bulkSearch, explore };

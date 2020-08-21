@@ -11,6 +11,7 @@ export interface IAdvancedQuery {
   text(): string | undefined;
   href(): string | undefined;
   title(): string | undefined;
+  src(): string | undefined;
 }
 
 export class ConfigItem<T extends keyof IAdvancedQuery> {
@@ -53,6 +54,7 @@ export const query = (root: Element | Document, selector: string): IAdvancedQuer
     text: () => element && cleanupString(element.textContent),
     href: () => element && element.getAttribute('href'),
     title: () => element && element.getAttribute('title'),
+    src: () => element && element.getAttribute('src'),
   };
 };
 
