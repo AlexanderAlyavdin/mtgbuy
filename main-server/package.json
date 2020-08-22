@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsc && node dist/main-server/src/app.js",
     "start-demon": "nodemon",
-    "test": "cross-env LOG_LEVEL=warning jest",
+    "test": "tsc && cross-env LOG_LEVEL=warning jest",
     "build": "tsc"
   },
   "dependencies": {
@@ -44,6 +44,16 @@
   },
   "jest": {
     "preset": "ts-jest",
-    "testEnvironment": "node"
+    "testEnvironment": "node",
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.+(ts|tsx|js)",
+      "**/?(*.)+(spec|test).+(ts|tsx|js)"
+    ],
+    "transform": {
+      "^.+\\.(ts|tsx)$": "ts-jest"
+    }
   }
 }

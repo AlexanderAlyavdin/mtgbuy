@@ -3,7 +3,7 @@ import { JSDOM } from 'jsdom';
 
 import rewire from 'rewire';
 
-const MtgTrade = rewire('../dist/main-server/src/shops/mtgTrade.js');
+const MtgTrade = rewire('../../dist/main-server/src/shops/mtgTrade.js');
 const parseSearchResult = MtgTrade.__get__('parseSearchResult');
 const parseUserCards = MtgTrade.__get__('parseUserCards');
 
@@ -57,7 +57,10 @@ test('Parsed mtgTrade test document has correct card items:', () => {
 });
 
 test('User singles parse result has correct items', () => {
-  const items = parseUserCards(new JSDOM(userSinglesTestHtml).window.document);
+  const items = parseUserCards(
+    new JSDOM(userSinglesTestHtml).window.document,
+    'https://mtgtrade.net/store/single/user/11077/',
+  );
 
   expect(items).toEqual(userSinglesExpectedResult);
 });

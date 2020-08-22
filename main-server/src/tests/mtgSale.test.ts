@@ -3,7 +3,7 @@ import { JSDOM } from 'jsdom';
 
 import rewire from 'rewire';
 
-const MtgSale = rewire('../dist/main-server/src/shops/mtgSale.js');
+const MtgSale = rewire('../../dist/main-server/src/shops/mtgSale.js');
 const parseSearchResult = MtgSale.__get__('parseSearchResult');
 const parseCardListResult = MtgSale.__get__('parseCardListResult');
 

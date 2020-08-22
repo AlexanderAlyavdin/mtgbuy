@@ -176,16 +176,10 @@ const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview
     await browser.close().catch(error => logger.log(`Failed to close browser: ${error}`, LogLevel.Error));
   }
 
-  const items = parseUserCards(document);
-
-  return items.map(item => {
-    const cardOneName = item.name.split('/')[0].trim();
-    item.link = `${url}/?query=${encodeURIComponent(cardOneName)}`;
-    return item;
-  });
+  return parseUserCards(document, url);
 };
 
-const parseUserCards = (document: Document): Array<ICardPreview> => {
+const parseUserCards = (document: Document, userSinglesUrl: string): Array<ICardPreview> => {
   const cardRows = queryAll(document, Selector.userCardRow);
 
   if (cardRows.length == 0) {
@@ -196,10 +190,11 @@ const parseUserCards = (document: Document): Array<ICardPreview> => {
   return cardRows.map(row => {
     const item = queryUserCardItem(row);
     const cardName = item.name();
+    const cardOneName = cardName.split('/')[0].trim();
     return {
       name: cardName,
       imageUrl: `${hostUrl}${item.imageUrlRel()}`,
-      link: '',
+      link: `${userSinglesUrl}/?query=${encodeURIComponent(cardOneName)}`,
     };
   });
 };
