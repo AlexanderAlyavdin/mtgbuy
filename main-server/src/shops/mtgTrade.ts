@@ -140,14 +140,23 @@ const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview
   }
 
   const getCardsForPageNum = async (page: Page, pageNum: Number): Promise<Document> => {
-    await page.evaluate(`$('.js-store-user-single-form').find('[name="page"]').val(${pageNum})`);
+    await page.evaluate(`$('${Selector.userSinglesSearchForm}').find('[name="page"]').val(${pageNum})`);
     const resultVarName = 'my_temp_var';
     await page.evaluate(`var ${resultVarName}`);
     await page.evaluate(
-      `$('.js-store-user-single-form').ajaxSubmit({success: function(res) { ${resultVarName}=res; }})`,
+      `$('${Selector.userSinglesSearchForm}').ajaxSubmit(
+        {
+          success: function(res) { ${resultVarName}=res; },
+          error: function() { ${resultVarName}=''; }
+        })`,
     );
+    logger.log(`Form submited for page ${pageNum}. Waiting for result...`);
+
     await page.waitForFunction(`${resultVarName}`);
     let content = (await page.evaluate(`${resultVarName}`)) as string;
+    if (content.length == 0) {
+      logger.log(`Failed to get page content: ${pageNum}`, LogLevel.Error);
+    }
     if (content.includes('var last_page = true;')) {
       logger.log(`Page with number does not exist: ${pageNum}`);
       return undefined;
@@ -157,7 +166,6 @@ const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview
     return new JSDOM(content).window.document;
   };
 
-  // Set up browser and page.
   const browser = await puppeteer.launch({
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
@@ -168,6 +176,8 @@ const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview
     const page = await browser.newPage();
     page.setViewport({ width: 1280, height: 926 });
 
+    logger.log(`Browser go to url: ${url}`, LogLevel.Debug);
+
     await page.goto(url);
     document = await getCardsForPageNum(page, pageNum);
   } catch (error) {
@@ -176,7 +186,10 @@ const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview
     await browser.close().catch(error => logger.log(`Failed to close browser: ${error}`, LogLevel.Error));
   }
 
-  return parseUserCards(document, url);
+  const cards = parseUserCards(document, url);
+  logger.log(`Explore parsed ${cards.length} cards`);
+
+  return cards;
 };
 
 const parseUserCards = (document: Document, userSinglesUrl: string): Array<ICardPreview> => {
@@ -186,6 +199,8 @@ const parseUserCards = (document: Document, userSinglesUrl: string): Array<ICard
     logger.log(`No cards found on page`, LogLevel.Warning);
     return [];
   }
+
+  logger.log(`Found ${cardRows.length} user singles on page`);
 
   return cardRows.map(row => {
     const item = queryUserCardItem(row);

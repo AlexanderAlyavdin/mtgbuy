@@ -15,6 +15,7 @@ export enum Selector {
   currentPage = '.pagination-item.current',
   userCardRow = 'tr.card-row.my-collection-card',
   userSinglesRelLink = 'ul.user-edit-form-menu.js-user-edit-form-menu.user-store-menu li:nth-child(1) a',
+  userSinglesSearchForm = '.js-store-user-single-form',
 }
 
 export const queryCardItem = queryConcrete(
