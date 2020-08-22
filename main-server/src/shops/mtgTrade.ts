@@ -133,7 +133,13 @@ const searchCardList = async (cardNames: Array<string>): Promise<Array<ISearchRe
 const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview>> => {
   logger.log(`Explore url: ${url}`);
 
-  const scrapeGetPageContent = async (page: Page, pageNum: Number): Promise<Array<ICardPreview>> => {
+  // Only user singles
+  if (!UrlRegEx.userSingles.test(url)) {
+    logger.log(`Specified url is not user singles: ${url}`, LogLevel.Error);
+    return [];
+  }
+
+  const getCardsForPageNum = async (page: Page, pageNum: Number): Promise<Document> => {
     await page.evaluate(`$('.js-store-user-single-form').find('[name="page"]').val(${pageNum})`);
     const resultVarName = 'my_temp_var';
     await page.evaluate(`var ${resultVarName}`);
@@ -144,11 +150,11 @@ const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview
     let content = (await page.evaluate(`${resultVarName}`)) as string;
     if (content.includes('var last_page = true;')) {
       logger.log(`Page with number does not exist: ${pageNum}`);
-      return [];
+      return undefined;
     }
 
     content = `<table><tbody>${content}</tbody><table>`;
-    return parseUserCards(new JSDOM(content).window.document);
+    return new JSDOM(content).window.document;
   };
 
   // Set up browser and page.
@@ -156,45 +162,46 @@ const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview
     headless: true,
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
   });
-  const page = await browser.newPage();
-  page.setViewport({ width: 1280, height: 926 });
 
-  // Navigate to the demo page.
-  await page.goto(url);
+  let document: Document;
+  try {
+    const page = await browser.newPage();
+    page.setViewport({ width: 1280, height: 926 });
 
-  // Extract items from the page.
-  const items = await scrapeGetPageContent(page, pageNum);
+    await page.goto(url);
+    document = await getCardsForPageNum(page, pageNum);
+  } catch (error) {
+    logger.log(`Error while getting page content: ${error}`, LogLevel.Error);
+  } finally {
+    await browser.close().catch(error => logger.log(`Failed to close browser: ${error}`, LogLevel.Error));
+  }
 
-  // Close the browser.
-  await browser.close().catch(error => logger.log(`Failed to close browser: ${error}`, LogLevel.Error));
+  const items = parseUserCards(document);
 
-  return items;
+  return items.map(item => {
+    const cardOneName = item.name.split('/')[0].trim();
+    item.link = `${url}/?query=${encodeURIComponent(cardOneName)}`;
+    return item;
+  });
 };
 
 const parseUserCards = (document: Document): Array<ICardPreview> => {
   const cardRows = queryAll(document, Selector.userCardRow);
-  const userSinglesLink = `${hostUrl}${query(document, Selector.userSinglesRelLink).href()}`;
 
   if (cardRows.length == 0) {
-    logger.log(`No cards found: ${userSinglesLink}`, LogLevel.Warning);
+    logger.log(`No cards found on page`, LogLevel.Warning);
     return [];
   }
 
   return cardRows.map(row => {
     const item = queryUserCardItem(row);
     const cardName = item.name();
-    const linkCardName = cardName.split('/')[0].trim();
     return {
       name: cardName,
       imageUrl: `${hostUrl}${item.imageUrlRel()}`,
-      link: `${userSinglesLink}?query=${encodeURIComponent(linkCardName)}`,
+      link: '',
     };
   });
 };
 
-const canExplore = (url: string): boolean => {
-  // Only user singles
-  return UrlRegEx.userSingles.test(url);
-};
-
-export default { shopName, hostUrl, searchCard, searchCardList, explore, canExplore };
+export default { shopName, hostUrl, searchCard, searchCardList, explore };

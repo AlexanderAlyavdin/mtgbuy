@@ -87,8 +87,4 @@ const searchCardList = async (cardNames: Array<string>): Promise<Array<ISearchRe
   });
 };
 
-const canExplore = (url: string): boolean => {
-  return false;
-};
-
-export default { shopName, hostUrl, searchCard, searchCardList, canExplore };
+export default { shopName, hostUrl, searchCard, searchCardList };
