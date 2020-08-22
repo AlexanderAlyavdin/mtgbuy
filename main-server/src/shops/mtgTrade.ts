@@ -139,6 +139,9 @@ const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview
     return [];
   }
 
+  // Remove slash at the end
+  if (url.endsWith('/')) url = url.slice(0, -1);
+
   const getCardsForPageNum = async (page: Page, pageNum: Number): Promise<Document> => {
     await page.evaluate(`$('${Selector.userSinglesSearchForm}').find('[name="page"]').val(${pageNum})`);
     const resultVarName = 'my_temp_var';

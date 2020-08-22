@@ -41,12 +41,12 @@ const userSinglesExpectedResult = [
   {
     name: 'Heat Shimmer / Жаркий Отблеск',
     imageUrl: 'https://mtgtrade.net/cards/lw/175.jpg',
-    link: 'https://mtgtrade.net/store/single/user/11077//?query=Heat%20Shimmer',
+    link: 'https://mtgtrade.net/store/single/user/11077/?query=Heat%20Shimmer',
   },
   {
     name: 'Hero of Goma Fada / Герой из Гома-Фада',
     imageUrl: 'https://mtgtrade.net/cards/ptc/269.jpg',
-    link: 'https://mtgtrade.net/store/single/user/11077//?query=Hero%20of%20Goma%20Fada',
+    link: 'https://mtgtrade.net/store/single/user/11077/?query=Hero%20of%20Goma%20Fada',
   },
 ];
 
@@ -59,7 +59,7 @@ test('Parsed mtgTrade test document has correct card items:', () => {
 test('User singles parse result has correct items', () => {
   const items = parseUserCards(
     new JSDOM(userSinglesTestHtml).window.document,
-    'https://mtgtrade.net/store/single/user/11077/',
+    'https://mtgtrade.net/store/single/user/11077',
   );
 
   expect(items).toEqual(userSinglesExpectedResult);

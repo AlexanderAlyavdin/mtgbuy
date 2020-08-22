@@ -118,8 +118,11 @@ const bulkSearch = async (cardNames: Array<string>): Promise<Array<ISearchResult
 };
 
 const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview>> => {
+  if (!url.startsWith('http')) {
+    url = `https://${url}`;
+  }
   const urlObj = new URL(url);
-  const found = shopList.find(shop => (new URL(shop.hostUrl).hostname == urlObj.hostname));
+  const found = shopList.find(shop => new URL(shop.hostUrl).hostname == urlObj.hostname);
   if (!found) {
     logger.log(`No shop found to explore url: ${url}`, LogLevel.Error);
     return [];
