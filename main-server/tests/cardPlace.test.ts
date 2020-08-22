@@ -6,7 +6,7 @@ import rewire from 'rewire';
 const CardPlace = rewire('../dist/main-server/src/shops/cardPlace.js');
 const parseSearchResult = CardPlace.__get__('parseSearchResult');
 
-const cardSearchTestHtml = fs.readFileSync(`${__dirname}/cardPlaceTestDoc.html`, 'utf-8');
+const cardSearchTestHtml = fs.readFileSync(`${__dirname}/testFiles/cardPlaceTestDoc.html`, 'utf-8');
 
 const cardSearchExpectedResult = [
   {

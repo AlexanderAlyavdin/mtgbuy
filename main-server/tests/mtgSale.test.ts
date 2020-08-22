@@ -2,14 +2,13 @@ import fs from 'fs';
 import { JSDOM } from 'jsdom';
 
 import rewire from 'rewire';
-import { timeStamp } from 'console';
 
 const MtgSale = rewire('../dist/main-server/src/shops/mtgSale.js');
 const parseSearchResult = MtgSale.__get__('parseSearchResult');
 const parseCardListResult = MtgSale.__get__('parseCardListResult');
 
-const cardSearchTestHtml = fs.readFileSync(`${__dirname}/mtgSaleTestDoc.html`, 'utf-8');
-const cardListSearchTestHtml = fs.readFileSync(`${__dirname}/mtgSaleCardListTestDoc.html`, 'utf-8');
+const cardSearchTestHtml = fs.readFileSync(`${__dirname}/testFiles/mtgSaleTestDoc.html`, 'utf-8');
+const cardListSearchTestHtml = fs.readFileSync(`${__dirname}/testFiles/mtgSaleCardListTestDoc.html`, 'utf-8');
 
 const cardSearchExpectedResult = [
   {
