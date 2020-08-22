@@ -117,8 +117,8 @@ const bulkSearch = async (cardNames: Array<string>): Promise<Array<ISearchResult
   return searchResults;
 };
 
-const explore = async (url: string): Promise<Array<ICardPreview>> => {
-  const found = shopList.find(shop => url.startsWith(shop.hostUrl));
+const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview>> => {
+  const found = shopList.find(shop => shop.canExplore(url));
   if (!found) {
     logger.log(`No shop found to explore url: ${url}`, LogLevel.Error);
     return [];
@@ -129,7 +129,7 @@ const explore = async (url: string): Promise<Array<ICardPreview>> => {
     return [];
   }
 
-  return await found.explore(url);
+  return await found.explore(url, pageNum);
 };
 
 export default { search, bulkSearch, explore };

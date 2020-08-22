@@ -3,6 +3,10 @@ import { queryConcrete, ConfigItem } from '../../utils/queryHelpers';
 export const hostUrl = `https://mtgtrade.net`;
 export const shopName = 'MtgTrade';
 
+export const UrlRegEx = {
+  userSingles: /(http(s)?:\/\/)?mtgtrade\.net\/store\/single\/user\/\d+\/?/,
+};
+
 export enum Selector {
   searchResultList = '.search-results-list',
   searchItem = '.search-item',

@@ -71,8 +71,9 @@ app.post('/bulksearch', async (req, response) => {
 
 app.get('/explore', async (req, response) => {
   const url = req.query.url;
+  const pageNum = req.query.page;
 
-  const result = await SearchAggregator.explore(url).catch(error => {
+  const result = await SearchAggregator.explore(url, pageNum).catch(error => {
     logger.log(`Explore: Failed with error: ${error}`, LogLevel.Error);
     return {};
   });

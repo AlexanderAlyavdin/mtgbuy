@@ -9,5 +9,6 @@ export default interface ICardShop {
   searchCard(cardName: string): Promise<Array<ICardItem>>;
   searchCardList(cardNames: Array<string>): Promise<Array<ISearchResult>>;
 
-  explore?(url: string): Promise<Array<ICardPreview>>;
+  canExplore(url: string): boolean;
+  explore?(url: string, pageNum: Number): Promise<Array<ICardPreview>>;
 }

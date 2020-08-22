@@ -1,16 +1,17 @@
 import { JSDOM } from 'jsdom';
 import got, { Response } from 'got';
+import puppeteer, { Page } from 'puppeteer';
 
 import ICardItem from '@shared/interfaces/ICardItem';
 import ISearchResult from '@shared/interfaces/ISearchResult';
+import ICardPreview from '@shared/interfaces/ICardPreview';
 import Condition from '@shared/constants/condition';
 
 import Logger, { LogLevel } from '../utils/logger';
 import { queryAll, query } from '../utils/queryHelpers';
 import { rusNameTo2Code } from '../utils/isoLanguageCodes';
 
-import { shopName, hostUrl, queryCardItem, Selector, queryUserCardItem } from './constants/mtgTrade';
-import ICardPreview from '@shared/interfaces/ICardPreview';
+import { shopName, hostUrl, queryCardItem, Selector, queryUserCardItem, UrlRegEx } from './constants/mtgTrade';
 
 const logger = new Logger('MtgTrade');
 
@@ -129,18 +130,45 @@ const searchCardList = async (cardNames: Array<string>): Promise<Array<ISearchRe
   });
 };
 
-const explore = async (url: string): Promise<Array<ICardPreview>> => {
+const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview>> => {
   logger.log(`Explore url: ${url}`);
 
-  return await got(url, { rejectUnauthorized: false, timeout: 10000 })
-    .then(result => {
-      const dom = new JSDOM(result.body).window.document;
-      return parseUserCards(dom);
-    })
-    .catch(error => {
-      logger.log(`Error while exploring url: ${error}`, LogLevel.Error);
+  const scrapeGetPageContent = async (page: Page, pageNum: Number): Promise<Array<ICardPreview>> => {
+    await page.evaluate(`$('.js-store-user-single-form').find('[name="page"]').val(${pageNum})`);
+    const resultVarName = 'my_temp_var';
+    await page.evaluate(`var ${resultVarName}`);
+    await page.evaluate(
+      `$('.js-store-user-single-form').ajaxSubmit({success: function(res) { ${resultVarName}=res; }})`,
+    );
+    await page.waitForFunction(`${resultVarName}`);
+    let content = (await page.evaluate(`${resultVarName}`)) as string;
+    if (content.includes('var last_page = true;')) {
+      logger.log(`Page with number does not exist: ${pageNum}`);
       return [];
-    });
+    }
+
+    content = `<table><tbody>${content}</tbody><table>`;
+    return parseUserCards(new JSDOM(content).window.document);
+  };
+
+  // Set up browser and page.
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
+  const page = await browser.newPage();
+  page.setViewport({ width: 1280, height: 926 });
+
+  // Navigate to the demo page.
+  await page.goto(url);
+
+  // Extract items from the page.
+  const items = await scrapeGetPageContent(page, pageNum);
+
+  // Close the browser.
+  await browser.close().catch(error => logger.log(`Failed to close browser: ${error}`, LogLevel.Error));
+
+  return items;
 };
 
 const parseUserCards = (document: Document): Array<ICardPreview> => {
@@ -164,4 +192,9 @@ const parseUserCards = (document: Document): Array<ICardPreview> => {
   });
 };
 
-export default { shopName, hostUrl, searchCard, searchCardList, explore };
+const canExplore = (url: string): boolean => {
+  // Only user singles
+  return UrlRegEx.userSingles.test(url);
+};
+
+export default { shopName, hostUrl, searchCard, searchCardList, explore, canExplore };
