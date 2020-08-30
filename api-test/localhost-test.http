@@ -26,3 +26,7 @@ content-type: application/json
     "Golos, Tireless Pilgrim",
     "Sisay, Weatherlight Captain"
 ]
+
+############
+
+GET http://localhost:3030/explore?url=https%3A%2F%2Fmtgtrade.net%2Fstore%2Fsingle%2Fuser%2F11077%2F&page=4

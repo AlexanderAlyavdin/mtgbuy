@@ -1,22 +1,19 @@
 {
-    "compilerOptions": {
-      "module": "commonjs",
-      "esModuleInterop": true,
-      "target": "es6",
-      "moduleResolution": "node",
-      "sourceMap": true,
-      "outDir": "dist",
-      "lib": ["es2019", "dom", "esnext.array"],
-      "baseUrl": "./src",
-      "paths": {
-        "@shared/*": ["../../main-client/src/shared/*"],
-      }
-    },
-
-    "exclude": [
-        "tests/**/*"
-    ],
-    "_moduleAliases": {
-      "@shared/*": ["dist/shared/*"],
+  "compilerOptions": {
+    "module": "commonjs",
+    "esModuleInterop": true,
+    "target": "es6",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "outDir": "dist",
+    "lib": ["es2019", "dom", "esnext.array"],
+    "baseUrl": "./src",
+    "paths": {
+      "@shared/*": ["../../main-client/src/shared/*"]
     }
+  },
+
+  "_moduleAliases": {
+    "@shared/*": ["dist/shared/*"]
   }
+}

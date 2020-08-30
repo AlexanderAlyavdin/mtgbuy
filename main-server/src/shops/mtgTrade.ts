@@ -1,15 +1,17 @@
 import { JSDOM } from 'jsdom';
 import got, { Response } from 'got';
+import puppeteer, { Page } from 'puppeteer';
 
 import ICardItem from '@shared/interfaces/ICardItem';
 import ISearchResult from '@shared/interfaces/ISearchResult';
+import ICardPreview from '@shared/interfaces/ICardPreview';
 import Condition from '@shared/constants/condition';
 
 import Logger, { LogLevel } from '../utils/logger';
 import { queryAll, query } from '../utils/queryHelpers';
 import { rusNameTo2Code } from '../utils/isoLanguageCodes';
 
-import { shopName, hostUrl, queryCardItem, Selector } from './constants/mtgTrade';
+import { shopName, hostUrl, queryCardItem, Selector, queryUserCardItem, UrlRegEx } from './constants/mtgTrade';
 
 const logger = new Logger('MtgTrade');
 
@@ -128,4 +130,91 @@ const searchCardList = async (cardNames: Array<string>): Promise<Array<ISearchRe
   });
 };
 
-export default { shopName, hostUrl, searchCard, searchCardList };
+const explore = async (url: string, pageNum: Number): Promise<Array<ICardPreview>> => {
+  logger.log(`Explore url: ${url}`);
+
+  // Only user singles
+  if (!UrlRegEx.userSingles.test(url)) {
+    logger.log(`Specified url is not user singles: ${url}`, LogLevel.Error);
+    return [];
+  }
+
+  // Remove slash at the end
+  if (url.endsWith('/')) url = url.slice(0, -1);
+
+  const getCardsForPageNum = async (page: Page, pageNum: Number): Promise<Document> => {
+    await page.evaluate(`$('${Selector.userSinglesSearchForm}').find('[name="page"]').val(${pageNum})`);
+    const resultVarName = 'my_temp_var';
+    await page.evaluate(`var ${resultVarName}`);
+    await page.evaluate(
+      `$('${Selector.userSinglesSearchForm}').ajaxSubmit(
+        {
+          success: function(res) { ${resultVarName}=res; },
+          error: function() { ${resultVarName}=''; }
+        })`,
+    );
+    logger.log(`Form submited for page ${pageNum}. Waiting for result...`);
+
+    await page.waitForFunction(`${resultVarName}`);
+    let content = (await page.evaluate(`${resultVarName}`)) as string;
+    if (content.length == 0) {
+      logger.log(`Failed to get page content: ${pageNum}`, LogLevel.Error);
+    }
+    if (content.includes('var last_page = true;')) {
+      logger.log(`Page with number does not exist: ${pageNum}`);
+      return undefined;
+    }
+
+    content = `<table><tbody>${content}</tbody><table>`;
+    return new JSDOM(content).window.document;
+  };
+
+  const browser = await puppeteer.launch({
+    headless: true,
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
+  });
+
+  let document: Document;
+  try {
+    const page = await browser.newPage();
+    page.setViewport({ width: 1280, height: 926 });
+
+    logger.log(`Browser go to url: ${url}`, LogLevel.Debug);
+
+    await page.goto(url);
+    document = await getCardsForPageNum(page, pageNum);
+  } catch (error) {
+    logger.log(`Error while getting page content: ${error}`, LogLevel.Error);
+  } finally {
+    await browser.close().catch(error => logger.log(`Failed to close browser: ${error}`, LogLevel.Error));
+  }
+
+  const cards = parseUserCards(document, url);
+  logger.log(`Explore parsed ${cards.length} cards`);
+
+  return cards;
+};
+
+const parseUserCards = (document: Document, userSinglesUrl: string): Array<ICardPreview> => {
+  const cardRows = queryAll(document, Selector.userCardRow);
+
+  if (cardRows.length == 0) {
+    logger.log(`No cards found on page`, LogLevel.Warning);
+    return [];
+  }
+
+  logger.log(`Found ${cardRows.length} user singles on page`);
+
+  return cardRows.map(row => {
+    const item = queryUserCardItem(row);
+    const cardName = item.name();
+    const cardOneName = cardName.split('/')[0].trim();
+    return {
+      name: cardName,
+      imageUrl: `${hostUrl}${item.imageUrlRel()}`,
+      link: `${userSinglesUrl}/?query=${encodeURIComponent(cardOneName)}`,
+    };
+  });
+};
+
+export default { shopName, hostUrl, searchCard, searchCardList, explore };

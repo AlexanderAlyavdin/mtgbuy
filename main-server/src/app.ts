@@ -69,6 +69,17 @@ app.post('/bulksearch', async (req, response) => {
   response.send(result);
 });
 
+app.get('/explore', async (req, response) => {
+  const url = req.query.url;
+  const pageNum = req.query.page;
+
+  const result = await SearchAggregator.explore(url, pageNum).catch(error => {
+    logger.log(`Explore: Failed with error: ${error}`, LogLevel.Error);
+    return {};
+  });
+  response.send(result);
+});
+
 app.listen(config.PORT, () => {
   logger.log(`server is listening on ${config.PORT}`);
 });
