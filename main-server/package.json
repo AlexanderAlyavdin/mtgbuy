@@ -4,6 +4,7 @@
   "main": "dist/main-server/src/app.js",
   "license": "MIT",
   "scripts": {
+    "start-prod": "tsc -p tsconfig.prod.json && node dist/main-server/src/app.js",
     "start": "tsc && node dist/main-server/src/app.js",
     "start-demon": "nodemon",
     "test": "tsc && cross-env LOG_LEVEL=warning jest",

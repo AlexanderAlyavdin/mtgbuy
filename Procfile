@@ -1,1 +1,1 @@
-web: ls && cd main-server && yarn start
+web: ls && cd main-server && yarn start-prod
