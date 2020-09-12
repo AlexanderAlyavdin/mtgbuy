@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import { Router, Switch, Route } from 'react-router-dom';
 import { History } from 'history';
 import TestRoute from './routes/Test';
-import SearchRoute from './routes/SearchRoute';
+import SingleSearchRoute from './routes/single-search/SingleSearchRoute';
 import { palette, PaletteProps } from '@material-ui/system';
 import styled, { ThemeProvider } from 'styled-components';
 import Box from '@material-ui/core/Box';
@@ -25,8 +25,8 @@ const App: FunctionComponent<AppProps> = ({ routerHistory }) => {
         <ThemeProvider theme={theme}>
           <MainBox bgcolor='secondary.light'>
             <Switch>
-              <Route exact path='/'>
-                <SearchRoute />
+              <Route path='/'>
+                <SingleSearchRoute />
               </Route>
               <Route path='/about'>
                 <div>Route About</div>

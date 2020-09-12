@@ -2,7 +2,7 @@ import React, { FunctionComponent } from 'react';
 import styled from 'styled-components';
 import { palette, PaletteProps } from '@material-ui/system';
 import { AppBar, Toolbar } from '@material-ui/core';
-import SearchInput from './SearchInput';
+import SearchInput from '../../components/SearchInput';
 
 interface HeaderProps {
   onSearch?(value: string): void;
