@@ -1,0 +1,8 @@
+POST http://localhost:3030/bulksearch
+content-type: application/json
+
+[
+  "Sisay, Weatherlight Captain",
+  "Golos, Tireless Pilgrim"
+]
+############

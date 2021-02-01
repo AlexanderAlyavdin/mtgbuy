@@ -8,6 +8,7 @@ import styled, { ThemeProvider } from 'styled-components';
 import Box from '@material-ui/core/Box';
 import theme from 'theme';
 import { StylesProvider } from '@material-ui/styles';
+import ListSearchRoute from './routes/ListSearchRoute';
 
 type AppProps = {
   routerHistory: History;
@@ -28,8 +29,8 @@ const App: FunctionComponent<AppProps> = ({ routerHistory }) => {
               <Route path='/'>
                 <SingleSearchRoute />
               </Route>
-              <Route path='/about'>
-                <div>Route About</div>
+              <Route exact path='/list_search'>
+                <ListSearchRoute />
               </Route>
               <Route path='/test'>
                 <TestRoute />
